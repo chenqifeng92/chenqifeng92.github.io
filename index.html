@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Qifeng Chen's Resume</title>
+	<title>Qifeng Chen Resume</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="Generator" content="CV Maker - https://cvmkr.com/" />
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300&subset=latin,latin-ext" rel="stylesheet" type="text/css" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300&subset=latin,latin-ext" rel="stylesheet"
+		type="text/css" />
 	<style type="text/css">
 		body {
 			background: #f0f0f0;
 			margin: 0;
 			padding: 0;
-			
+
 			font-family: 'Open Sans', 'Helvetica Light', 'Helvetica Neue', 'Arial Narrow', Helvetica, Arial, serif;
 			font-weight: 300;
 			line-height: 22px;
@@ -19,152 +20,179 @@
 			color: #000;
 		}
 
-		h1, h2, h3, h4 {
+		h1,
+		h2,
+		h3,
+		h4 {
 			font-family: 'Open Sans', 'Helvetica Light', 'Helvetica Neue', 'Arial Narrow', Helvetica, Arial, serif;
 			font-weight: 300;
 			font-weight: normal;
 			margin: 0 0 15px 0;
 			padding: 0;
 		}
+
 		h1 {
 			font-size: 350%;
 		}
+
 		h2 {
 			font-size: 210%;
 		}
+
 		h3 {
 			font-size: 130%;
 		}
-		
+
 		p {
 			margin: 0 0 10px 0;
 		}
-		
+
 		ul {
 			margin: 0;
 			list-style-type: square;
 		}
+
 		a {
 			color: #222;
 		}
-		/* ________________________________________________________ */
-		.rtl {
-			direction: rtl;
-		}
+
 		.clear {
 			clear: both;
 		}
 
-		#main {
+		.resume {
 			background: #fff;
 			width: 900px;
 			padding: 35px;
 			margin: 0 auto 15px auto;
 			overflow: hidden;
-			
+
 			box-shadow: 0 0 6px #ccc;
 		}
-		
-		#title {
+
+		.resume-header {
 			line-height: 42px;
 			border-bottom: 1px solid #000;
 			padding-bottom: 20px;
 			margin: 0px 0 20px 0;
 		}
-		
-		#credit {
+
+		.resume-credit {
 			margin-bottom: 20px;
 			font-size: 11px;
 			color: #999;
 			text-align: center;
 		}
-			#credit a {
-				color: #999;
-			}
-		
+
+		.resume-credit a {
+			color: #999;
+		}
+
 		p label {
 			font-size: 110%;
 			margin-right: 10px;
 		}
-			p label span.colon {
-				display: inline;
-			}
 
-		
+		p label span.colon {
+			display: inline;
+		}
+
+
 		.section {
 			margin-bottom: 25px;
 		}
-		.section .set {
-		}
+
 		.item {
 			margin: 0 0 20px 0;
 		}
 
-		/*  _____________________________ */
 		.section .title {
-			text-transform: uppercase;
 			font-size: 160%;
 
 			margin: 0 auto 15px auto;
 			display: block;
 		}
-			.section .set {
-				margin-left: 25px;
-			}
-			.section .set h3 {
-				margin: 0;
-			}
 
+		.section .set {
+			margin-left: 25px;
+		}
 
+		.section .set h3 {
+			margin: 0;
+		}
 
 		.basic-info {
 			border-top: 0;
 		}
+
 		.section.basic-info .title {
 			float: left;
 			border: 0;
 		}
+
 		.basic-info .set {
 			float: right;
 			width: 70%;
 		}
+
 		.basic-info .address {
 			width: 40%;
 			float: left;
 		}
+
 		.basic-info .r {
 			float: right;
 			width: 60%;
 			text-align: right;
 		}
-			.basic-info label {
-				font-family: 'Open Sans', 'Helvetica Light', 'Helvetica Neue', 'Arial Narrow', Helvetica, Arial, serif;
-				font-weight: 300;
-			}
-			.basic-info label, .basic-info span  {
-				display: inline !important;
-			}
+
+		.basic-info label {
+			font-family: 'Open Sans', 'Helvetica Light', 'Helvetica Neue', 'Arial Narrow', Helvetica, Arial, serif;
+			font-weight: 300;
+		}
+
+		.basic-info label,
+		.basic-info span {
+			display: inline !important;
+		}
+
 		.basic-info p {
 			margin: 0;
 		}
-		
+
 		.section span.value {
 			display: block;
 		}
-		.section h3 span.l, .section span.r {
+
+		.section h3 span.l,
+		.section span.r {
 			width: 49%;
 			float: left;
 		}
-			.section span.r {
-				float: right;
-				text-align: right;
-			}
-			.section-education .school,
-			.section-work .job_title {
-				font-size: 100%;
-				display: block;
-				margin: 5px 0 5px 0;
-			}
+
+		.section span.r {
+			float: right;
+			text-align: right;
+		}
+
+		.section-work .info {
+			margin-top: 18px;
+		}
+
+		.section-work .info-label {
+			display: block;
+			font-weight: 600;
+			margin: 12px 0 6px 0;
+			text-transform: none;
+		}
+
+		.section-education .school,
+		.section-education .course,
+		.section-work .job_title {
+			font-size: 100%;
+			display: block;
+			margin: 5px 0 5px 0;
+		}
 
 		#photo {
 			width: 160px;
@@ -174,142 +202,852 @@
 			margin-top: 4px;
 			border-radius: 4px;
 		}
+
 		#photo img {
 			width: 100%;
 			height: auto;
 		}
+
 		.header.photo {
 			margin-left: 190px;
 		}
-		.header.photo #title {
+
+		.header.photo .resume-header {
 			text-align: left;
 		}
+
 		.header.photo .basic-info {
 			float: none;
 			padding: 0;
 		}
 
+		.hidden {
+			display: none;
+		}
+
+		.action-bar {
+			position: fixed;
+			top: 20px;
+			right: 6px;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 8px;
+			z-index: 1000;
+		}
+
+		.print-button {
+			border: none;
+			background: transparent;
+			color: #000;
+			font-size: 13px;
+			padding: 0;
+			cursor: pointer;
+		}
+
+		.print-button:hover,
+		.print-button:focus {
+			text-decoration: underline;
+		}
+
+		.lang-toggle {
+			display: flex;
+			gap: 8px;
+		}
+
+		.lang-toggle button {
+			border: 1px solid #000;
+			background: #fff;
+			color: #000;
+			font-size: 12px;
+			padding: 6px 12px;
+			cursor: pointer;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			transition: background 0.2s ease, color 0.2s ease;
+		}
+
+		.lang-toggle button.active {
+			background: #000;
+			color: #fff;
+		}
 
 		@media screen and (max-width: 950px) {
 			body {
 				background: #fff;
 			}
-			#main {
+
+			.resume {
 				box-shadow: none;
-				padding: 0;
 				padding: 5px;
+			}
+
+			.action-bar {
+				position: static;
+				margin: 10px 10px 0 auto;
+			}
+		}
+
+		@media print {
+			body {
+				background: #fff;
+			}
+
+			.action-bar {
+				display: none !important;
+			}
+
+			.resume {
+				box-shadow: none;
+				margin: 0;
 			}
 		}
 	</style>
 </head>
-<body class="lang-en ">
 
-<div id="main">
-	
-	<h1 id="title">Peter Chen</h1>
-	<div class="basic-info section">
-		<h2 class="title">Contact</h2>
-		<div class="set">
-		
-							<p class="address">
-					<span class="value">
-						1355 Market Street<br />San Francisco<br />CA 94103					</span>
-				</p>
-						<div class="r">
-									<p class="email"><span class="value">chenqifengfree@gmail.com</span></p>
-				
-									<p class="website"><span class="value">chenqifengfree.github.io</span></p>
-				
-									<p class="phone"><span class="value">+1 (347) 903 7818</span></p>
-							</div>
-			<div class="clear"> </div>
-		</div><!-- set //-->
-		<div class="clear"> </div>
-	</div><!-- basic-info //-->
+<body class="lang-en">
 
-	
-		
-			<div class="section section-1287593158087">
-			<h2 class="title">Objective</h2>
+	<div class="action-bar" aria-label="page actions">
+		<button type="button" class="print-button" aria-label="打印简历">Print CV</button>
+		<div class="lang-toggle" aria-label="language switcher">
+			<button type="button" data-lang="zh">中文</button>
+			<button type="button" data-lang="en">ENGLISH</button>
+		</div>
+	</div>
+
+	<div id="resume-zh" class="resume resume-zh hidden">
+
+		<h1 class="resume-header">陈棋烽<span style="float: right; font-size: 14px; text-transform: uppercase; line-height: 85px; font-weight: 300;">求职 Java高级开发工程师</span></h1>
+		<div class="basic-info section">
+			<h2 class="title" style="color:#fff">基本信息</h2>
 			<div class="set">
-							<div class="item">
-								<span class="info">Seeking a position as an accountant where extensive experience will be further developed and utilised. Extensive experience to the credit.</span>
-							</div>
-						</div>
+				<div class="r">
+					<p class="email"><span class="value">邮箱：chenqifengfree@outlook.com</span></p>
+					<p class="phone"><span class="value">手机（微信同号）：18549846808</span></p>
+					<p class="location"><span class="value">男，33岁，BASE上海，本科学信可查，已离职可以随时入职</span></p>
+				</div>
+				<div class="clear"> </div>
+			</div><!-- set //-->
+			<div class="clear"> </div>
+		</div><!-- basic-info //-->
+		<div class="section">
+			<h2 class="title">个人优势</h2>
+			<div class="set">
+				<div class="item">
+					<span class="info">具备十年以上 Java 企业级系统开发与架构设计经验，熟悉Java核心及JVM优化，熟练掌握Spring框架，包括 SpringBoot、以及Spring Cloud微服务架构设计与实践。熟悉MyBatis、JPA等持久化技术，熟悉MySQL、Oracle等关系型数据库及MongoDB非关系型数据库。掌握 Redis、Kafka、RabbitMQ 等缓存与消息中间件，熟悉Flowable、Drools、Airflow等工作流与规则引擎，能够设计高并发、分布式系统解决方案。具备丰富的系统性能优化与安全合规经验，熟悉微服务治理体系，掌握 SkyWalking、SonarQube、Prometheus 等可观测与质量保障工具，能够从架构、代码质量到交付流程全面把控项目稳定性与扩展性。熟练应用 Keycloak 与 OAuth2 实现统一认证与安全管理，具备自动化测试与 CI/CD 实践经验，并能在大型分布式项目中从零搭建系统架构、划分服务边界并推进高质量交付。<br><br>熟悉 SAP Cloud Application Programming Model（CAP）框架，熟悉CDS模型开发与CQN查询编写，掌握 Fiori Drafts草稿机制及HANA数据库操作，能够在SAP微服务架构下进行模块划分、核心业务逻辑实现与系统性能优化。<br><br>具备优异的跨文化沟通能力和英语表达能力，拥有大学英语四级，上海市中级口译证书，能在中英文双语环境中顺畅主持会议、参与方案评审及技术交流。长期参与与海外团队（含印度口音英语）合作的项目，能高效进行需求澄清、方案评估与问题协同。</span>
+				</div>
+			</div>
 			<div class="clear"> </div>
 		</div>
-			<div class="section section-work">
-			<h2 class="title">Work experience</h2>
+		<div class="section section-work">
+			<h2 class="title">工作经历</h2>
 			<div class="set">
-								<div class="item">
-									<h3><span class="company l">MyOffice Inc, Boston</span>
-							<span class="date r">October 2005 &mdash; Present</span>
-								</h3>
-								<div class="clear"> </div>
-								<span class="job_title">Administrator</span><div class="info"><ul><li>Performed general office duties and administrative tasks.</li><li>Prepared weekly confidential sales reports for presentation to management.</li><li>Managed the internal and external mail functions.</li></ul></div><div class="clear"> </div>
-								</div>
-							
-								<div class="item">
-									<h3><span class="company l">DC Systems, DC</span>
-							<span class="date r">March 2003 &mdash; June 2005</span>
-								</h3>
-								<div class="clear"> </div>
-								<span class="job_title">Accounting Assistant</span><div class="info"><ul><li>Administered online banking functions. </li><li>Reduced credit period from 90 days to 60 days. </li><li>Managed payroll function for 140 employees.</li></ul></div><div class="clear"> </div>
-								</div>
-							</div>
+				<div class="item">
+					<h3><span class="company l">慧博云通科技股份有限公司上海分公司</span>
+						<span class="date r">2023年5月 &mdash; 至今</span>
+					</h3>
+					<div class="clear"> </div>
+					<span class="job_title">Java高级开发工程师</span>
+					<div class="info">
+						<ul>
+							<li>负责核心模块设计与开发、代码质量管控及系统性能优化，主导与海外团队的业务沟通、需求对齐，推动技术分享与敏捷开发落地，确保项目高质量交付。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">上海睿民互联网科技有限公司</span>
+						<span class="date r">2020年12月 &mdash; 2023年3月</span>
+					</h3>
+					<div class="clear"> </div>
+					<span class="job_title">项目经理</span>
+					<div class="info">
+						<ul>
+							<li>负责开发公司睿雪票据系统，全程参与民泰银行新一代票据系统改造的项目管理并确保按期上线完美交付</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">上海新致软件</span>
+						<span class="date r">2018年3月 &mdash; 2020年11月</span>
+					</h3>
+					<div class="clear"> </div>
+					<span class="job_title">Java架构师</span>
+					<div class="info">
+						<ul>
+							<li>负责开发实时交易风控系统与保险业务 SaaS 系统，主导全流程业务架构设计，嵌入规则引擎与工作流引擎，打造高并发、全链路集成的数字化风控与保险系统。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">亚信科技（南京）有限公司</span>
+						<span class="date r">2015年9月 &mdash; 2018年2月</span>
+					</h3>
+					<div class="clear"> </div>
+					<span class="job_title">Java开发</span>
+					<div class="info">
+						<ul>
+							<li>基于国家标准开发了新能源充电桩管理系统和电信固网终端销售系统，将物联网（IoT）设备接入与业务流程深度融合</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">维天运通信息科技股份有限公司</span>
+						<span class="date r">2013年7月 &mdash; 2015年9月</span>
+					</h3>
+					<div class="clear"> </div>
+					<span class="job_title">Java开发</span>
+					<div class="info">
+						<ul>
+							<li>基于LBS的整车物流调度与车队管理系统开发</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">上海新致软件</span>
+						<span class="date r">2018年3月 &mdash; 2020年11月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<ul>
+							<li>负责开发实时交易风控系统与保险业务 SaaS 系统，主导全流程业务架构设计，嵌入规则引擎与工作流引擎，打造高并发、全链路集成的数字化风控与保险系统。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">亚信科技（南京）有限公司</span>
+						<span class="date r">2015年9月 &mdash; 2018年2月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<ul>
+							<li>基于国家标准开发了新能源充电桩管理系统和电信固网终端销售系统，将物联网设备接入与业务流程深度融合。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">维天运通信息科技股份有限公司</span>
+						<span class="date r">2013年7月 &mdash; 2015年9月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<ul>
+							<li>基于LBS的整车物流调度与车队管理系统开发。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+			</div>
 			<div class="clear"> </div>
 		</div>
-			<div class="section section-qualifications">
-			<h2 class="title">Qualifications</h2>
+		<div class="section section-work">
+			<h2 class="title">项目经验</h2>
 			<div class="set">
-							<div class="item">
-								<span class="info"><ul><li>Certified Public Accountant (CPA)</li><li>Certified Management Accountant (CMA)</li><li>Certified Financial Manager (CFM)</li></ul></span>
-							</div>
-						</div>
+				<div class="item">
+					<h3><span class="company l">【慧博云通】SAP Ariba 采购到付款业务重构项目</span>
+						<span class="date r">2025年3月 &mdash; 2025年9月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">项目描述：</p>
+						<p>该项目是 SAP Ariba 平台从传统 AN（Gen1）架构向 NextGen 架构演进的核心重构工程，重点改造了与采购订单下发、供应商发票校验、付款确认等相关的模块。SAP Ariba 是全球领先的采购与支出管理云平台，核心业务覆盖从采购寻源、合同签订，到采购订单（Purchase Order）下发、发票处理（Invoice Management）和付款（Payment）的完整 Procure-to-Pay（P2P）流程。赋能企业在全球商业网络中与供应商协作，实现更高的合规性、成本控制和流程自动化。团队采用基于 SAP CAP 框架的微服务架构，并结合 Fiori Drafts 草稿机制，提升了用户在处理订单和发票时的交互体验。技术栈涵盖 SAP 定制 JDK、本地 SQLite 与线上 HANA 数据库的切换，以及 SonarQube 进行代码质量分析。开发过程遵循 Scrum 敏捷模式，配合单元测试、集成测试和性能测试。在测试环节特别关注覆盖率，通过不断补充用例，确保核心模块的稳定性与可维护性。</p>
+						<p class="info-label">个人贡献：</p>
+						<ul>
+							<li>在 notification-service 中开发了邮件通知和用户偏好设置功能，在 configuration-service 中实现了跨租户配置管理功能。</li>
+							<li>主导 NextGen Pending Queue 核心 API 的设计与实现，完成文档查询、重排队列和文件传输管理等关键功能，并独立设计了 Stuck Pending Queue Notification，用于检测和提醒卡滞任务，增强系统可靠性。</li>
+							<li>参与基于存储过程的发票迁移逻辑开发与调试，协助测试团队定位并修复多处迁移问题，并根据 code owner 规范重构发票供应商配置逻辑，使不同供应商可通过独立配置文件执行流程。</li>
+							<li>优化 admin-job-manager-service 的 Job 表结构，新增操作日志和用户字段，为后续数据级权限控制奠定基础。</li>
+							<li>编写和完善单元测试、集成测试与性能测试用例，持续提升代码覆盖率和系统稳定性，并保障 CI/CD 流水线的顺利运行。</li>
+							<li>撰写并分享技术文档，系统总结 CAP 框架下的修改人/修改时间追踪优化方案，在团队内进行技术分享，帮助成员理解 CAP 的 Draft 机制与最佳实践。</li>
+							<li>主动协助团队成员解决技术问题，并与 SAP 美国团队保持高频沟通，熟练应对印度口音英语交流，确保需求澄清与开发落地。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">【慧博云通】南非OldMutual海外寿险业务系统</span>
+						<span class="date r">2023年5月 &mdash; 2025年2月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">项目描述：</p>
+						<p>该项目驻场平安金融壹账通为南非Old Mutual集团定制开发，旨在建设统一的海外寿险数字展业与客户管理平台（DAE：Digital Adviser Enablement）。系统为当地顾问、销售经理及后台支持团队提供端到端的业务支撑，覆盖客户全生命周期与销售全流程，包括潜在客户管理（Leads）、销售机会（Opportunities）、客户与保单管理（Customers &amp; Portfolios）、营销活动（Campaign）、顾问绩效追踪（Dashboard &amp; Performance）及佣金申报（S&amp;T Claims）等模块。系统与 Old Mutual 的多套核心后台实现集成：通过 OMK 获取客户与保单核心数据，通过 RPP 接入产品配置与销售规则体系，并与 Xplan 同步顾问绩效与客户投资组合，实现数据一致与业务协同，统一销售数据口径与业务闭环管理。平台支持南非及纳米比亚等多国市场的本地化运营。技术上，系统基于 Spring Boot + Spring Cloud 微服务架构，服务层按业务域划分为客户服务、销售管理、营销活动、顾问绩效及报表统计等独立模块，通过 Gateway 网关统一流量入口，并利用 Feign 实现服务间通信与负载均衡。采用 Redis 进行会话缓存与热点数据加速，Kafka 用于异步消息传递与事件驱动的数据同步。统一认证与授权由 Keycloak 提供，结合 OAuth2.0 协议实现单点登录、角色分级访问与令牌加密，保障用户身份安全与操作可追溯。系统接口经 API Gateway 统一签名验签并结合审计日志落地，符合国际数据隐私与合规要求（含 POPIA 数据保护法）。数据库层采用 MySQL 持久化客户与交易数据，并结合数据掩码与审计表设计强化数据安全与合规性。项目采用敏捷开发模式，以两周为一个迭代周期，并逐步引入单元测试、集成测试及性能测试机制，持续提升测试覆盖率与代码质量。</p>
+						<p class="info-label">个人贡献：</p>
+						<ul>
+							<li>直接参与与南非业务团队的需求分析与方案评审，承担中英双语沟通与规则澄清，确保系统逻辑与当地保险业务流程的精确映射。</li>
+							<li>负责系统核心模块的后端设计与开发，涵盖客户、销售线索及营销活动模块，主导服务划分、接口建模与核心业务逻辑实现。</li>
+							<li>主导部分微服务的架构优化与性能调优，基于 Redis 缓存与分布式锁机制提升高并发场景下的数据一致性与访问效率。</li>
+							<li>负责多地区数据治理与清洗规则设计，处理不同国家客户数据在身份格式、时间标准及编码体系上的差异，确保数据落库一致性与报表准确性。</li>
+							<li>推动敏捷开发与自动化测试落地，协同测试团队构建单元测试与集成测试框架，完善性能测试流程，有效提升系统稳定性与发布质量。</li>
+							<li>协助完善统一鉴权与角色控制策略，实现顾问、经理、后台人员的权限分级与功能隔离，增强系统安全性与可维护性。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">【上海睿民】民泰银行新一代票据系统改造</span>
+						<span class="date r">2021年11月 &mdash; 2023年3月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">项目描述：</p>
+						<p>该项目是民泰银行响应中国票交所 ECDS 向 CPES 系统切换的重大升级，核心目标是实现票据等分化改造，支持票据的拆分与合并业务模式。系统设计严格遵循票交所业务直连接口规范，覆盖等分化后的票据承兑、背书、贴现、质押解质押、回购、托收等全生命周期管理，并深度集成票交所 CPES 系统、行内网银、信贷等关键系统。技术上，采用 SpringBoot 架构进行系统升级，使用国产信创数据库承载改造后的等分化数据模型。系统通过 MQ 异步通信和 Socket 机制与行内外系统进行报文交互，并对额度管理和风控核心节点进行了重构，以保障新业务模式下的交易一致性与高安全合规要求。</p>
+						<p class="info-label">个人贡献：</p>
+						<ul>
+							<li>担任项目经理，主导客户需求沟通、系统设计、架构决策、人员招聘与开发交付，在紧张工期内保障系统按时上线并获得客户好评。</li>
+							<li>主导等分化票据全生命周期业务的后端逻辑设计与开发，重构票据状态机模型以适应拆分与合并模式。</li>
+							<li>负责对接票交所最新 CPES 直连接口规范的系统改造与联调，确保电票报文格式、签名校验及交易流程的完全合规与平稳切换。</li>
+							<li>重新设计并实现额度占用/释放与票据风险控制模块，有效支持等分化票据的黑名单校验与风险冻结。</li>
+							<li>协同银行网银、信贷系统团队完成接口重设计和联调，保障票据信息与授信额度的准确流转。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">【上海睿民】iFinBMS 睿雪票据管理平台</span>
+						<span class="date r">2020年12月 &mdash; 2021年10月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">项目描述：</p>
+						<p>平台面向商业银行的票据业务管理需求，覆盖银行承兑汇票和商业承兑汇票的全流程处理，包括签发、贴现、转贴现、再贴现、托收解付等场景。系统支持纸票与电票的统一管理，并与人民银行 ECDS、票交所交易系统、核心系统、信贷系统及网银系统对接，实现票据交易、额度管理、会计分录和风险检查等功能的自动化与合规化。系统基于 Java EE 技术栈，采用分层架构设计，后端以 SpringBoot 为核心框架，结合 Oracle 与 MyBatis/JDBC 组件实现数据持久化；通过 MQ 与 Socket 通讯机制进行报文交互；批量子系统负责夜间批处理与报表生成，并通过缓存、参数化配置、任务调度保证高频操作的性能与稳定性。</p>
+						<p class="info-label">个人贡献：</p>
+						<ul>
+							<li>参与贴现、转贴现、再贴现等核心交易模块的后端设计与开发，负责利息计算与风险定价等复杂业务规则实现。</li>
+							<li>负责与 ECDS、票交所的接口联调和报文解析，保障电票流程的准确性与自动化。</li>
+							<li>设计并实现基于信贷系统的授信额度实时校验与冻结/释放机制，落地黑名单、公示催告、票据冻结/解冻等关键风控逻辑。</li>
+							<li>优化 Oracle 数据库结构、索引及 SQL，显著提升大额票据查询与统计报表响应效率。</li>
+							<li>参与供应链票据、秒贴、票付通等创新产品的后台逻辑开发，支持银行票据融资业务的快速创新。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">【新致软件】太平洋保险 SaaS 业务管理系统</span>
+						<span class="date r">2019年2月 &mdash; 2020年10月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">项目描述：</p>
+						<p>该项目由太平洋保险委托开发，旨在建设集团级保险 SaaS 业务管理平台，为各子公司与合作渠道提供标准化、可扩展的保险业务运营能力。系统基于 SpringBoot + Spring Cloud 微服务架构构建，通过多租户设计实现业务隔离，覆盖产品管理、承保、保全、理赔、结算与渠道管理全流程。平台支持保险产品的参数化配置与销售管理，集成 Drools 规则引擎实现动态核保与风险控制，使用 Flowable 工作流引擎管理多级审批流程。结算模块支持佣金、费用与账务对账的自动化处理，渠道模块提供机构授权、业绩考核与分润管理能力。系统采用统一认证与授权（SSO + OAuth2）、Redis + Kafka 的高并发架构，并与集团 eHR、财务及核心保险系统集成。</p>
+						<p class="info-label">个人贡献：</p>
+						<ul>
+							<li>负责系统总体架构设计与核心业务模块开发，主导 Spring Cloud 微服务与多租户架构的实现。</li>
+							<li>参与保险核心业务流程建模与实现，确保产品配置、承保、保全、理赔、结算及渠道管理的逻辑一致与数据准确。</li>
+							<li>设计基于 Drools 的灵活核保与风控规则体系，实现多维条件组合与动态规则加载。</li>
+							<li>使用 Flowable 构建保全与理赔审批流程，支持多角色、多节点审批与异常回溯。</li>
+							<li>设计 Redis + Kafka 异步消息与缓存机制，提升高并发场景下的系统响应速度与稳定性。</li>
+							<li>实现统一认证与授权模块（SSO + OAuth2 + RBAC），构建租户级用户、角色与权限管理体系。</li>
+							<li>负责异构系统集成与数据同步，主导性能优化与可观测性建设，结合 SkyWalking 实现链路追踪与指标监控。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">【新致软件】信用卡实时交易风控系统</span>
+						<span class="date r">2018年3月 &mdash; 2019年1月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">项目描述：</p>
+						<p>项目由浦发硅谷银行联合开发，建设面向国际信用卡交易的实时风险控制系统。系统采集用户登录、交易、支付等全链路行为数据，实现潜在欺诈与异常交易的实时识别与处置。重点通过规则引擎与大数据分析结合，实现多维风险识别、自动规则调整与精准预警，保障跨境交易安全与合规。</p>
+						<p class="info-label">个人贡献：</p>
+						<ul>
+							<li>负责基于 Spring Boot 的后端设计与开发，利用 Drools 实现风控策略的动态配置与实时执行。</li>
+							<li>设计 Redis 与 MongoDB 结合的风险事件缓存及历史存储方案，支持高并发实时计算与横向扩展。</li>
+							<li>主导用户行为链路建模，关联登录→活动→订单→支付等事件，构建复合场景规则提升风控精度。</li>
+							<li>负责风控规则引擎版本管理与维护，支持策略快速迭代与回溯。</li>
+							<li>参与误报与漏报的人工复核流程开发，实现风险事件识别到闭环的全流程管理。</li>
+							<li>完成历史交易数据可视化分析与报表模块建设，支撑风险趋势监控与决策。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">【亚信科技】IMC 充电桩后台管理系统</span>
+						<span class="date r">2017年1月 &mdash; 2018年2月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">项目描述：</p>
+						<p>系统用于公司旗下新能源充电桩的统一运营与计费管理，遵循国家新能源行业标准及 T/CEC 102.1 – 102.4《电动汽车充换电服务信息交换》系列规范。平台支持站点、设备、运营商、计费、支付、用户及鉴权等核心模块，通过 MQTT 协议接入充电桩终端，实现设备状态上报、远程监控、计费结算与告警通知，构建设备与平台之间的物联网数据链路。后端基于 Spring Boot + Spring Cloud 微服务架构，采用 Eureka、Feign、Ribbon、Hystrix 实现解耦与容错；数据层使用 JPA + MySQL 并结合 Redis，消息层通过 MQTT 与 Kafka 提升并发吞吐；统一鉴权基于 Spring Security + JWT；监控日志体系结合 ELK 与 Prometheus + Grafana；前端采用 AngularJS + TypeScript 开发。</p>
+						<p class="info-label">个人贡献：</p>
+						<ul>
+							<li>参与系统功能划分与模块设计，梳理核心模块间的业务与数据流。</li>
+							<li>负责运营商管理、计费管理、支付接入、充电记录管理等模块的后端开发与接口设计。</li>
+							<li>参与数据库模型与缓存方案设计，优化高并发场景下的查询与写入性能。</li>
+							<li>编写接口文档与测试用例，协同前端与测试团队完成联调与验证。</li>
+							<li>通过优化 Kafka 队列参数与异步任务调度，解决充电记录延迟与重复上报问题，提高系统稳定性。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">【亚信科技】中国电信精品渠道固网终端销售系统</span>
+						<span class="date r">2015年9月 &mdash; 2016年12月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">项目描述：</p>
+						<p>系统面向中国电信各地市渠道门店，提供手机及固网终端设备的进销存一体化管理服务，覆盖基础配置、库存与销售管理、门店及店员管理、统一收银、报表统计与数据可视化分析等模块，并支持多渠道协同及与总部、第三方系统的数据对接。系统采用 SpringMVC 架构，MyBatis 作为 ORM，Redis 提供缓存与会话管理，RabbitMQ 负责异步消息处理，前端基于 AngularJS，实现前后端分离；数据库大量使用存储过程应对高并发与百万级数据量。</p>
+						<p class="info-label">个人贡献：</p>
+						<ul>
+							<li>负责基础配置、销售管理、门店与店员管理、统一收银等核心功能开发与维护。</li>
+							<li>自主设计并实现报表管理与多维分析功能，支持按渠道、地区、终端类型的聚合与交叉查询。</li>
+							<li>针对百万级数据量进行 SQL 与存储过程优化，显著提升报表查询效率。</li>
+							<li>主导数据可视化与大屏展示模块设计，整合销售、库存及 IoT 终端状态，实现业务实时监控。</li>
+							<li>参与 Redis 缓存与 RabbitMQ 队列调优，增强并发处理能力与数据一致性。</li>
+							<li>负责吉林电信定制系统的开发、部署及数据割接，确保业务平稳迁移上线。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">【维天运通】RTG 车辆调度与管理系统</span>
+						<span class="date r">2013年7月 &mdash; 2015年9月</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">项目描述：</p>
+						<p>RTG 系统是“路歌”整车物流平台的调度与车辆管理模块，实现车辆资源统一调度、任务派发与行车监控。系统整合自有、合作及社会车辆数据，基于 GPS 定位与百度地图 API 实现实时位置采集与轨迹可视化，支持 Web 与移动端实时查看运输进度，并与派单APP联动，显著提升调度效率与透明度。系统采用 B/S 架构，后端以 Spring MVC 为核心，结合 Struts2 与 iBatis 实现业务逻辑与持久化，前端使用 JSP 与 jQuery 构建交互界面。</p>
+						<p class="info-label">个人贡献：</p>
+						<ul>
+							<li>参与车辆调度、订单派发、运输状态跟踪等核心模块开发与维护。</li>
+							<li>实现车辆状态管理、任务分配逻辑及位置上报接口，支持基于 LBS 的实时定位展示。</li>
+							<li>优化 SQL 与数据加载逻辑，提升高并发场景下的响应性能。</li>
+							<li>参与系统测试与问题定位，积累从需求到上线的完整项目经验。</li>
+							<li>系统上线后实现调度与运输状态的实时可视化管理，显著提升运营效率。</li>
+						</ul>
+						<p>系统上线后实现调度与运输状态的实时可视化管理，显著提升运营效率。</p>
+					</div>
+					<div class="clear"> </div>
+				</div>
+			</div>
 			<div class="clear"> </div>
 		</div>
-			<div class="section section-education">
-			<h2 class="title">Education</h2>
+		<div class="section section-education">
+			<h2 class="title">教育背景</h2>
 			<div class="set">
-						<div class="item">
-							<h3><span class="course l">MS in Accounting</span>
-						<span class="date r">September 1997 &mdash; September 2001</span>
-							</h3>
-							<div class="clear"> </div>
-							<span class="school">University of Washington</span><div class="info">Obtained the MS degree with GPA  4.0</div><span class="clear"> </span>
-						</div>
-						
-						<div class="item">
-							<h3><span class="course l">BS in Accounting</span>
-						<span class="date r">September 1993 &mdash; September 1996</span>
-							</h3>
-							<div class="clear"> </div>
-							<span class="school">Columbia University</span><span class="clear"> </span>
-						</div>
-						</div>
+				<div class="item">
+					<h3><span class="school l">北京大学（成教）</span>
+						<span class="date r">2017年9月 &mdash; 2022年1月</span>
+					</h3>
+					<div class="clear"> </div>
+					<span class="course">计算机科学与技术</span>
+					<div class="info">学历证书编号：100017202205000288<br>学位证书编号：1000142022040096</div><span class="clear"> </span>
+				</div>
+
+				<div class="item">
+					<h3><span class="school l">南京信息职业技术学院（全日制）</span>
+						<span class="date r">2010年9月 &mdash; 2013年7月</span>
+					</h3>
+					<div class="clear"> </div>
+					<span class="course">移动通信技术</span>
+					<div class="info">学历证书编号：131121201306002396</div><span class="clear"> </span>
+				</div>
+			</div>
 			<div class="clear"> </div>
 		</div>
-			<div class="section section-interests">
-			<h2 class="title">Interests</h2>
+	</div>
+
+	<div id="resume-en" class="resume resume-en">
+
+		<h1 class="resume-header">Qifeng Chen<span style="float: right; font-size: 14px; text-transform: uppercase; line-height: 85px; font-weight: 300;">APPLY FOR JAVA SENIOR DEVELOPER</span></h1>
+		<div class="basic-info section">
+			<h2 class="title">Shanghai, China</h2>
 			<div class="set">
-							<div class="item">
-								<span class="info">Music, Reading, Painting</span>
-							</div>
-						</div>
+				<div class="r">
+					<p class="email"><span class="value">chenqifengfree@outlook.com</span></p>
+					<p class="phone"><span class="value">18549846808</span></p>
+				</div>
+				<div class="clear"> </div>
+			</div><!-- set //-->
+			<div class="clear"> </div>
+		</div><!-- basic-info //-->
+
+
+
+		<div class="section">
+			<h2 class="title">PERSONAL ADVANTAGE</h2>
+			<div class="set">
+				<div class="item">
+					<span class="info">I have over a decade of experience in Java enterprise system development and architecture design, proficient in core Java and JVM optimization, and skilled in the Spring framework, including Spring Boot and Spring Cloud for microservices architecture design and implementation. I am experienced with persistence technologies such as MyBatis and JPA, familiar with relational databases including MySQL and Oracle, as well as non-relational databases like MongoDB. I am proficient in caching and messaging middleware such as Redis, Kafka, and RabbitMQ, and familiar with workflow and rules engines including Flowable, Drools, and Airflow, capable of designing high-concurrency, distributed system solutions. I possess extensive experience in system performance optimization and security compliance, familiar with microservices governance, and skilled in observability and quality assurance tools such as SkyWalking, SonarQube, and Prometheus, enabling me to comprehensively manage project stability and scalability from architecture and code quality to delivery processes. I am proficient in implementing unified authentication and security management with Keycloak and OAuth2, experienced in automated testing and CI/CD practices, and capable of building large-scale distributed system architectures from scratch, defining service boundaries, and ensuring high-quality delivery.<br><br>I am familiar with the SAP Cloud Application Programming Model (CAP) framework, experienced in CDS model development and CQN query writing, skilled in Fiori Drafts mechanism and HANA database operations, and capable of modularization, core business logic implementation, and system performance optimization within SAP microservices architecture.<br><br>I possess excellent cross-cultural communication and English proficiency, holding CET-4 and the Shanghai Intermediate Interpretation Certificate, and I am able to smoothly conduct meetings, participate in design reviews, and engage in technical discussions in bilingual environments. I have extensive experience collaborating with overseas teams and can efficiently clarify requirements, evaluate solutions, and coordinate issue resolution.</span>
+				</div>
+			</div>
 			<div class="clear"> </div>
 		</div>
-			<div class="section section-references">
-			<h2 class="title">References</h2>
+		<div class="section section-work">
+			<h2 class="title">CAREER LIFE</h2>
 			<div class="set">
-							<div class="item">
-								<span class="info">Mr. Neo, President of Matrix corp.<br />Email: neo@neo-matrix.com<br />Phone: +1-234-5678</span>
-							</div>
-						</div>
+				<div class="item">
+					<h3><span class="company l">Hydsoft Technology Co., Ltd.</span>
+						<span class="date r">May 2023 &mdash; Present</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<ul>
+							<li>Responsible for system design and core module development, code review, and system performance optimization; led business communication and requirement alignment with overseas teams, driving technical knowledge sharing and Agile implementation to ensure high-quality delivery.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Shanghai Ruimin Internet Technologies Co., Ltd.</span>
+						<span class="date r">December 2020 &mdash; March 2023</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<ul>
+							<li>Led the development of the company’s iFinBMS bill management system and took full charge of project management for Mintai Bank’s next-generation bill system transformation, ensuring timely and flawless delivery.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Shanghai Newtouch Software Co., Ltd.</span>
+						<span class="date r">March 2018 &mdash; November 2020</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<ul>
+							<li>Developed a real-time risk management system and an insurance SaaS platform, leading end-to-end architectural design by integrating rule and workflow engines to deliver a high-concurrency, fully integrated digital solution.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Asiainfo Technologies (Nanjing) Co., Ltd.</span>
+						<span class="date r">September 2015 &mdash; February 2018</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<ul>
+							<li>Developed a new energy charging station management system and a telecom fixed-line terminal sales system based on national standards, deeply integrating IoT device connectivity into business processes.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Logory Logistics Technology Co., Ltd.</span>
+						<span class="date r">July 2013 &mdash; September 2015</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<ul>
+							<li>LBS-based full-truckload dispatch and fleet management system development</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+			</div>
 			<div class="clear"> </div>
 		</div>
-		
-</div>
-	<div id="credit">Made with <a href="https://cvmkr.com/">CV Maker</a></div>
-	
+		<div class="section section-work">
+			<h2 class="title">PROJECT EXPERIENCE</h2>
+			<div class="set">
+				<div class="item">
+					<h3><span class="company l">HydSoft: SAP Ariba Procure-to-Pay (P2P) Business Refactoring Project</span>
+						<span class="date r">May 2025 &mdash; Present</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">Project Summary:</p>
+						<p>This project was a core refactoring initiative for the evolution of the SAP Ariba platform from the traditional AN (Gen1) architecture to the NextGen architecture. The main focus was to rebuild key modules related to purchase order issuance, supplier invoice verification, and payment confirmation. SAP Ariba is a global leading cloud platform for procurement and spend management, covering the end-to-end Procure-to-Pay (P2P) process—from sourcing and contract signing to purchase order (PO) management, invoice processing, and payment execution. It enables enterprises to collaborate with suppliers across global business networks, achieving greater compliance, cost control, and process automation. The team adopted a microservice architecture based on the SAP CAP (Cloud Application Programming) framework and integrated the Fiori Drafts mechanism to enhance user interaction when handling orders and invoices. The technical stack included SAP custom JDK, switching between local SQLite and online HANA databases, and SonarQube for code quality analysis. The project followed the Scrum agile methodology, incorporating unit, integration, and performance testing. Special attention was paid to test coverage, with continuous improvement of test cases to ensure the stability and maintainability of core modules.</p>
+						<p class="info-label">My Contribution:</p>
+						<ul>
+							<li>Developed email notification and user preference configuration features in the notification-service, and implemented cross-tenant configuration management in the configuration-service.</li>
+							<li>Led the NextGen Pending Queue core API design and implementation, delivering key functions such as document query, queue reordering, and file transfer management. Independently designed the Stuck Pending Queue Notification mechanism to detect and alert on stalled tasks, improving system reliability.</li>
+							<li>Participated in the development and debugging of stored procedure–based invoice migration logic, assisted the QA team in identifying and fixing multiple migration issues, and refactored the supplier configuration logic according to code owner guidelines—enabling supplier-specific workflows through independent configuration files.</li>
+							<li>Optimized the admin-job-manager-service Job table structure by adding operation logs and user fields, laying the foundation for future data-level access control.</li>
+							<li>Authored and improved unit, integration, and performance test cases to increase code coverage and ensure CI/CD pipeline stability.</li>
+							<li>Composed and shared internal technical documentation, summarizing optimization strategies for modifier/time-tracking mechanisms under the CAP framework. Conducted internal tech-sharing sessions to help teammates understand CAP’s Draft mechanism and best practices, demonstrating strong knowledge sharing and teamwork spirit.</li>
+							<li>Proactively assisted teammates in resolving technical issues and maintained frequent communication with the SAP U.S. team, effectively handling English discussions with Indian accents to ensure requirement clarity and successful implementation.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">HydSoft: OldMutual DAE Life Insurance System</span>
+						<span class="date r">May 2023 &mdash; February 2025</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">Project Summary:</p>
+						<p>This project was developed on-site by Ping An OneConnect for Old Mutual Group in South Africa, aiming to build a unified digital life insurance sales and customer management platform (DAE: Digital Adviser Enablement). The platform provides end-to-end business support for local advisers, sales managers, and back-office teams, covering the entire customer lifecycle and sales process. Core modules include Lead Management, Opportunity Tracking, Customer and Policy Management, Marketing Campaigns, Adviser Performance Dashboard, and Commission Claims (S&amp;T Claims). The system integrates with multiple core back-end platforms of Old Mutual: OMK for customer and policy master data, RPP for product configuration and sales rule management, and Xplan for adviser performance and customer investment portfolio synchronization. Together, these integrations ensure consistent data flow, business collaboration, and a unified sales reporting framework. The platform supports localized operations across South Africa, Namibia, and other regional markets. From a technical perspective, the system is built on a Spring Boot + Spring Cloud microservice architecture. Services are divided by business domain into independent modules such as customer management, sales, marketing, adviser performance, and reporting. A unified Gateway handles traffic routing and API management, while Feign enables inter-service communication and load balancing. Redis is used for session caching and hotspot data acceleration, and Kafka supports asynchronous messaging and event-driven data synchronization. User authentication and authorization are handled via Keycloak, combined with the OAuth2.0 protocol to enable SSO, role-based access control, and encrypted token management, ensuring secure and auditable user operations. All external interfaces are routed through an API Gateway with unified signature verification and audit logging, compliant with international data privacy regulations, including POPIA (Protection of Personal Information Act). The database layer uses MySQL for customer and transaction persistence, with data masking and audit tables implemented to strengthen data compliance and security. The project followed an Agile methodology with biweekly iterations and progressively introduced unit, integration, and performance testing to increase test coverage and maintain high code quality.</p>
+						<p class="info-label">My Contribution:</p>
+						<ul>
+							<li>Collaborated directly with South African business teams on requirement analysis and solution design, facilitating bilingual (English–Chinese) communication and ensuring precise mapping of system logic to local insurance workflows;</li>
+							<li>Led the back-end design and development of core modules, including customer, lead, and marketing management, driving service partitioning, API modeling, and implementation of key business logic;</li>
+							<li>Directed architectural optimization and performance tuning for several microservices, improving data consistency and access efficiency in high-concurrency scenarios through Redis caching and distributed locking;</li>
+							<li>Designed multi-region data governance and cleansing rules to handle differences in customer identity formats, time standards, and encoding systems between South Africa and Namibia, ensuring data integrity and accurate reporting;</li>
+							<li>Promoted Agile development practices and automation testing, working closely with QA teams to establish unit and integration test frameworks and performance testing workflows, significantly enhancing system stability and release quality;</li>
+							<li>Assisted in refining unified authentication and role-based access strategies, implementing permission hierarchies for advisers, managers, and back-office users to strengthen system security and maintainability.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Ruimin: Mintai Bank Next-Gen Bill System Transformation</span>
+						<span class="date r">November 2021 &mdash; March 2023</span>
+					</h3>
+					<div class="clear"> </div>
+					<span class="job_title">Project Manager</span>
+					<div class="info">
+						<p class="info-label">Project Summary:</p>
+						<p>This project was Mintai Bank’s major upgrade in response to the Shanghai Commercial Paper Exchange’s (CPES) migration from ECDS to the CPES platform. The core objective was to implement denomination-splitting (ticket fractionalization) capabilities to support bill split &amp; merge business models. The system design strictly followed the Shanghai Commercial Paper Exchange’s direct-connection interface specifications, covering the full lifecycle for fractionated bills — acceptance, endorsement, discounting, pledge/release, repo, collection, and settlement — and providing deep integration with CPES, the bank’s corporate e-banking, and credit systems. From a technical perspective, the upgrade was implemented on Spring Boot, the transformed data model for split bills was hosted on a domestic Xinchuang database, and inter-system message exchange used message queue (MQ) and socket-based mechanisms. Core credit-management and risk-control nodes were refactored to ensure transactional consistency, security, and regulatory compliance under the new business model.</p>
+						<p class="info-label">My Contribution:</p>
+						<ul>
+							<li>Served as Project Manager, leading client requirement workshops, system design, architecture decisions, team recruitment, development, and final delivery; ensured on-time go-live under a tight schedule and received positive client feedback.</li>
+							<li>Led backend design and development for the full lifecycle of denomination-split bills; successfully refactored the bill state-machine model to accommodate split and merge flows.</li>
+							<li>Managed system adaptation and interface integration with the Shanghai Commercial Paper Exchange’s CPES direct-connection specifications, ensuring electronic bill message formats, signature verification, and transaction flows were fully compliant and smoothly transitioned.</li>
+							<li>Redesigned and implemented credit-limit allocation/release and bill risk-control modules to support fine-grained blacklist checks and risk freezes for split bills.</li>
+							<li>Collaborated closely with bank e-banking and credit system teams to redesign interfaces and complete joint testing, ensuring accurate data flow of bill information and credit limits after transformation.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Ruimin: iFinBMS Bill Management Platform</span>
+						<span class="date r">December 2020 &mdash; October 2021</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">Project Summary:</p>
+						<p>The iFinBMS platform was developed to meet commercial banks’ requirements for end-to-end bill business management, covering the full lifecycle of bank-accepted bills (banker’s acceptances) and commercial acceptance bills, including issuance, discounting, rediscounting (secondary rediscounting), collection, and settlement. The system supports unified management of both paper and electronic bills and integrates with external systems such as the People’s Bank of China ECDS (Electronic Commercial Draft System), the Shanghai Commercial Paper Exchange, the core banking system, the credit system, and corporate online banking. It automates key functions including bill transactions, credit-limit management, accounting entries, and risk checks to ensure regulatory compliance and operational efficiency. The platform was built on the Java EE technology stack, using a layered architecture with Spring Boot as the core framework and Oracle as the primary database. Data persistence was implemented via MyBatis/JDBC components, while message queue and socket-based communication mechanisms were used for message exchange with internal and external systems. A batch subsystem handled nightly processing and report generation. The system also applied caching strategies, parameterized configuration, and task scheduling to ensure stable performance for high-frequency operations such as bill inquiries, discount interest calculation, and risk validation.</p>
+						<p class="info-label">My Contribution:</p>
+						<ul>
+							<li>Participated in the backend design and development of core transaction modules such as discounting, rediscounting (secondary rediscounting), implementing complex business rules for interest calculation and risk pricing.</li>
+							<li>Responsible for interface integration and message parsing with ECDS and the Shanghai Commercial Paper Exchange, ensuring accurate automation of electronic bill processes such as endorsement transfer, pledge, and release.</li>
+							<li>Designed and implemented a real-time credit-limit verification and freeze/release mechanism integrated with the credit system, enabling key risk-control features including blacklist management, public notices, and bill freezing/unfreezing.</li>
+							<li>Optimized Oracle database schema, indexing, and SQL performance to improve response times for large-scale bill queries and financial reports under high-concurrency conditions.</li>
+							<li>Contributed to the backend development of innovative banking products such as supply-chain bills, instant discounting, and BillPay, supporting rapid innovation and rollout of new financing services.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Newtouch: Pacific Insurance SaaS Business Management System</span>
+						<span class="date r">February 2019 &mdash; October 2020</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">Project Summary:</p>
+						<p>This project was commissioned by Pacific Insurance to develop a group-level Insurance SaaS Business Management Platform, providing standardized and scalable insurance business operation capabilities for its subsidiaries and partner channels. The system was built on a Spring Boot + Spring Cloud microservices architecture, featuring a multi-tenant design to ensure business and data isolation across different organizations and channels. It covered the entire lifecycle of core insurance operations, including product management, underwriting, policy servicing, claims, settlement, and channel management. The platform supports parameterized configuration of insurance products and flexible sales management. It integrates the Drools rule engine for dynamic underwriting and risk control, and leverages the Flowable workflow engine to orchestrate multi-level approval processes for policy servicing and claims. The settlement module automates commission, fee, and financial reconciliation, while the channel module manages agency authorization, performance assessment, and profit sharing. The system implements unified authentication and authorization (SSO + OAuth2) and a high-concurrency architecture based on Redis and Kafka, and integrates seamlessly with the group’s eHR, finance, and core insurance systems, forming a comprehensive digital insurance ecosystem.</p>
+						<p class="info-label">My Contribution:</p>
+						<ul>
+							<li>Led the overall system architecture design and core module development; implemented Spring Cloud–based microservices and multi-tenant architecture to support business isolation and independent deployment for different institutions and channels.</li>
+							<li>Participated in core insurance business process modeling and implementation, covering product configuration, underwriting, policy servicing, claims, settlement, and channel management, ensuring logical consistency and data integrity.</li>
+							<li>Designed a flexible underwriting and risk control framework based on the Drools rule engine, supporting multi-dimensional condition composition and dynamic rule loading.</li>
+							<li>Built approval workflows for policy servicing and claims using the Flowable workflow engine, supporting multi-role, multi-node approval and exception handling.</li>
+							<li>Designed asynchronous messaging and caching mechanisms using Redis and Kafka, enhancing responsiveness and stability under high concurrency scenarios.</li>
+							<li>Implemented unified authentication and authorization (SSO + OAuth2 + RBAC), establishing tenant-level user, role, and permission management.</li>
+							<li>Participated in heterogeneous system integrations with the group’s eHR, financial, and core insurance systems, achieving seamless data synchronization, reconciliation, and process collaboration.</li>
+							<li>Led system performance optimization and observability improvements, leveraging SkyWalking for distributed tracing and metric monitoring to enhance maintainability and system stability.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Newtouch: Real-time Credit Card Transaction Risk Control System</span>
+						<span class="date r">March 2018 &mdash; January 2019</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">Project Summary:</p>
+						<p>This project was jointly developed with SPD Silicon Valley Bank to build a real-time risk control system for international credit card transactions. The system collects and models full-chain behavioral data from user login, transactions, and payments to enable real-time identification and handling of potential fraud and abnormal transactions. The project focuses on combining a rule engine with big data analytics to achieve multi-dimensional risk identification, automated rule adjustment, and precise risk warnings, ensuring the security and compliance of cross-border transactions.</p>
+						<p class="info-label">My Contribution:</p>
+						<ul>
+							<li>Responsible for backend design and development based on SpringBoot, utilizing the Drools rule engine to implement dynamic configuration and real-time execution of risk control strategies.</li>
+							<li>Designed and implemented a combined Redis and MongoDB solution for risk event caching and historical event storage, supporting high-concurrency real-time computation and horizontal scaling.</li>
+							<li>Led the modeling of user behavioral chains, performing correlation analysis of multi-dimensional events such as login → activity → order → payment to construct composite scenario rules and improve risk control accuracy.</li>
+							<li>Managed version control and maintenance of the risk control rule engine, supporting rapid rule iteration and strategy rollback.</li>
+							<li>Participated in developing the manual review process module for false positives and false negatives, enabling end-to-end management of risk events from identification to closure.</li>
+							<li>Completed the construction of visualization analysis and reporting modules for historical transaction data, supporting risk trend monitoring and decision-making support.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Asiainfo: IMC Charging Station Backend Management System</span>
+						<span class="date r">January 2017 &mdash; February 2018</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">Project Summary:</p>
+						<p>The system provides unified operations and billing management for the company’s new-energy EV charging stations, in compliance with national new-energy standards and the T/CEC 102.1–102.4 series “Information Exchange for Electric Vehicle Charging and Battery Swap Services.” The platform supports core modules for sites, devices, operators, billing, payments, users, and authentication. Charging stations are connected via the MQTT protocol to enable device status reporting, remote monitoring, billing and settlement, and alarm notifications, establishing an IoT data link between devices and the platform. The backend adopts a Spring Boot + Spring Cloud microservices architecture, using Eureka for service registry, Feign for remote calls, Ribbon for load balancing, and Hystrix for circuit breaking to achieve decoupling and fault tolerance. The data layer uses JPA + MySQL for the entity model, with Redis for caching acceleration and session sharing. For messaging, MQTT is used for device communication, and Kafka is used internally for asynchronous distribution of device reports and log messages to improve throughput under high concurrency. Unified authentication is implemented with Spring Security + JWT. Monitoring and logging use the ELK stack (Elasticsearch, Logstash, Kibana) and Prometheus + Grafana. The frontend is developed with AngularJS + TypeScript to enable front-end/back-end separation and modular interaction.</p>
+						<p class="info-label">My Contribution:</p>
+						<ul>
+							<li>Participated in functional decomposition and module design, sorting out business and data flows among core modules (sites, devices, billing, payments, users).</li>
+							<li>Responsible for backend development and API design for operator management, billing management, payment integration, and charging-record management, ensuring consistency between device-reported data and financial records.</li>
+							<li>Contributed to database schema and caching strategy design; optimized queries and write paths for high-concurrency scenarios.</li>
+							<li>Authored API documentation and test cases; collaborated with frontend and QA teams for interface integration and functional verification.</li>
+							<li>Resolved issues of charging-record latency and duplicate reporting by tuning Kafka queue parameters and asynchronous task dispatch, improving system stability and processing efficiency.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Asiainfo: China Telecom Premium Channel Fixed-line Terminal Sales System</span>
+						<span class="date r">September 2015 &mdash; December 2016</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">Project Summary:</p>
+						<p>This system targets China Telecom’s city-level channel stores, providing integrated procure–inventory–sales management for mobile and fixed-line terminal devices. As an important support system under the “Premium Channel” strategy, it covers core modules including base configuration, inventory and sales management, store and staff management, unified cash register (POS), reporting and data visualization, and supports multi-channel collaboration and data integration with headquarters and third-party systems. The system adopts a Spring MVC architecture, with MyBatis as the ORM framework. Redis is used for caching acceleration and session management, RabbitMQ is used for asynchronous message processing, and the frontend is implemented with AngularJS for front-end/back-end separation. Maven is used as the build tool. The database relies heavily on stored procedures to handle high concurrency and million-level data volumes.</p>
+						<p class="info-label">My Contribution:</p>
+						<ul>
+							<li>Responsible for development and maintenance of core features including base configuration, sales management, store and staff management, and unified cash register (POS).</li>
+							<li>Independently designed and implemented the reporting module and multidimensional data aggregation/analysis, supporting aggregation and cross-dimensional queries by channel, region, and terminal type.</li>
+							<li>Performed SQL and stored-procedure performance optimization for million-row datasets, significantly improving report-query and statistics performance.</li>
+							<li>Led the design of data visualization and large-screen dashboard modules, integrating sales data, inventory data, and IoT terminal operating status for real-time business monitoring.</li>
+							<li>Participated in Redis caching and RabbitMQ tuning to enhance concurrent processing capability and data consistency.</li>
+							<li>Responsible for custom development, deployment, and data cutover of the Jilin Telecom fixed-line terminal inventory system, ensuring smooth migration and production launch.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
+					<h3><span class="company l">Logory: RTG Vehicle Dispatch & Fleet Management System</span>
+						<span class="date r">July 2013 &mdash; September 2015</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">Project Summary：</p>
+						<p>RTG is the dispatch and fleet management module of a full-truckload logistics platform that connects truck owners and shippers using LBS-based location matching. The system unified fleet data from company-owned, partner and third-party carriers to digitize the end-to-end process from vehicle registration and order assignment to in-transit tracking. Using GPS and Baidu Maps APIs, RTG collected drivers’ locations in real time and visualized vehicle routes, enabling dynamic vehicle monitoring and transport-status tracking. Shippers could check shipment status via web or mobile, while drivers received dispatches and updates through a mobile app, greatly improving dispatch efficiency and transparency. The system was built on a B/S architecture with a Spring MVC-centered backend (integrating Struts2 and iBatis for business logic and persistence) and a JSP/jQuery frontend, designed for stable dispatch and real-time updates under high concurrency.</p>
+						<p class="info-label">My Contribution：</p>
+						<ul>
+							<li>Developed and maintained core modules for vehicle dispatch, order assignment, and transport-status tracking.</li>
+							<li>Implemented vehicle state management, task-distribution logic, and a location-reporting API to support LBS-driven real-time location display.</li>
+							<li>Optimized SQL queries and data-loading logic to improve response performance under high-concurrency scenarios.</li>
+							<li>Participated in system testing and troubleshooting, gaining end-to-end experience from requirements to production deployment.</li>
+						</ul>
+						<p>After deployment, the system provided real-time, visualized control of vehicle dispatch and transport status, significantly improving dispatcher efficiency and reducing manual coordination. This project solidified my practical experience in Java web backend development and deepened my understanding of LBS applications and dispatching business logic in the logistics domain.</p>
+					</div>
+					<div class="clear"> </div>
+				</div>
+			</div>
+			<div class="clear"> </div>
+		</div>
+		<div class="section section-education">
+			<h2 class="title">EDUCATIONAL BACKGROUND</h2>
+			<div class="set">
+				<div class="item">
+					<h3><span class="school l">Peking University(Adult Higher Education)</span>
+						<span class="date r">September 2017 &mdash; January 2022</span>
+					</h3>
+					<div class="clear"> </div>
+					<span class="course">BS/Computer Science</span>
+					<div class="info">Diploma No. 100017202205000288<br>Degree No. 1000142022040096</div><span class="clear"> </span>
+				</div>
+
+				<div class="item">
+					<h3><span class="school l">Nanjing College of Information Technology(Full time)</span>
+						<span class="date r">September 2010 &mdash; July 2013</span>
+					</h3>
+					<div class="clear"> </div>
+					<span class="course">Mobile Communication</span>
+					<div class="info">Diploma No. 131121201306002396</div><span class="clear"> </span>
+				</div>
+			</div>
+			<div class="clear"> </div>
+		</div>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var buttons = document.querySelectorAll('.lang-toggle button');
+			var printButton = document.querySelector('.print-button');
+			var resumes = {
+				zh: document.getElementById('resume-zh'),
+				en: document.getElementById('resume-en')
+			};
+			var defaultLang = document.body.classList.contains('lang-zh') ? 'zh' : 'en';
+			var originalTitle = document.title;
+
+			function switchLanguage(lang) {
+				Object.keys(resumes).forEach(function (key) {
+					resumes[key].classList.toggle('hidden', key !== lang);
+				});
+
+				document.body.classList.remove('lang-zh', 'lang-en');
+				document.body.classList.add(lang === 'zh' ? 'lang-zh' : 'lang-en');
+
+				buttons.forEach(function (button) {
+					button.classList.toggle('active', button.dataset.lang === lang);
+				});
+
+				if (printButton) {
+					var label = lang === 'zh' ? '打印简历' : 'Print CV';
+					printButton.textContent = label;
+					printButton.setAttribute('aria-label', label);
+				}
+			}
+
+			function getVisibleResumeTitle() {
+				var activeLang = document.body.classList.contains('lang-zh') ? 'zh' : 'en';
+				var activeResume = resumes[activeLang];
+				var header = activeResume ? activeResume.querySelector('.resume-header') : null;
+				return header ? header.textContent.replace(/\s+/g, ' ').trim() : originalTitle;
+			}
+
+			buttons.forEach(function (button) {
+				button.addEventListener('click', function () {
+					switchLanguage(button.dataset.lang);
+				});
+			});
+
+			if (printButton) {
+				printButton.addEventListener('click', function () {
+					var previousTitle = document.title;
+					var resumeTitle = getVisibleResumeTitle();
+
+					function restoreTitle() {
+						document.title = previousTitle;
+						window.removeEventListener('afterprint', restoreTitle);
+					}
+
+					document.title = resumeTitle || previousTitle;
+					window.addEventListener('afterprint', restoreTitle);
+					window.print();
+				});
+			}
+
+			switchLanguage(defaultLang);
+		});
+	</script>
 </body>
+
 </html>
