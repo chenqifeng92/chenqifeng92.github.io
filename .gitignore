@@ -12,15 +12,35 @@ build/*
 xcuserdata
 profile
 *.moved-aside
-.DS_Store
 .svn
 *.swp
 .data.html.swp
 *.pyc
-.data.html.swp
 *.sqlite
 .idea
 .Rhistory
 *.xccheckout
 *.xcscmblueprint
 Config.h
+
+# 依赖
+node_modules/
+
+# Cloudflare wrangler 本地密钥与缓存（含 DEEPSEEK_API_KEY，勿提交）
+.dev.vars
+.wrangler/
+
+# 日志
+*.log
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 调试产物（Playwright MCP 输出、本地截图）
+.playwright-mcp/
+# 如需把简历调试截图也排除，取消下面这行注释：
+# *.png
+
+# Claude Code 本地配置与会话数据
+.claude/

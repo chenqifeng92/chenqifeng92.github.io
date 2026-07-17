@@ -1,0 +1,13 @@
+# 版本控制与本地环境目录，不作为静态资产公开上传
+**/.git
+**/.claude
+**/.wrangler
+**/.playwright-mcp
+**/node_modules
+**/.DS_Store
+**/.dev.vars
+
+# Worker 源码与配置（构建时打包进 Worker，无需作为静态文件公开）
+/worker.js
+/wrangler.jsonc
+/functions

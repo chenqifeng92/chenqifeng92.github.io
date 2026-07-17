@@ -293,7 +293,10 @@
 				background: #fff;
 			}
 
-			.action-bar {
+			.action-bar,
+			#qf-chat-btn,
+			#qf-chat-tooltip,
+			#qf-chat-panel {
 				display: none !important;
 			}
 
@@ -334,7 +337,13 @@
 			<h2 class="title">个人优势</h2>
 			<div class="set">
 				<div class="item">
-					<span class="info">具备十年以上 Java 企业级系统开发与架构设计经验，熟悉Java核心及JVM优化，熟练掌握Spring框架，包括 SpringBoot、以及Spring Cloud微服务架构设计与实践。熟悉MyBatis、JPA等持久化技术，熟悉MySQL、Oracle等关系型数据库及MongoDB非关系型数据库。掌握 Redis、Kafka、RabbitMQ 等缓存与消息中间件，熟悉Flowable、Drools、Airflow等工作流与规则引擎，能够设计高并发、分布式系统解决方案。具备丰富的系统性能优化与安全合规经验，熟悉微服务治理体系，掌握 SkyWalking、SonarQube、Prometheus 等可观测与质量保障工具，能够从架构、代码质量到交付流程全面把控项目稳定性与扩展性。熟练应用 Keycloak 与 OAuth2 实现统一认证与安全管理，具备自动化测试与 CI/CD 实践经验，并能在大型分布式项目中从零搭建系统架构、划分服务边界并推进高质量交付。<br><br>熟悉 SAP Cloud Application Programming Model（CAP）框架，熟悉CDS模型开发与CQN查询编写，掌握 Fiori Drafts草稿机制及HANA数据库操作，能够在SAP微服务架构下进行模块划分、核心业务逻辑实现与系统性能优化。<br><br>具备优异的跨文化沟通能力和英语表达能力，拥有大学英语四级，上海市中级口译证书，能在中英文双语环境中顺畅主持会议、参与方案评审及技术交流。长期参与与海外团队（含印度口音英语）合作的项目，能高效进行需求澄清、方案评估与问题协同。</span>
+					<div class="info">
+						<ul>
+							<li>具备十年以上 Java 企业级系统开发与架构设计经验，熟悉 Java 核心与 JVM 优化，熟练掌握 Spring 系列框架（包括 Spring Boot）及 Spring Cloud 微服务架构的设计与实践。熟悉 MyBatis、JPA 等持久化技术，熟悉 MySQL、Oracle、国产的 OceanBase 等关系型数据库及 MongoDB 非关系型数据库的设计与调优。掌握 Redis、Kafka、RabbitMQ 等缓存与消息中间件，熟悉 Flowable、Drools、Airflow 等工作流与规则引擎，能够设计高并发、分布式系统解决方案。长期在 SAP BTP Cloud Foundry 环境交付企业级应用，熟悉 BTP 服务编配与运营；对 Azure 拥有深入实践，并熟悉 AWS、GCP 等主要公有云，能在容器化与编排体系下进行成本与性能优化，具备端到端的云原生方案设计与落地能力。熟练使用 Maven 管理依赖并结合 Azure DevOps Pipelines 构建 CI/CD 流水线，同时具备 SAP UI5、HTML、JavaScript、CSS 等前端开发能力，熟悉 Cloud API、脚本语言与数据报表工具，胜任全栈开发与可观测性建设。具备丰富的系统性能优化与安全合规经验，熟悉微服务治理体系，掌握 SkyWalking、SonarQube、Prometheus、Grafana 等可观测与质量保障工具，能够从架构、代码质量到交付流程全面把控项目稳定性与扩展性。熟练应用 Keycloak 与 OAuth2 实现统一认证与安全管理，具备完善的自动化测试与发布体系经验，并能在大型分布式项目中从零搭建系统架构、划分服务边界并推进高质量交付。</li>
+							<li>熟悉 SAP Cloud Application Programming Model（CAP）框架，熟悉 CDS 模型开发与 CQN 查询编写，掌握 Fiori Drafts 草稿机制及 HANA 数据库操作，能够在 SAP 微服务架构下进行模块划分、核心业务逻辑实现与系统性能优化。</li>
+							<li>具备优异的跨文化沟通能力和英语表达能力，拥有大学英语四级和上海市中级口译证书，能在中英文双语环境中顺畅主持会议、参与方案评审及技术交流；长期参与与海外团队（含印度口音英语）合作的项目，能高效进行需求澄清、方案评估与问题协同。</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			<div class="clear"> </div>
@@ -418,8 +427,27 @@
 			<h2 class="title">项目经验</h2>
 			<div class="set">
 				<div class="item">
+					<h3><span class="company l">【慧博云通】融和租赁核心系统2.0升级改造项目</span>
+						<span class="date r">2026年1月 &mdash; 至今</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">项目描述：</p>
+						<p>该项目是国电投旗下融和租赁核心业务系统 HX2.0 从 1.0 向 2.0 的信创化重构升级工程，覆盖融资租赁业务从项目决策、合同会签、用印、付款、回款、核销、开票到归档的全流程，并支撑通用事项、产业创新、债权、股权、经营租赁等多业务线。系统基于 Spring Boot 2.6.3 微服务架构，拆分为 corebiz-base、corebiz-finance、corebiz-debt、corebiz-equity、corebiz-operlease、corebiz-integration、corebiz-gateway、corebiz-others、corebiz-auth 九大服务，采用人大金仓 KingbaseES 4.2 国产信创数据库，结合 Sa-Token 统一认证、Nacos 配置中心、xxl-job 分布式调度、Redisson 分布式锁与缓存、spring-cloud-sleuth 链路追踪。核心业务流程通过自研 process-core 流程引擎驱动，使用 Feign 实现跨服务调用，并集成多个内外部系统。项目采用敏捷迭代与 GitFlow 分支管理，遵循信创合规与数据安全要求。</p>
+						<p class="info-label">个人贡献：</p>
+						<ul>
+							<li>负责通用事项付款/退款、产业创新开票、股权/债权/经营租赁及非业务采购等多业务线的端到端功能落地，覆盖合同会签、用印、付款申请、额度占用、发票开具到归档核销的全流程，完成跨法人组织、跨服务的原子回写与状态机设计，解决退款状态转换、额度释放、付款关闭等数据一致性难题。</li>
+							<li>主导微服务架构下的横向治理与工程化建设，推进全局 Jackson 空字符串反序列化、高精度财务字段扩展、isMock 灰度字段一致性等底层修复；基于 Feign 实现跨服务分布式事务协作，设计 CRM 不可用降级策略与归档差量同步机制，并主导生产问题根因定位，覆盖流程状态同步、数据权限隔离、跨服务字段语义差异等典型微服务治理场景。</li>
+							<li>负责会议一览、开票一览等多业务线的跨源数据聚合能力建设，针对数据分散在多个 Schema、多个微服务及不同业务模块的痛点，通过多层嵌套查询与跨表合并将异构数据聚合成统一视图，并设计矩阵式行转列模型对会议层级、审批角色等维度进行标准化，解决同一类数据因来源不同导致字段口径不一致、查询链路复杂的问题；同时优化 SQL 执行计划、索引与分页策略，控制多源聚合查询的响应时间；通过定时任务预生成待办数据并动态编排审批角色，保障查询性能与业务时效。</li>
+							<li>引入并落地 process-core 自研流程引擎作为核心业务流程的横切基础设施，针对国企复杂审批场景定制，弥补 Flowable/BPMN 在多部门协管、提级会签、动态会办规则上的灵活性不足，以及 Airflow 偏向任务调度而非业务审批的局限；通过 preHandler 前置校验与 preCommit 预提交机制实现审批节点的两阶段控制，将原先分散在付款、退款、开票、银行账户等 8 个以上核心流程中的部门协管审批逻辑抽象为统一可编排节点，解决审批路径硬编码难以扩展、复杂会签节点易跳过、审批状态与服务状态不一致等痛点，显著提升复杂审批流程的可预测性与业务扩展效率。</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
 					<h3><span class="company l">【慧博云通】SAP Ariba 采购到付款业务重构项目</span>
-						<span class="date r">2025年3月 &mdash; 至今</span>
+						<span class="date r">2025年3月 &mdash; 2025年12月</span>
 					</h3>
 					<div class="clear"> </div>
 					<div class="info">
@@ -600,7 +628,6 @@
 							<li>参与系统测试与问题定位，积累从需求到上线的完整项目经验。</li>
 							<li>系统上线后实现调度与运输状态的实时可视化管理，显著提升运营效率。</li>
 						</ul>
-						<p>系统上线后实现调度与运输状态的实时可视化管理，显著提升运营效率。</p>
 					</div>
 					<div class="clear"> </div>
 				</div>
@@ -746,8 +773,27 @@
 			<h2 class="title">PROJECT EXPERIENCE</h2>
 			<div class="set">
 				<div class="item">
+					<h3><span class="company l">HydSoft: Ronghe Leasing Core System 2.0 Upgrade Project</span>
+						<span class="date r">January 2026 &mdash; Present</span>
+					</h3>
+					<div class="clear"> </div>
+					<div class="info">
+						<p class="info-label">Project Summary:</p>
+						<p>This project was the Xinchuang (domestic innovation) refactoring and upgrade of HX2.0, the core business system of SPIC Ronghe Leasing, covering the full leasing business lifecycle from project decision-making, contract co-signature, seal management, payment, receipt, write-off, invoicing to archiving, supporting general matters, industrial innovation, debt, equity and operating lease business lines. The system adopted a Spring Boot 2.6.3 microservices architecture split into nine services: corebiz-base, corebiz-finance, corebiz-debt, corebiz-equity, corebiz-operlease, corebiz-integration, corebiz-gateway, corebiz-others and corebiz-auth. It used KingbaseES 4.2 as the domestic database, Sa-Token for authentication, Nacos for configuration, xxl-job for distributed scheduling, Redisson for caching/locks, and spring-cloud-sleuth for tracing. Core business flows were driven by the in-house process-core engine, with Feign-based inter-service calls and integrations to multiple internal and external systems. The project followed Agile iterations and GitFlow branching under Xinchuang compliance and data-security requirements.</p>
+						<p class="info-label">My Contribution:</p>
+						<ul>
+							<li>Led end-to-end feature delivery across general-matters payment/refund, industrial-innovation invoicing, equity/debt/operating-lease and non-business procurement business lines, covering the full lifecycle from contract co-signature, seal management, payment request, quota occupation, invoice issuance to archiving and write-off; completed atomic write-back and state-machine design across legal entities and services, resolving data-consistency challenges in refund state transitions, quota release and payment closure.</li>
+							<li>Drove horizontal governance and engineering standardization in the microservices architecture, leading bottom-up fixes such as global Jackson empty-string deserialization, high-precision financial field expansion and isMock gray-field consistency; implemented Feign-based distributed transaction coordination, designed CRM-unavailability fallback and delta archive synchronization, and root-caused production issues spanning workflow-state sync, data-scope isolation and cross-service field semantic differences.</li>
+							<li>Owned cross-source data aggregation capabilities for multiple business lines such as meeting overview and invoice overview; addressed the pain point of data scattered across multiple schemas, microservices and business modules by aggregating heterogeneous data into unified views through multi-level nested queries and cross-table merges, and designed a matrix-style row-to-column model to standardize dimensions such as meeting levels and approval roles; resolved inconsistencies in field definitions and complex query chains caused by disparate data sources, while optimizing SQL execution plans, indexes and pagination strategies to keep multi-source aggregation queries responsive; used scheduled jobs to pre-generate to-do data and dynamically orchestrate approval roles, ensuring query performance and business timeliness.</li>
+							<li>Introduced and landed the in-house process-core workflow engine as the cross-cutting infrastructure for core business processes, custom-built for complex SOE approval scenarios to address the flexibility gaps of Flowable/BPMN in multi-department co-management, escalation counter-signature and dynamic co-handling rules, as well as Airflow's task-scheduling-oriented limitation for business approvals; implemented two-stage control of approval nodes through preHandler pre-validation and preCommit pre-commit mechanisms, abstracting department co-management approval logic previously scattered across 8+ core flows—payment, refund, invoicing, bank account and others—into unified configurable nodes, solving pain points such as hard-coded approval paths being difficult to extend, complex counter-signature nodes being prone to skip, and approval state being inconsistent with service state, significantly improving predictability and business extensibility of complex approval processes.</li>
+						</ul>
+					</div>
+					<div class="clear"> </div>
+				</div>
+
+				<div class="item">
 					<h3><span class="company l">HydSoft: SAP Ariba Procure-to-Pay (P2P) Business Refactoring Project</span>
-						<span class="date r">May 2025 &mdash; Present</span>
+						<span class="date r">March 2025 &mdash; December 2025</span>
 					</h3>
 					<div class="clear"> </div>
 					<div class="info">
@@ -793,7 +839,6 @@
 						<span class="date r">November 2021 &mdash; March 2023</span>
 					</h3>
 					<div class="clear"> </div>
-					<span class="job_title">Project Manager</span>
 					<div class="info">
 						<p class="info-label">Project Summary:</p>
 						<p>This project was Mintai Bank’s major upgrade in response to the Shanghai Commercial Paper Exchange’s (CPES) migration from ECDS to the CPES platform. The core objective was to implement denomination-splitting (ticket fractionalization) capabilities to support bill split &amp; merge business models. The system design strictly followed the Shanghai Commercial Paper Exchange’s direct-connection interface specifications, covering the full lifecycle for fractionated bills — acceptance, endorsement, discounting, pledge/release, repo, collection, and settlement — and providing deep integration with CPES, the bank’s corporate e-banking, and credit systems. From a technical perspective, the upgrade was implemented on Spring Boot, the transformed data model for split bills was hosted on a domestic Xinchuang database, and inter-system message exchange used message queue (MQ) and socket-based mechanisms. Core credit-management and risk-control nodes were refactored to ensure transactional consistency, security, and regulatory compliance under the new business model.</p>
@@ -915,14 +960,14 @@
 				</div>
 
 				<div class="item">
-					<h3><span class="company l">Logory: RTG Vehicle Dispatch & Fleet Management System</span>
+					<h3><span class="company l">Logory: RTG Vehicle Dispatch &amp; Fleet Management System</span>
 						<span class="date r">July 2013 &mdash; September 2015</span>
 					</h3>
 					<div class="clear"> </div>
 					<div class="info">
-						<p class="info-label">Project Summary：</p>
+						<p class="info-label">Project Summary:</p>
 						<p>RTG is the dispatch and fleet management module of a full-truckload logistics platform that connects truck owners and shippers using LBS-based location matching. The system unified fleet data from company-owned, partner and third-party carriers to digitize the end-to-end process from vehicle registration and order assignment to in-transit tracking. Using GPS and Baidu Maps APIs, RTG collected drivers’ locations in real time and visualized vehicle routes, enabling dynamic vehicle monitoring and transport-status tracking. Shippers could check shipment status via web or mobile, while drivers received dispatches and updates through a mobile app, greatly improving dispatch efficiency and transparency. The system was built on a B/S architecture with a Spring MVC-centered backend (integrating Struts2 and iBatis for business logic and persistence) and a JSP/jQuery frontend, designed for stable dispatch and real-time updates under high concurrency.</p>
-						<p class="info-label">My Contribution：</p>
+						<p class="info-label">My Contribution:</p>
 						<ul>
 							<li>Developed and maintained core modules for vehicle dispatch, order assignment, and transport-status tracking.</li>
 							<li>Implemented vehicle state management, task-distribution logic, and a location-reporting API to support LBS-driven real-time location display.</li>
@@ -1023,6 +1068,8 @@
 			switchLanguage(defaultLang);
 		});
 	</script>
+	<!-- AI 聊天机器人（Cloudflare Pages 同源）：widget 请求同源 /api/chat，由 functions/api/chat.js 处理。部署见 chatbot/README.md -->
+	<script src="chatbot/widget.js" data-worker="/api/chat" defer></script>
 </body>
 
 </html>

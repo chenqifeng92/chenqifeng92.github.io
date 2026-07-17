@@ -1,0 +1,14 @@
+{
+  "name": "qifeng-chatbot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "陈棋烽简历聊天机器人 - Cloudflare Worker + DeepSeek",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "secret": "wrangler secret put DEEPSEEK_API_KEY"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
