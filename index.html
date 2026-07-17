@@ -1068,8 +1068,8 @@
 			switchLanguage(defaultLang);
 		});
 	</script>
-	<!-- AI 聊天机器人（Cloudflare Pages 同源）：widget 请求同源 /api/chat，由 functions/api/chat.js 处理。部署见 chatbot/README.md -->
-	<script src="chatbot/widget.js" data-worker="/api/chat" defer></script>
+	<!-- AI 聊天机器人：API 指向 Cloudflare Worker（cv），跨域已放开，GitHub Pages / workers.dev / 本地打开均可聊天 -->
+	<script src="chatbot/widget.js" data-worker="https://cv.chenqifeng.workers.dev/api/chat" defer></script>
 </body>
 
 </html>
