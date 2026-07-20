@@ -253,14 +253,18 @@ export async function onRequestOptions() {
 // POST /api/suggestions
 // 根据已发生的对话上下文，让 LLM 生成 3 个用户可能想追问的问题，作为快捷引导按钮。
 // 非流式、JSON 输出；不写入主对话历史，与 /api/chat 解耦。
-const SUGGEST_SYSTEM = `你是"棋烽助手"的追问建议生成器。根据下方用户与助手已有的对话上下文，推测用户接下来最可能想追问的 3 个问题，用于作为快捷引导按钮。
+function buildSuggestSystem(lang) {
+  const langName = lang === 'en' ? 'English' : '中文';
+  return `你是"棋烽助手"的追问建议生成器。根据下方用户与助手已有的对话上下文，推测用户接下来最可能想追问的 3 个问题，用于作为快捷引导按钮。
 
 要求：
 - 紧扣已发生的对话内容，是自然的下一步追问（深挖细节、横向对比、延伸场景、举例等）。
-- 每个问题简短（15 字以内）、口语化、可直接点击。
+- 每个问题简短（中文 15 字以内、英文 12 词以内）、口语化、可直接点击。
 - 不要重复已经问过的问题；不要"还有什么想了解的"这类空泛问题。
+- 必须用${langName}生成这些问题（无论对话原文是何种语言）。
 - 严格输出 JSON 对象：{"suggestions": ["问题1","问题2","问题3"]}
 - 不要输出 JSON 以外的任何内容。`;
+}
 
 async function handleSuggestions(request, env) {
   if (!env.DEEPSEEK_API_KEY) {
@@ -274,6 +278,7 @@ async function handleSuggestions(request, env) {
     return json({ error: 'Invalid JSON body' }, 400);
   }
 
+  const lang = body.lang === 'en' ? 'en' : 'zh';
   const userMessages = Array.isArray(body.messages) ? body.messages : [];
   if (userMessages.length === 0) {
     return json({ suggestions: [] });
@@ -281,7 +286,7 @@ async function handleSuggestions(request, env) {
 
   // 只取最近 3 轮（6 条）做上下文，控制成本与延迟
   const recent = userMessages.slice(-6);
-  const messages = [{ role: 'system', content: SUGGEST_SYSTEM }, ...recent];
+  const messages = [{ role: 'system', content: buildSuggestSystem(lang) }, ...recent];
 
   const requestBody = {
     model: MODEL,

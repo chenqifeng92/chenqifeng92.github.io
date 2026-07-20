@@ -323,7 +323,7 @@
       const resp = await fetch(SUGGESTIONS_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages }),
+        body: JSON.stringify({ messages, lang: currentLang }),
       });
       if (!resp.ok) return;
       const data = await resp.json();
