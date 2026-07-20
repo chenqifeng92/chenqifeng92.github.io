@@ -130,9 +130,20 @@
 
   /* 移动端 */
   @media (max-width:520px){
-    #qf-chat-panel{right:0;bottom:0;width:100vw;height:100vh;max-height:100vh;border-radius:0}
+    /* 用 dvh/dvw 适配移动端动态地址栏，避免面板高度超出可视区被遮；
+       dvh 不支持时回退到前面的 vh/vw */
+    #qf-chat-panel{
+      right:0;bottom:0;
+      width:100vw;width:100dvw;
+      height:100vh;height:100dvh;
+      max-height:100vh;max-height:100dvh;
+      border-radius:0;
+    }
     #qf-chat-btn{right:16px;bottom:16px;width:56px;height:56px}
     #qf-chat-tooltip{right:82px;bottom:22px;max-width:210px;font-size:12.5px}
+    /* 避开底部 home indicator 与顶部状态栏/刘海 */
+    #qf-chat-head{padding-top:calc(15px + env(safe-area-inset-top))}
+    #qf-chat-form{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
   }
 
   /* 暗色模式 */
@@ -263,16 +274,28 @@
   function openPanel() {
     hideTooltip();
     panel.classList.add('open');
-    btn.classList.add('hidden');
+    // 通知页面：聊天面板已打开，页面可据此让出空间（如简历纸左移）
+    document.body.classList.add('qf-chat-open');
+    // 气泡变为关闭按钮：不隐藏，点击即可收起
+    btn.classList.add('is-open');
+    btn.innerHTML = '×';
+    btn.setAttribute('aria-label', '关闭聊天');
     setTimeout(() => input.focus(), 100);
   }
   // 8 秒后自动隐藏引导气泡
   resetTooltipTimer();
   function closePanel() {
     panel.classList.remove('open');
-    btn.classList.remove('hidden');
+    document.body.classList.remove('qf-chat-open');
+    btn.classList.remove('is-open');
+    btn.innerHTML = '💬';
+    btn.setAttribute('aria-label', '打开聊天');
   }
-  btn.onclick = openPanel;
+  // 气泡作为开关：已打开则收起，否则打开
+  btn.onclick = () => {
+    if (panel.classList.contains('open')) closePanel();
+    else openPanel();
+  };
   closeBtn.onclick = closePanel;
   tooltipClose.onclick = (e) => { e.stopPropagation(); hideTooltip(); };
 

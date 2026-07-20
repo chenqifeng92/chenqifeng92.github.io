@@ -359,6 +359,17 @@
 			}
 		}
 
+		/* 桌面端聊天面板打开时，简历"纸"左移让位，收起后复位居中 */
+		@media screen and (min-width: 981px) {
+			.resume {
+				transition: margin 0.3s ease;
+			}
+			body.qf-chat-open .resume {
+				margin-left: 0;
+				margin-right: auto;
+			}
+		}
+
 		@media print {
 			body {
 				background: #fff;
