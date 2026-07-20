@@ -11,3 +11,7 @@
 /worker.js
 /wrangler.jsonc
 /functions
+
+# chatbot 源码（persona / sync 脚本），不作为静态资产公开，仅 widget.js 对外
+/chatbot/persona.md
+/chatbot/sync-persona.js

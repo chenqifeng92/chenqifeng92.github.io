@@ -1,17 +1,13 @@
 /**
- * 将 persona.md 同步到所有后端的 SYSTEM_PROMPT：
- *   - chatbot/worker.js        （独立 Cloudflare Worker）
- *   - functions/api/chat.js    （Cloudflare Pages Function）
+ * 将 persona.md 同步到后端的 SYSTEM_PROMPT：
+ *   - functions/api/chat.js    （Cloudflare Worker「cv」的 /api/chat 处理逻辑）
  *
  * 用法：
  *   node sync-persona.js
  *
  * 原理：
  *   读取 persona.md 正文，做 JS 模板字符串转义，
- *   替换每个目标文件中 // === PERSONA_START === 与 // === PERSONA_END === 之间的 SYSTEM_PROMPT。
- *
- * 注：chatbot/worker-fc.js（阿里云 FC）的 SYSTEM_PROMPT 格式不同（【】 而非 ##），
- *     仍需手动从 worker.js 复制同步，见 worker-fc.js 文件头部说明。
+ *   替换目标文件中 // === PERSONA_START === 与 // === PERSONA_END === 之间的 SYSTEM_PROMPT。
  */
 
 const fs = require('fs');
@@ -19,7 +15,6 @@ const path = require('path');
 
 const PERSONA_PATH = path.join(__dirname, 'persona.md');
 const TARGETS = [
-  path.join(__dirname, 'worker.js'),
   path.join(__dirname, '..', 'functions', 'api', 'chat.js'),
 ];
 
