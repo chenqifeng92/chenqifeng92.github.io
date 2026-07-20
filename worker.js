@@ -10,7 +10,7 @@
  *       npx wrangler secret put DEEPSEEK_API_KEY。不要写进代码或提交到 Git。
  */
 
-import { onRequestPost, onRequestGet, onRequestOptions } from './functions/api/chat.js';
+import { onRequestPost, onRequestGet, onRequestOptions, onRequestPostSuggestions } from './functions/api/chat.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -29,6 +29,21 @@ export default {
           return new Response('Method Not Allowed', {
             status: 405,
             headers: { Allow: 'GET, POST, OPTIONS' },
+          });
+      }
+    }
+
+    if (url.pathname === '/api/suggestions') {
+      const context = { request, env, ctx };
+      switch (request.method) {
+        case 'POST':
+          return onRequestPostSuggestions(context);
+        case 'OPTIONS':
+          return onRequestOptions(context);
+        default:
+          return new Response('Method Not Allowed', {
+            status: 405,
+            headers: { Allow: 'POST, OPTIONS' },
           });
       }
     }

@@ -220,3 +220,73 @@ export async function onRequestGet() {
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: corsHeaders() });
 }
+
+// ============== 动态追问建议 ==============
+// POST /api/suggestions
+// 根据已发生的对话上下文，让 LLM 生成 3 个用户可能想追问的问题，作为快捷引导按钮。
+// 非流式、JSON 输出；不写入主对话历史，与 /api/chat 解耦。
+const SUGGEST_SYSTEM = `你是"棋烽助手"的追问建议生成器。根据下方用户与助手已有的对话上下文，推测用户接下来最可能想追问的 3 个问题，用于作为快捷引导按钮。
+
+要求：
+- 紧扣已发生的对话内容，是自然的下一步追问（深挖细节、横向对比、延伸场景、举例等）。
+- 每个问题简短（15 字以内）、口语化、可直接点击。
+- 不要重复已经问过的问题；不要"还有什么想了解的"这类空泛问题。
+- 严格输出 JSON 对象：{"suggestions": ["问题1","问题2","问题3"]}
+- 不要输出 JSON 以外的任何内容。`;
+
+async function handleSuggestions(request, env) {
+  if (!env.DEEPSEEK_API_KEY) {
+    return json({ error: 'Server not configured: DEEPSEEK_API_KEY missing' }, 500);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: 'Invalid JSON body' }, 400);
+  }
+
+  const userMessages = Array.isArray(body.messages) ? body.messages : [];
+  if (userMessages.length === 0) {
+    return json({ suggestions: [] });
+  }
+
+  // 只取最近 3 轮（6 条）做上下文，控制成本与延迟
+  const recent = userMessages.slice(-6);
+  const messages = [{ role: 'system', content: SUGGEST_SYSTEM }, ...recent];
+
+  const requestBody = {
+    model: MODEL,
+    messages,
+    stream: false,
+    temperature: 0.7,
+    max_tokens: 300,
+    response_format: { type: 'json_object' },
+  };
+
+  try {
+    const upstream = await callDeepSeek(requestBody, env.DEEPSEEK_API_KEY);
+    if (!upstream.ok) {
+      return json({ suggestions: [] });
+    }
+    const data = await upstream.json();
+    const content = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
+    let items = [];
+    try {
+      const parsed = JSON.parse(content);
+      items = Array.isArray(parsed.suggestions) ? parsed.suggestions : [];
+    } catch {}
+    items = items
+      .filter((s) => typeof s === 'string' && s.trim())
+      .map((s) => s.trim())
+      .slice(0, 3);
+    return json({ suggestions: items });
+  } catch {
+    return json({ suggestions: [] });
+  }
+}
+
+// POST /api/suggestions
+export async function onRequestPostSuggestions(context) {
+  return handleSuggestions(context.request, context.env);
+}

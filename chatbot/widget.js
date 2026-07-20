@@ -249,9 +249,10 @@
     errBox.style.display = 'block';
     setTimeout(() => { errBox.style.display = 'none'; }, 6000);
   }
-  function renderSuggestions() {
+  function renderSuggestions(items) {
+    items = items || SUGGESTIONS;
     suggestBox.innerHTML = '';
-    SUGGESTIONS.forEach(q => {
+    items.forEach(q => {
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'chip';
@@ -259,6 +260,29 @@
       chip.onclick = () => { input.value = q; send(); };
       suggestBox.appendChild(chip);
     });
+  }
+  // 动态追问建议：根据已发生的对话上下文，由后端 LLM 生成用户可能想追问的问题。
+  // 仅在前三轮对话内启用；超过三轮不再生成，引导用户自由提问。
+  const SUGGESTIONS_URL = WORKER_URL.replace(/\/api\/chat$/, '/api/suggestions');
+  let suggestReqId = 0; // 防竞态：用户连发消息时丢弃过期的建议请求
+  async function fetchDynamicSuggestions() {
+    const myId = suggestReqId;
+    try {
+      const resp = await fetch(SUGGESTIONS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages }),
+      });
+      if (!resp.ok) return;
+      const data = await resp.json();
+      if (myId !== suggestReqId) return; // 期间又发了新消息，丢弃过期结果
+      const items = Array.isArray(data.suggestions)
+        ? data.suggestions.filter(Boolean).slice(0, 3)
+        : [];
+      if (items.length === 0) return;
+      renderSuggestions(items);
+      suggestBox.classList.remove('hidden');
+    } catch {}
   }
 
   // ---------- 打开/关闭 ----------
@@ -311,6 +335,7 @@
     if (!text || streaming) return;
     errBox.style.display = 'none';
     suggestBox.classList.add('hidden');
+    suggestReqId++; // 作废上一轮未返回的建议请求
 
     messages.push({ role: 'user', content: text });
     addMsg('user', text);
@@ -381,6 +406,9 @@
         botBubble.innerHTML = '<span style="color:#999">（没有返回内容）</span>';
       } else {
         messages.push({ role: 'assistant', content: acc });
+        // 前三轮：根据上下文动态生成引导追问
+        const userTurns = messages.filter(m => m.role === 'user').length;
+        if (userTurns <= 3) fetchDynamicSuggestions();
       }
     } catch (e) {
       removeTyping();
