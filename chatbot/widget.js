@@ -6,6 +6,8 @@
  *
  * 把 data-worker 换成你部署后的 Cloudflare Worker 地址。
  * 无依赖，原生 JS，自带样式，自动适配暗色模式与移动端。
+ * 界面语言跟随简历页面（body.lang-en / body.lang-zh）切换；
+ * AI 回复语言则跟随用户提问语言（由 persona 规则保证），两者独立。
  */
 (function () {
   'use strict';
@@ -17,17 +19,45 @@
     return;
   }
 
-  const TOOLTIP_TEXT = '和棋烽的蒸馏智能体聊天，了解他的个人情况';
-
-  const SUGGESTIONS = [
-    '简单介绍一下棋烽',
-    '他最近在做什么项目？',
-    '他的技术栈有哪些？',
-    '为什么想转 AI Agent 方向？',
-    '怎么联系他？',
-  ];
-
-  const WELCOME = '你好！我是棋烽的职业助手，可以介绍他的经历、技能和近况。试试下面的问题，或直接问我 👇';
+  // ---------- 多语言文案（跟随简历页面中英文切换） ----------
+  // 注意：界面语言跟页面；AI 回复语言跟用户提问（persona 规则），两者独立。
+  const I18N = {
+    zh: {
+      title: '棋烽助手',
+      sub: '简历问答 · AI Agent',
+      tooltip: '和棋烽的蒸馏智能体聊天，了解他的个人情况',
+      welcome: '你好！我是棋烽的职业助手，可以介绍他的经历、技能和近况。试试下面的问题，或直接问我 👇',
+      suggestions: ['简单介绍一下棋烽', '他最近在做什么项目？', '他的技术栈有哪些？', '为什么想转 AI Agent 方向？', '怎么联系他？'],
+      placeholder: '问点什么…',
+      send: '发送',
+      openLabel: '打开聊天',
+      closeLabel: '关闭聊天',
+      tipClose: '关闭提示',
+      errPrefix: '请求失败：',
+      errSuffix: '。请稍后再试。',
+      errNetwork: '网络错误',
+      emptyReply: '（没有返回内容）',
+    },
+    en: {
+      title: 'Qifeng Assistant',
+      sub: 'Resume Q&A · AI Agent',
+      tooltip: "Chat with Qifeng's distilled agent to learn about him",
+      welcome: "Hi! I'm Qifeng's career assistant — ask about his background, skills, and latest work. Try a question below or just ask 👇",
+      suggestions: ['Tell me about Qifeng briefly', "What's his latest project?", 'What is his tech stack?', 'Why pivot to AI Agents?', 'How to contact him?'],
+      placeholder: 'Ask me anything…',
+      send: 'Send',
+      openLabel: 'Open chat',
+      closeLabel: 'Close chat',
+      tipClose: 'Close',
+      errPrefix: 'Request failed: ',
+      errSuffix: '. Please try again later.',
+      errNetwork: 'network error',
+      emptyReply: '(no response)',
+    },
+  };
+  let currentLang = document.body.classList.contains('lang-en') ? 'en' : 'zh';
+  function tr() { return I18N[currentLang]; }
+  let welcomeBubble = null; // 首条欢迎气泡，切换语言时更新
 
   // ---------- 样式 ----------
   const css = `
@@ -61,6 +91,7 @@
     content:'';position:absolute;right:22px;bottom:-7px;transform:translateX(50%);
     border-width:9px 7px 0 7px;border-style:solid;border-color:#1a1a1a transparent transparent transparent
   }
+  #qf-chat-tooltip .qf-tip-text{display:inline}
   #qf-chat-tooltip .qf-close{
     position:absolute;top:5px;right:6px;width:20px;height:20px;line-height:20px;
     text-align:center;font-size:15px;color:rgba(255,255,255,.65);cursor:pointer;border-radius:50%
@@ -108,6 +139,8 @@
   #qf-chat-suggest .chip{font-size:12.5px;padding:6px 12px;border:1px solid #d0d0c8;border-radius:16px;background:#fff;cursor:pointer;color:#444;transition:all .15s;font-weight:500}
   #qf-chat-suggest .chip:hover{border-color:#1a1a1a;color:#1a1a1a;background:#fafafa}
   #qf-chat-suggest.hidden{display:none}
+  #qf-chat-suggest:not(.hidden){animation:qf-suggest-in .25s ease both}
+  @keyframes qf-suggest-in{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
 
   /* 输入区 */
   #qf-chat-form{display:flex;gap:10px;padding:12px 14px;border-top:1px solid #eaeae6;background:#fff}
@@ -169,30 +202,33 @@
   const btn = document.createElement('button');
   btn.id = 'qf-chat-btn';
   btn.innerHTML = '💬';
-  btn.setAttribute('aria-label', '打开聊天');
+  btn.setAttribute('aria-label', tr().openLabel);
   document.body.appendChild(btn);
 
   const tooltip = document.createElement('div');
   tooltip.id = 'qf-chat-tooltip';
-  tooltip.innerHTML = `${escapeHtml(TOOLTIP_TEXT)}<span class="qf-close" aria-label="关闭提示">×</span>`;
+  // 文本与关闭按钮分离为两个 span：切换语言时只更新文本 span，
+  // 关闭按钮节点不重建，其事件绑定保持有效。
+  tooltip.innerHTML = `<span class="qf-tip-text"></span><span class="qf-close" aria-label="">×</span>`;
   document.body.appendChild(tooltip);
 
+  const L0 = tr();
   const panel = document.createElement('div');
   panel.id = 'qf-chat-panel';
   panel.innerHTML = `
     <div id="qf-chat-head">
       <div>
-        <div class="title">棋烽助手</div>
-        <div class="sub">简历问答 · AI Agent</div>
+        <div class="title">${L0.title}</div>
+        <div class="sub">${L0.sub}</div>
       </div>
-      <button id="qf-chat-close" aria-label="关闭">×</button>
+      <button id="qf-chat-close" aria-label="${L0.closeLabel}">×</button>
     </div>
     <div id="qf-chat-body"></div>
     <div id="qf-chat-suggest"></div>
     <div id="qf-chat-err"></div>
     <form id="qf-chat-form">
-      <textarea id="qf-chat-input" rows="1" placeholder="问点什么…" autocomplete="off"></textarea>
-      <button id="qf-chat-send" type="submit">发送</button>
+      <textarea id="qf-chat-input" rows="1" placeholder="${L0.placeholder}" autocomplete="off"></textarea>
+      <button id="qf-chat-send" type="submit">${L0.send}</button>
     </form>
   `;
   document.body.appendChild(panel);
@@ -250,7 +286,7 @@
     setTimeout(() => { errBox.style.display = 'none'; }, 6000);
   }
   function renderSuggestions(items) {
-    items = items || SUGGESTIONS;
+    items = items || tr().suggestions;
     suggestBox.innerHTML = '';
     items.forEach(q => {
       const chip = document.createElement('button');
@@ -260,6 +296,22 @@
       chip.onclick = () => { input.value = q; send(); };
       suggestBox.appendChild(chip);
     });
+  }
+  // 根据当前语言刷新所有界面文案（tooltip / 头部 / 输入区 / 欢迎语 / 首屏建议）
+  function applyLang(lang) {
+    if (!I18N[lang]) return;
+    currentLang = lang;
+    const L = I18N[lang];
+    tooltip.querySelector('.qf-tip-text').textContent = L.tooltip;
+    tooltip.querySelector('.qf-close').setAttribute('aria-label', L.tipClose);
+    panel.querySelector('#qf-chat-head .title').textContent = L.title;
+    panel.querySelector('#qf-chat-head .sub').textContent = L.sub;
+    input.placeholder = L.placeholder;
+    sendBtn.textContent = L.send;
+    if (welcomeBubble) welcomeBubble.innerHTML = renderMd(L.welcome);
+    // 无对话历史时刷新首屏建议；有对话时保留动态建议（其语言跟随对话上下文）
+    if (messages.length === 0) renderSuggestions(L.suggestions);
+    btn.setAttribute('aria-label', panel.classList.contains('open') ? L.closeLabel : L.openLabel);
   }
   // 动态追问建议：根据已发生的对话上下文，由后端 LLM 生成用户可能想追问的问题。
   // 仅在前三轮对话内启用；超过三轮不再生成，引导用户自由提问。
@@ -282,6 +334,9 @@
       if (items.length === 0) return;
       renderSuggestions(items);
       suggestBox.classList.remove('hidden');
+      // 建议区出现会挤压消息区高度，等下一帧布局更新后滚动到底，
+      // 确保最后一条气泡完整可见、不被建议区遮挡
+      requestAnimationFrame(() => { body.scrollTop = body.scrollHeight; });
     } catch {}
   }
 
@@ -303,7 +358,7 @@
     // 气泡变为关闭按钮：不隐藏，点击即可收起
     btn.classList.add('is-open');
     btn.innerHTML = '×';
-    btn.setAttribute('aria-label', '关闭聊天');
+    btn.setAttribute('aria-label', tr().closeLabel);
     setTimeout(() => input.focus(), 100);
   }
   // 8 秒后自动隐藏引导气泡
@@ -313,7 +368,7 @@
     document.body.classList.remove('qf-chat-open');
     btn.classList.remove('is-open');
     btn.innerHTML = '💬';
-    btn.setAttribute('aria-label', '打开聊天');
+    btn.setAttribute('aria-label', tr().openLabel);
   }
   // 气泡作为开关：已打开则收起，否则打开
   btn.onclick = () => {
@@ -403,7 +458,7 @@
       }
 
       if (!acc) {
-        botBubble.innerHTML = '<span style="color:#999">（没有返回内容）</span>';
+        botBubble.innerHTML = '<span style="color:#999">' + tr().emptyReply + '</span>';
       } else {
         messages.push({ role: 'assistant', content: acc });
         // 前三轮：根据上下文动态生成引导追问
@@ -413,7 +468,7 @@
     } catch (e) {
       removeTyping();
       if (!acc) botBubble.remove();
-      showError('请求失败：' + (e.message || '网络错误') + '。请稍后再试。');
+      showError(tr().errPrefix + (e.message || tr().errNetwork) + tr().errSuffix);
       // 失败时回滚用户消息，方便重试
       messages.pop();
     } finally {
@@ -433,6 +488,14 @@
   });
 
   // ---------- 初始化 ----------
-  addMsg('bot', WELCOME);
+  welcomeBubble = addMsg('bot', tr().welcome);
   renderSuggestions();
+  // 应用当前语言：填充 tooltip 文本等创建时留空的文案
+  applyLang(currentLang);
+  // 监听简历页面语言切换，同步更新聊天界面语言
+  const langObserver = new MutationObserver(() => {
+    const next = document.body.classList.contains('lang-en') ? 'en' : 'zh';
+    if (next !== currentLang) applyLang(next);
+  });
+  langObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 })();
