@@ -1,12 +1,12 @@
 /**
- * 陈棋烽简历聊天机器人 - Cloudflare Pages Function
+ * 陈棋烽简历聊天机器人 - Worker "cv" 后端模块
  *
- * 与 chatbot/worker.js（独立 Cloudflare Worker）逻辑一致，仅入口签名适配 Pages Functions：
- *   export async function onRequestPost(context)  ->  context.request / context.env
+ * 由根 worker.js 路由分发调用：POST /api/chat、GET /api/suggestions；其余路径由 env.ASSETS 提供静态资源。
  *
- * 路由：POST /api/chat（同源；前端 widget.js 用 data-worker="/api/chat"）
- * 部署：把仓库接到 Cloudflare Pages，push 自动部署；函数目录约定为仓库根 functions/。
- * 密钥：Pages 项目 Settings -> Environment Variables -> DEEPSEEK_API_KEY（Production，Secret）。
+ * 前端 widget.js 用 data-worker="https://cv.cqf.kdns.fr/api/chat" 跨域调用（CORS 全开），
+ * 指向绑定在 Cloudflare 账户的自定义域名，以绕过 workers.dev 在中国大陆的 SNI 封锁。
+ * 部署：Cloudflare Workers Builds 连接 GitHub 仓库，master push 自动部署到 Worker "cv"。
+ * 密钥：Worker Settings -> Variables -> DEEPSEEK_API_KEY（Secret）。
  *
  * 人设同步：SYSTEM_PROMPT 由 sync-persona.js 从 persona.md 同步，勿手改这段。
  */
