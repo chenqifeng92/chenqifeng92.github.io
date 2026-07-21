@@ -32,7 +32,7 @@ Cloudflare Worker "cv"（worker.js，根入口，路由分发）
 - `cv.cqf.kdns.fr` 是绑定在 Cloudflare 账户的自定义域名，用于绕过 `workers.dev` 在中国大陆的 SNI 封锁，使访客在国内也能顺畅访问 Worker 并调用 DeepSeek。
 - `chatbot/widget.js` 界面随页面语言（中/英）切换。
 - 人设（SYSTEM_PROMPT）写在 `chatbot/persona.md`，由 `sync-persona.js` 同步进 `functions/api/chat.js`，不手改代码段。
-- 防刷：`POST /api/chat` 与 `/api/suggestions` 走 Workers Rate Limiting 绑定（`CHAT_RATE_LIMITER`，按客户端 IP 60 次/60 秒），超限返回 429；入参另做长度/条数硬约束，DeepSeek 预付余额维持低位作最终兜底。
+- 防刷：IP 限流由 Cloudflare WAF Rate Limiting 规则在 Dashboard 配置（`cqf.kdns.fr` zone -> Security -> WAF -> Rate limiting rules，匹配 POST `/api/chat` 与 `/api/suggestions`，同 IP 60 次/60 秒超限 Block），不在仓库内；入参另做长度/条数硬约束，DeepSeek 预付余额维持低位作最终兜底。
 
 ## 仓库结构
 
@@ -40,7 +40,7 @@ Cloudflare Worker "cv"（worker.js，根入口，路由分发）
 .
 ├── index.html              # 简历页面（中英双语）
 ├── worker.js               # Worker "cv" 入口，路由分发
-├── wrangler.jsonc          # Cloudflare Worker 配置（name=cv，assets binding=ASSETS，CHAT_RATE_LIMITER 限流绑定）
+├── wrangler.jsonc          # Cloudflare Worker 配置（name=cv，assets binding=ASSETS）
 ├── .assetsignore           # 不作为静态资产公开的文件清单
 ├── functions/api/chat.js   # /api/chat 后端：DeepSeek SSE 流式 + 人设
 └── chatbot/
