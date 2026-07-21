@@ -375,22 +375,24 @@
     }
     return html.replace(/@@B(\d+)@@/g, (_, n) => blocks[+n] || '');
   }
-  // 长回答分多气泡：活动气泡累积到此字符数时，在最近的段落边界（连续空行）
-  // 切分封存，剩余进入新气泡继续流式渲染。切点须在代码围栏闭合处（``` 偶数），
-  // 避免把代码块切成两半导致渲染崩坏。对话历史仍存完整一条 assistant 消息，仅展示层拆分。
-  const SPLIT_THRESHOLD = 480;
-  // 在 text 里找最后一个"安全切点"：返回切点之后的起始索引（下一段开头）；
-  // 切点 = 连续空行之后，且该位置之前 ``` 围栏数为偶数（代码块已闭合）。找不到返回 -1。
-  function findSafeSplit(text) {
-    let lastSafe = -1;
+  // 长回答分多气泡：活动气泡累积到此字符数时，在段落边界（连续空行）切分封存，
+  // 剩余进入新气泡继续流式渲染。切点须在代码围栏闭合处（``` 偶数），避免把代码块切成两半。
+  // 对话历史仍存完整一条 assistant 消息，仅展示层拆分。
+  // 阈值取 1000：十个面试题量级的长回答约分成 5~6 个气泡，每气泡一屏半左右，阅读舒适且不碎。
+  const SPLIT_THRESHOLD = 1000;
+  // 在 text 里找第一个"切点前内容已达 minLen"的安全切点：返回切点之后的起始索引（下一段开头）；
+  // 切点 = 连续空行之后，且该位置之前 ``` 围栏数为偶数（代码块已闭合）。取第一个够长的切点，
+  // 使各气泡大小接近阈值、分布均匀，避免按"最后一个切点"切出大量小尾巴气泡。找不到返回 -1。
+  function findSafeSplit(text, minLen) {
     const re = /\n{2,}/g;
     let m;
     while ((m = re.exec(text)) !== null) {
       const after = m.index + m[0].length;
+      if (after < minLen) continue;
       const fences = (text.slice(0, m.index).match(/```/g) || []).length;
-      if (fences % 2 === 0) lastSafe = after;
+      if (fences % 2 === 0) return after;
     }
-    return lastSafe;
+    return -1;
   }
   function addMsg(role, text) {
     const wrap = document.createElement('div');
@@ -569,7 +571,7 @@
     // 后段进入新活动气泡继续流式渲染。while 循环确保一次大块内容也能切多段。
     const seal = () => {
       while (activeAcc.length >= SPLIT_THRESHOLD) {
-        const at = findSafeSplit(activeAcc);
+        const at = findSafeSplit(activeAcc, SPLIT_THRESHOLD);
         if (at <= 0) break;
         activeBubble.innerHTML = renderMd(activeAcc.slice(0, at));
         activeAcc = activeAcc.slice(at);
