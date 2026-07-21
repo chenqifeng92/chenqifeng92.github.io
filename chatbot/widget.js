@@ -375,6 +375,23 @@
     }
     return html.replace(/@@B(\d+)@@/g, (_, n) => blocks[+n] || '');
   }
+  // 长回答分多气泡：活动气泡累积到此字符数时，在最近的段落边界（连续空行）
+  // 切分封存，剩余进入新气泡继续流式渲染。切点须在代码围栏闭合处（``` 偶数），
+  // 避免把代码块切成两半导致渲染崩坏。对话历史仍存完整一条 assistant 消息，仅展示层拆分。
+  const SPLIT_THRESHOLD = 480;
+  // 在 text 里找最后一个"安全切点"：返回切点之后的起始索引（下一段开头）；
+  // 切点 = 连续空行之后，且该位置之前 ``` 围栏数为偶数（代码块已闭合）。找不到返回 -1。
+  function findSafeSplit(text) {
+    let lastSafe = -1;
+    const re = /\n{2,}/g;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      const after = m.index + m[0].length;
+      const fences = (text.slice(0, m.index).match(/```/g) || []).length;
+      if (fences % 2 === 0) lastSafe = after;
+    }
+    return lastSafe;
+  }
   function addMsg(role, text) {
     const wrap = document.createElement('div');
     wrap.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
@@ -543,8 +560,23 @@
     streaming = true;
     typingIndicator();
 
-    const botBubble = addMsg('bot', '');
-    let acc = '';
+    let activeBubble = addMsg('bot', '');
+    let activeAcc = '';   // 当前活动气泡累积的文本
+    let fullAcc = '';    // 完整输出，用于写入对话历史（多气泡展示合并为一条）
+    const bubbles = [];  // 本次创建的 bot 气泡（失败回滚用）
+    bubbles.push(activeBubble);
+    // 活动气泡累积超过阈值时，在最近的安全段落边界切分：前段固化进当前气泡，
+    // 后段进入新活动气泡继续流式渲染。while 循环确保一次大块内容也能切多段。
+    const seal = () => {
+      while (activeAcc.length >= SPLIT_THRESHOLD) {
+        const at = findSafeSplit(activeAcc);
+        if (at <= 0) break;
+        activeBubble.innerHTML = renderMd(activeAcc.slice(0, at));
+        activeAcc = activeAcc.slice(at);
+        activeBubble = addMsg('bot', '');
+        bubbles.push(activeBubble);
+      }
+    };
 
     try {
       const resp = await fetch(WORKER_URL, {
@@ -582,8 +614,10 @@
               const json = JSON.parse(data);
               const delta = json.choices && json.choices[0] && json.choices[0].delta;
               if (delta && delta.content) {
-                acc += delta.content;
-                botBubble.innerHTML = renderMd(acc);
+                fullAcc += delta.content;
+                activeAcc += delta.content;
+                seal();
+                activeBubble.innerHTML = renderMd(activeAcc);
                 body.scrollTop = body.scrollHeight;
               }
             } catch {}
@@ -594,23 +628,26 @@
         const data = await resp.json();
         const content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
         if (content) {
-          acc = content;
-          botBubble.innerHTML = renderMd(acc);
+          fullAcc = content;
+          activeAcc = content;
+          seal();
+          activeBubble.innerHTML = renderMd(activeAcc);
           body.scrollTop = body.scrollHeight;
         }
       }
 
-      if (!acc) {
-        botBubble.innerHTML = '<span style="color:#999">' + tr().emptyReply + '</span>';
+      if (!fullAcc) {
+        activeBubble.innerHTML = '<span style="color:#999">' + tr().emptyReply + '</span>';
       } else {
-        messages.push({ role: 'assistant', content: acc });
+        messages.push({ role: 'assistant', content: fullAcc });
         // 前三轮：根据上下文动态生成引导追问
         const userTurns = messages.filter(m => m.role === 'user').length;
         if (userTurns <= 3) fetchDynamicSuggestions();
       }
     } catch (e) {
       removeTyping();
-      if (!acc) botBubble.remove();
+      // 无内容则移除本次创建的空 bot 气泡；有部分输出则保留在屏幕上（不写入历史）
+      if (!fullAcc) bubbles.forEach((b) => { const w = b.closest('.msg'); if (w) w.remove(); });
       showError(tr().errPrefix + (e.message || tr().errNetwork) + tr().errSuffix);
       // 失败时回滚用户消息，方便重试
       messages.pop();
