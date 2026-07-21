@@ -52,28 +52,6 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
-    // [TEMP DIAGNOSTIC] 探查 CHAT_RATE_LIMITER 为何不计数；定位后移除。
-    if (url.pathname === '/api/rl-test') {
-      const limiter = env.CHAT_RATE_LIMITER;
-      const ip = clientIp(request);
-      if (!limiter) {
-        return new Response(JSON.stringify({ hasBinding: false, ip }), {
-          headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' },
-        });
-      }
-      try {
-        const res = await limiter.limit({ key: ip });
-        return new Response(JSON.stringify({ hasBinding: true, ip, result: res }), {
-          headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' },
-        });
-      } catch (e) {
-        return new Response(JSON.stringify({ hasBinding: true, ip, error: String((e && e.message) || e) }), {
-          status: 500,
-          headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' },
-        });
-      }
-    }
-
     if (url.pathname === '/api/chat') {
       const context = { request, env, ctx };
       switch (request.method) {
