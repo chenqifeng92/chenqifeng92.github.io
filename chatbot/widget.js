@@ -132,7 +132,26 @@
   #qf-chat-body .msg.bot .bubble{background:#fff;border:1px solid #e6e6e2;color:#222}
   #qf-chat-body .msg.user .bubble{background:#1a1a1a;color:#fff}
   #qf-chat-body .bubble code{background:rgba(0,0,0,.08);padding:2px 6px;border-radius:5px;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.84em}
+  #qf-chat-body .bubble p{margin:0 0 6px}
+  #qf-chat-body .bubble p:last-child{margin-bottom:0}
+  #qf-chat-body .bubble ul,#qf-chat-body .bubble ol{margin:0 0 6px;padding-left:20px}
+  #qf-chat-body .bubble li{margin:2px 0}
+  #qf-chat-body .bubble h3,#qf-chat-body .bubble h4,#qf-chat-body .bubble h5{margin:8px 0 4px;line-height:1.4;font-weight:700}
+  #qf-chat-body .bubble h3{font-size:1.02em}
+  #qf-chat-body .bubble h4{font-size:.96em}
+  #qf-chat-body .bubble h5{font-size:.92em}
+  #qf-chat-body .bubble a{color:#1a6dcc;text-decoration:underline;word-break:break-all}
+  #qf-chat-body .bubble blockquote{margin:0 0 6px;padding:2px 0 2px 10px;border-left:3px solid #d6d6cf;color:#777}
+  #qf-chat-body .bubble hr{border:none;border-top:1px solid #e6e6e2;margin:8px 0}
   #qf-chat-body .bubble pre{background:rgba(0,0,0,.07);padding:10px 12px;border-radius:8px;overflow-x:auto;margin:8px 0;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:.84em;white-space:pre}
+  #qf-chat-body .qf-code{margin:8px 0;border:1px solid #e6e6e2;border-radius:8px;overflow:hidden;background:rgba(0,0,0,.035)}
+  #qf-chat-body .qf-code .qf-code-head{display:flex;align-items:center;justify-content:space-between;padding:3px 8px 3px 10px;background:rgba(0,0,0,.05);font-size:11px}
+  #qf-chat-body .qf-code .qf-code-lang{color:#888;text-transform:lowercase;letter-spacing:.3px}
+  #qf-chat-body .qf-code .qf-copy-btn{background:transparent;border:1px solid #d6d6cf;color:#666;border-radius:5px;padding:1px 8px;font-size:11px;cursor:pointer;line-height:1.5}
+  #qf-chat-body .qf-code .qf-copy-btn:hover{background:#fff;color:#222}
+  #qf-chat-body .qf-code .qf-copy-btn.copied{color:#1a9f5f}
+  #qf-chat-body .qf-code pre{margin:0;border-radius:0;background:transparent}
+  #qf-chat-body .qf-code pre code{background:none;padding:0;font-size:.84em;color:inherit}
 
   /* 推荐问题 */
   #qf-chat-suggest{padding:0 16px 10px;display:flex;flex-wrap:wrap;gap:7px;background:#f6f6f3}
@@ -186,6 +205,15 @@
     #qf-chat-body .msg.bot .bubble{background:#262a2e;border-color:#2f3336;color:#ecece8}
     #qf-chat-body .msg.user .bubble{background:#d0d0d0;color:#1a1a1a}
     #qf-chat-body .bubble code,#qf-chat-body .bubble pre{background:rgba(255,255,255,.1)}
+  #qf-chat-body .bubble a{color:#7ab8ff}
+  #qf-chat-body .bubble blockquote{border-color:#3a3f44;color:#9a9a94}
+  #qf-chat-body .bubble hr{border-top-color:#2f3336}
+  #qf-chat-body .qf-code{border-color:#2f3336;background:rgba(255,255,255,.04)}
+  #qf-chat-body .qf-code .qf-code-head{background:rgba(255,255,255,.06)}
+  #qf-chat-body .qf-code .qf-code-lang{color:#8a8a84}
+  #qf-chat-body .qf-code .qf-copy-btn{border-color:#454a4e;color:#a0a09a}
+  #qf-chat-body .qf-code .qf-copy-btn:hover{background:rgba(255,255,255,.08);color:#d0d0d0}
+  #qf-chat-body .qf-code pre,#qf-chat-body .qf-code pre code{background:transparent}
     #qf-chat-suggest .chip{background:#262a2e;border-color:#454a4e;color:#a0a09a}
     #qf-chat-suggest .chip:hover{border-color:#d0d0d0;color:#d0d0d0;background:#2a2e32}
     #qf-chat-input{background:#262a2e;border-color:#454a4e;color:#ecece8}
@@ -248,14 +276,104 @@
 
   // ---------- 渲染 ----------
   function escapeHtml(s) {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
-  function renderMd(text) {
-    let s = escapeHtml(text);
-    s = s.replace(/```([\s\S]*?)```/g, (_, c) => `<pre>${c.replace(/^\n/, '')}</pre>`);
-    s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
-    s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  // 内联规则：行内代码、链接、粗体、斜体。输入须已 escapeHtml。
+  function renderInline(s) {
+    const codes = [];
+    s = s.replace(/`([^`]+)`/g, (_, c) => {
+      const i = codes.length;
+      codes.push('<code>' + c + '</code>');
+      return '@@C' + i + '@@';
+    });
+    s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    s = s.replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/__([^_]+?)__/g, '<strong>$1</strong>');
+    s = s.replace(/(^|[^*a-zA-Z0-9])\*([^*\n]+?)\*(?![a-zA-Z0-9])/g, '$1<em>$2</em>');
+    s = s.replace(/@@C(\d+)@@/g, (_, n) => codes[+n] || '');
     return s;
+  }
+  // 代码块：语言标签 + 复制按钮（内容已转义）
+  function renderCodeBlock(lang, code) {
+    const langLabel = lang ? escapeHtml(lang) : 'text';
+    return '<div class="qf-code">'
+      + '<div class="qf-code-head"><span class="qf-code-lang">' + langLabel + '</span>'
+      + '<button class="qf-copy-btn" type="button">复制</button></div>'
+      + '<pre><code>' + escapeHtml(code) + '</code></pre></div>';
+  }
+  // 文本段（代码围栏之间）-> 块级 HTML：标题/分隔线/引用/列表/段落
+  function renderTextSegment(seg) {
+    if (!seg) return '';
+    const lines = seg.replace(/\r/g, '').split('\n');
+    let html = '';
+    let para = [];
+    let listType = null;
+    let listItems = [];
+    let quote = [];
+    const closeList = () => {
+      if (listType) {
+        const tag = listType;
+        html += '<' + tag + '>' + listItems.map((li) => '<li>' + renderInline(escapeHtml(li)) + '</li>').join('') + '</' + tag + '>';
+        listType = null; listItems = [];
+      }
+    };
+    const closeQuote = () => {
+      if (quote.length) {
+        html += '<blockquote>' + quote.map((q) => renderInline(escapeHtml(q))).join('<br>') + '</blockquote>';
+        quote = [];
+      }
+    };
+    const flushPara = () => {
+      if (para.length) {
+        html += '<p>' + para.map((t) => renderInline(escapeHtml(t))).join('<br>') + '</p>';
+        para = [];
+      }
+    };
+    const closeAll = () => { closeList(); closeQuote(); flushPara(); };
+    for (const line of lines) {
+      if (/^\s*$/.test(line)) { closeAll(); continue; }
+      const h = line.match(/^(#{1,6})\s+(.*)$/);
+      if (h) { closeAll(); const n = Math.min(h[1].length, 3) + 2; html += '<h' + n + '>' + renderInline(escapeHtml(h[2])) + '</h' + n + '>'; continue; }
+      if (/^\s*([-*_])\1{2,}\s*$/.test(line)) { closeAll(); html += '<hr>'; continue; }
+      const q = line.match(/^>\s?(.*)$/);
+      if (q) { flushPara(); closeList(); quote.push(q[1]); continue; }
+      closeQuote();
+      const ul = line.match(/^[-*+]\s+(.*)$/);
+      if (ul) { flushPara(); if (listType && listType !== 'ul') closeList(); listType = 'ul'; listItems.push(ul[1]); continue; }
+      const ol = line.match(/^\d+[.)]\s+(.*)$/);
+      if (ol) { flushPara(); if (listType && listType !== 'ol') closeList(); listType = 'ol'; listItems.push(ol[1]); continue; }
+      closeList();
+      para.push(line);
+    }
+    closeAll();
+    return html;
+  }
+  // markdown 渲染：按代码围栏切分，代码段（含流式未闭合的末段）走代码块，其余走块级渲染。
+  function renderMd(text) {
+    if (!text) return '';
+    const parts = text.split('```');
+    const blocks = [];
+    let html = '';
+    for (let i = 0; i < parts.length; i++) {
+      if (i % 2 === 1) {
+        let seg = parts[i];
+        let lang = '';
+        const nl = seg.indexOf('\n');
+        if (nl !== -1) {
+          const fl = seg.slice(0, nl).trim();
+          if (fl && /^[A-Za-z0-9+#.\-]{1,20}$/.test(fl)) { lang = fl; seg = seg.slice(nl + 1); }
+        } else if (/^[A-Za-z0-9+#.\-]{1,20}$/.test(seg.trim())) {
+          // 流式：只有语言、还没换行，按语言标签 + 空代码渲染
+          lang = seg.trim(); seg = '';
+        }
+        const idx = blocks.length;
+        blocks.push(renderCodeBlock(lang, seg.replace(/^\n+/, '').replace(/\n+$/, '')));
+        html += '@@B' + idx + '@@';
+      } else {
+        html += renderTextSegment(parts[i]);
+      }
+    }
+    return html.replace(/@@B(\d+)@@/g, (_, n) => blocks[+n] || '');
   }
   function addMsg(role, text) {
     const wrap = document.createElement('div');
@@ -383,6 +501,31 @@
   tooltip.addEventListener('mouseenter', resetTooltipTimer);
   btn.addEventListener('mouseleave', resetTooltipTimer);
   tooltip.addEventListener('mouseleave', resetTooltipTimer);
+
+  // 代码块复制按钮：事件委托（流式重渲染会重建按钮，直接绑会丢）
+  body.addEventListener('click', (e) => {
+    const copyBtn = e.target.closest('.qf-copy-btn');
+    if (!copyBtn) return;
+    const box = copyBtn.closest('.qf-code');
+    const codeEl = box && box.querySelector('pre code');
+    if (!codeEl) return;
+    const txt = codeEl.textContent;
+    const done = () => {
+      const orig = copyBtn.textContent;
+      copyBtn.textContent = '已复制';
+      copyBtn.classList.add('copied');
+      setTimeout(() => { copyBtn.textContent = orig; copyBtn.classList.remove('copied'); }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(done).catch(() => {});
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch (_) {}
+      document.body.removeChild(ta);
+    }
+  });
 
   // ---------- 发送 & 流式接收 ----------
   async function send() {
