@@ -42,23 +42,24 @@
 
 ## 文件清单
 
-github 仓库根 = Worker 静态资产目录 + Worker 源；gitlab 仓库 = `public/` 为 Pages 站点根，根目录另存源文件镜像（不 serve）。
+github 仓库根 = Worker 静态资产目录 + Worker 源 + 人设源；gitlab 仓库 = 最小静态镜像（只含站点运行必需文件，`public/` 由 CI 生成、不进版本库）。
 
 | 文件 | 作用 | github | gitlab |
 |---|---|---|---|
-| `index.html` | 简历页面（中英双语、可打印） | 根 | `public/` |
-| `chatbot/widget.js` | 聊天浮窗前端（UI、markdown 渲染、复制按钮、跨域调 Worker） | `chatbot/` | `public/chatbot/` |
-| `chatbot/persona.md` | 人设源文档（SYSTEM_PROMPT 的源），运行时不读 | `chatbot/` | `chatbot/`（镜像） |
-| `chatbot/sync-persona.js` | dev 脚本：persona.md -> chat.js 的 SYSTEM_PROMPT | `chatbot/` | `chatbot/`（镜像） |
-| `functions/api/chat.js` | Worker 聊天后端：/api/chat、/api/suggestions，DeepSeek SSE 代理 + CORS + 入参硬约束；SYSTEM_PROMPT 烤在里面 | `functions/api/` | `functions/api/`（镜像） |
-| `worker.js` | Worker "cv" 入口，路由分发 | 根 | 根（镜像） |
-| `wrangler.jsonc` | Cloudflare Worker 配置（name=cv，assets binding=ASSETS） | 根 | 根（镜像） |
-| `.gitlab-ci.yml` | GitLab Pages CI（发布 `public/`） | — | 根 |
+| `index.html` | 简历页面（中英双语、可打印） | 根 | 根（CI 拷到 `public/`） |
+| `chatbot/widget.js` | 聊天浮窗前端（UI、markdown 渲染、复制按钮、跨域调 Worker） | `chatbot/` | `chatbot/`（CI 拷到 `public/chatbot/`） |
+| `fonts/open-sans-latin-300.woff2` | 自托管 Open Sans:300 英文字体（OFL），unicode-range 仅覆盖拉丁字符 | `fonts/` | `fonts/`（CI 拷到 `public/fonts/`） |
+| `chatbot/persona.md` | 人设源文档（SYSTEM_PROMPT 的源），运行时不读 | `chatbot/` | - |
+| `chatbot/sync-persona.js` | dev 脚本：persona.md -> chat.js 的 SYSTEM_PROMPT | `chatbot/` | - |
+| `functions/api/chat.js` | Worker 聊天后端：/api/chat、/api/suggestions，DeepSeek SSE 代理 + CORS + 入参硬约束；SYSTEM_PROMPT 烤在里面 | `functions/api/` | - |
+| `worker.js` | Worker "cv" 入口，路由分发 | 根 | - |
+| `wrangler.jsonc` | Cloudflare Worker 配置（name=cv，assets binding=ASSETS） | 根 | - |
+| `.gitlab-ci.yml` | GitLab Pages CI（把 index.html + widget.js + fonts/ 拷进 `public/` 发布） | — | 根 |
 | `.gitignore` | 忽略 `.DS_Store` 等 | 根 | 根 |
 | `.assetsignore` | Worker assets binding 不 serve 的文件清单（仅 github 生效，不影响 git） | 根 | - |
 | `README.md` | 本文档 | 根 | 根 |
 
-> gitlab 仓库根的 `worker.js` / `wrangler.jsonc` / `functions/` / `chatbot/persona.md` / `chatbot/sync-persona.js` 是为保持两边一致而镜像的源文件，在 GitLab Pages 上不生效（Pages 只 serve `public/`）。改 Worker 后端只需在 github 仓库改并部署。
+> gitlab 只保留站点运行的最小必需（`index.html`、`chatbot/widget.js`、`fonts/open-sans-latin-300.woff2`、`.gitlab-ci.yml`、`.gitignore`、`README.md`）。Worker 后端源码与人设源文件只在 github 仓库，避免两份版本漂移。改后端/人设只需在 github 改并部署。
 
 ## 密钥
 
@@ -69,9 +70,8 @@ github 仓库根 = Worker 静态资产目录 + Worker 源；gitlab 仓库 = `pub
 1. 编辑 `chatbot/persona.md`。
 2. 在 github 仓库根运行 `node chatbot/sync-persona.js`：读 persona.md，重写 `functions/api/chat.js` 里 `// === PERSONA_START ===` … `// === PERSONA_END ===` 之间的 `SYSTEM_PROMPT` 常量。
 3. commit + push 到 github `master`，Workers Builds 自动部署。
-4. 同步把 persona.md 拷到 gitlab 仓库，保持两边一致。
 
-> 运行时 Worker 读的是 `chat.js` 里烤好的 `SYSTEM_PROMPT` 常量，**不读 persona.md**；光改 persona.md 不同步 + 部署不生效。persona 文本同时存在于 persona.md（源）与 chat.js（烤进去），两份都在公开仓库里。
+> 运行时 Worker 读的是 `chat.js` 里烤好的 `SYSTEM_PROMPT` 常量，**不读 persona.md**；光改 persona.md 不同步 + 部署不生效。persona 文本同时存在于 persona.md（源）与 chat.js（烤进去），两份都在公开的 github 仓库里。gitlab 不含 persona.md（最小镜像）。
 
 ## 防刷
 
@@ -89,4 +89,4 @@ npx wrangler dev               # 本地起 Worker（DEEPSEEK_API_KEY 配 .dev.va
 
 ## 备注：`.assetsignore`（仅 github）
 
-github 仓库用 `.assetsignore` 告诉 Worker 的 assets binding **不要**把下列文件当 HTTP 静态资源 serve：`worker.js`、`wrangler.jsonc`、`functions/`、`chatbot/persona.md`、`chatbot/sync-persona.js`，以及 `.git` / `.claude` / `.wrangler` / `node_modules` / `.DS_Store` / `.dev.vars` 等本地目录。即 `cv.cqf.kdns.fr/chatbot/persona.md` 等返回 404，只有 `index.html`、`chatbot/widget.js` 等站点文件被 serve。**`.assetsignore` 只管 Worker 的 HTTP serve，不影响 git**--这些文件仍在版本库里公开（git 只看 `.gitignore`）。gitlab 不读 `.assetsignore`，源文件放 `public/` 之外即不会被 Pages serve。
+github 仓库用 `.assetsignore` 告诉 Worker 的 assets binding **不要**把下列文件当 HTTP 静态资源 serve：`worker.js`、`wrangler.jsonc`、`functions/`、`chatbot/persona.md`、`chatbot/sync-persona.js`，以及 `.git` / `.claude` / `.wrangler` / `node_modules` / `.DS_Store` / `.dev.vars` 等本地目录。即 `cv.cqf.kdns.fr/chatbot/persona.md` 等返回 404，只有 `index.html`、`chatbot/widget.js` 等站点文件被 serve。**`.assetsignore` 只管 Worker 的 HTTP serve，不影响 git**--这些文件仍在版本库里公开（git 只看 `.gitignore`）。gitlab 不含这些源文件（最小镜像），CI 只把 `index.html` + `chatbot/widget.js` + `fonts/` 拷进 `public/` 发布，达到同样不暴露的效果。
