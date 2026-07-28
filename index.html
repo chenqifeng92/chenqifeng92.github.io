@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Qifeng Chen Resume</title>
+	<title>Qifeng CV</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<style type="text/css">
@@ -1118,6 +1118,8 @@
 
 				document.body.classList.remove('lang-zh', 'lang-en');
 				document.body.classList.add(lang === 'zh' ? 'lang-zh' : 'lang-en');
+
+				document.title = lang === 'zh' ? '陈棋烽简历' : 'Qifeng CV';
 
 				buttons.forEach(function (button) {
 					button.classList.toggle('active', button.dataset.lang === lang);
