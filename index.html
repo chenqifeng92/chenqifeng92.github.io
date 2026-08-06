@@ -649,15 +649,16 @@
 					<div class="clear"> </div>
 					<div class="info">
 						<p class="info-label">项目描述：</p>
-						<p>项目由浦发硅谷银行联合开发，建设面向国际信用卡交易的实时风险控制系统。系统采集用户登录、交易、支付等全链路行为数据，实现潜在欺诈与异常交易的实时识别与处置。重点通过规则引擎与大数据分析结合，实现多维风险识别、自动规则调整与精准预警，保障跨境交易安全与合规。</p>
+						<p>项目为浦发硅谷银行建设面向国际信用卡跨境交易的实时风险控制系统，防范盗刷、套现、撞库等欺诈风险。系统通过 Kafka 接入用户登录、交易、支付、设备、地理位置等全链路行为数据，经数据清洗、去重与特征归一化后，由 Flink 实时流计算引擎进行窗口聚合与复杂事件处理，实时计算风控特征指标并驱动 Drools 规则引擎完成欺诈判定与分级处置（拦截、挂起、人工复核），配合 Redis 高速缓存与 MongoDB 历史回溯，实现多维风险识别、规则动态调整与精准预警，保障跨境交易安全与合规。</p>
 						<p class="info-label">个人贡献：</p>
 						<ul>
-							<li>负责基于 Spring Boot 的后端设计与开发，利用 Drools 实现风控策略的动态配置与实时执行。</li>
-							<li>设计 Redis 与 MongoDB 结合的风险事件缓存及历史存储方案，支持高并发实时计算与横向扩展。</li>
-							<li>主导用户行为链路建模，关联登录→活动→订单→支付等事件，构建复合场景规则提升风控精度。</li>
-							<li>负责风控规则引擎版本管理与维护，支持策略快速迭代与回溯。</li>
-							<li>参与误报与漏报的人工复核流程开发，实现风险事件识别到闭环的全流程管理。</li>
-							<li>完成历史交易数据可视化分析与报表模块建设，支撑风险趋势监控与决策。</li>
+							<li>基于 Flink 搭建用户行为事件实时流处理管道，消费 Kafka 接入的登录、交易、支付等全链路事件，完成数据清洗（去重、异常值过滤）、特征归一化与实时指标计算，支撑毫秒级风控判定。</li>
+							<li>利用 Flink 滑动窗口与会话窗口统计实时风控指标（短时高频交易、同设备多账户、异地登录等），结合复杂事件处理识别“登录->改密->下单->支付”等复合欺诈模式，提升异常交易识别率。</li>
+							<li>基于 Drools 设计风控规则引擎，将风险策略抽象为可配置规则（黑白名单、阈值、行为序列、设备指纹），支持规则动态加载、版本管理与热更新，业务方无需发版即可调整策略；规则由 Flink 实时指标触发，实现欺诈交易实时拦截与处置。</li>
+							<li>设计 Redis + MongoDB 风险事件存储方案：Redis 承担实时风控特征与会话状态的高速读写，MongoDB 存储历史事件与行为链路供回溯分析，支持高并发与横向扩展。</li>
+							<li>主导用户行为链路建模，关联登录->活动->订单->支付等事件构建复合场景规则，将单一事件规则升级为行为序列规则，显著降低误报与漏报。</li>
+							<li>对历史交易数据进行风险趋势分析，建设可视化与报表模块，支撑风险趋势监控与决策支持。</li>
+							<li>参与误报漏报人工复核流程开发，打通“实时识别->自动处置->人工复核->规则优化”闭环；系统上线后实时拦截欺诈交易，规则迭代周期从发版级缩短至分钟级。</li>
 						</ul>
 					</div>
 					<div class="clear"> </div>
@@ -998,15 +999,16 @@
 					<div class="clear"> </div>
 					<div class="info">
 						<p class="info-label">Project Summary:</p>
-						<p>This project was jointly developed with SPD Silicon Valley Bank to build a real-time risk control system for international credit card transactions. The system collects and models full-chain behavioral data from user login, transactions, and payments to enable real-time identification and handling of potential fraud and abnormal transactions. The project focuses on combining a rule engine with big data analytics to achieve multi-dimensional risk identification, automated rule adjustment, and precise risk warnings, ensuring the security and compliance of cross-border transactions.</p>
+						<p>Built for SPD Silicon Valley Bank, this project delivered a real-time risk control system for international cross-border credit card transactions, guarding against fraud such as card theft, cash-out, and credential stuffing. The system ingests full-chain behavioral data - user login, transactions, payments, device, and geolocation - via Kafka, then performs data cleansing, deduplication, and feature normalization before Flink's real-time stream processing engine performs windowed aggregation and Complex Event Processing (CEP) to compute real-time risk features that drive the Drools rule engine for fraud decisioning and tiered handling (block, suspend, manual review), complemented by Redis for high-speed caching and MongoDB for historical retrospective, achieving multi-dimensional risk identification, dynamic rule adjustment, and precise risk warnings, ensuring the security and compliance of cross-border transactions.</p>
 						<p class="info-label">My Contribution:</p>
 						<ul>
-							<li>Responsible for backend design and development based on SpringBoot, utilizing the Drools rule engine to implement dynamic configuration and real-time execution of risk control strategies.</li>
-							<li>Designed and implemented a combined Redis and MongoDB solution for risk event caching and historical event storage, supporting high-concurrency real-time computation and horizontal scaling.</li>
-							<li>Led the modeling of user behavioral chains, performing correlation analysis of multi-dimensional events such as login → activity → order → payment to construct composite scenario rules and improve risk control accuracy.</li>
-							<li>Managed version control and maintenance of the risk control rule engine, supporting rapid rule iteration and strategy rollback.</li>
-							<li>Participated in developing the manual review process module for false positives and false negatives, enabling end-to-end management of risk events from identification to closure.</li>
-							<li>Completed the construction of visualization analysis and reporting modules for historical transaction data, supporting risk trend monitoring and decision-making support.</li>
+							<li>Built a real-time streaming pipeline with Flink that consumes full-chain events - login, transactions, payments - ingested via Kafka, performing data cleansing (deduplication, anomaly filtering), feature normalization, and real-time metric computation to support millisecond-level risk decisions.</li>
+							<li>Used Flink sliding and session windows to compute real-time risk metrics (short-burst high-frequency transactions, multiple accounts on one device, geo-anomaly logins) and applied Complex Event Processing (CEP) to detect composite fraud patterns such as login -> password change -> order -> payment, improving anomalous-transaction detection.</li>
+							<li>Designed the risk control rule engine with Drools, abstracting risk strategies into configurable rules (blacklists/whitelists, thresholds, behavioral sequences, device fingerprints) with dynamic loading, versioning, and hot updates - enabling business teams to adjust strategies without redeployment. Rules were triggered by Flink-computed real-time metrics for real-time fraud interception and handling.</li>
+							<li>Designed a Redis + MongoDB risk-event storage scheme: Redis for high-speed read/write of real-time features and session state, MongoDB for historical events and behavioral chains for retrospective analysis, supporting high concurrency and horizontal scaling.</li>
+							<li>Led user behavioral-chain modeling, correlating login -> activity -> order -> payment events to build composite-scenario rules, upgrading single-event rules to behavioral-sequence rules and significantly reducing false positives and false negatives.</li>
+							<li>Performed risk-trend analysis on historical transaction data and built visualization and reporting modules to support risk-trend monitoring and decision-making.</li>
+							<li>Participated in the false-positive/negative manual review workflow, closing the loop from real-time detection -> automated handling -> manual review -> rule optimization; after launch the system intercepted fraudulent transactions in real time, and rule-iteration cycles shortened from release-level to minute-level.</li>
 						</ul>
 					</div>
 					<div class="clear"> </div>
