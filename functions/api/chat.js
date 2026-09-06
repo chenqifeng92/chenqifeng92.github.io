@@ -343,7 +343,9 @@ async function handleSuggestions(request, env) {
     messages,
     stream: false,
     temperature: 0.7,
-    max_tokens: 300,
+    // 注意：DeepSeek JSON Output 模式会隐式消耗 token（finish_reason=length 且 content 为空），
+    // 300 偶发不够用直接耗尽，导致返回空建议；按实际用量计费，上限给足。
+    max_tokens: 800,
     response_format: { type: 'json_object' },
   };
 
