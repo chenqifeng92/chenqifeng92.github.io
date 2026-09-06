@@ -347,26 +347,48 @@ async function handleSuggestions(request, env) {
     response_format: { type: 'json_object' },
   };
 
-  try {
-    const upstream = await callDeepSeek(requestBody, env.DEEPSEEK_API_KEY);
-    if (!upstream.ok) {
-      return json({ suggestions: [] });
-    }
-    const data = await upstream.json();
-    const content = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
-    let items = [];
+  // DeepSeek JSON Output 有已知的偶发问题：小概率返回空 content 或输出被代码块等文本包裹。
+  // 这里做两层防护：①解析容错（先直接 parse，失败则提取首个 {...} 片段再 parse）
+  // ②失败或空结果时自动重试一次。debug 字段记录失败原因，便于线上排查。
+  let items = null;
+  let debugInfo = null;
+  for (let attempt = 0; attempt < 2 && !(items && items.length); attempt++) {
     try {
-      const parsed = JSON.parse(content);
-      items = Array.isArray(parsed.suggestions) ? parsed.suggestions : [];
-    } catch {}
-    items = items
-      .filter((s) => typeof s === 'string' && s.trim())
-      .map((s) => s.trim())
-      .slice(0, 3);
-    return json({ suggestions: items });
-  } catch {
-    return json({ suggestions: [] });
+      const upstream = await callDeepSeek(requestBody, env.DEEPSEEK_API_KEY);
+      if (!upstream.ok) {
+        debugInfo = `upstream_status_${upstream.status}`;
+        continue;
+      }
+      const data = await upstream.json();
+      const choice = data.choices && data.choices[0];
+      const content = (choice && choice.message && choice.message.content) || '';
+      if (!content) {
+        debugInfo = `empty_content_finish_${(choice && choice.finish_reason) || 'unknown'}`;
+        continue;
+      }
+      let parsed = null;
+      try {
+        parsed = JSON.parse(content);
+      } catch {
+        const m = content.match(/\{[\s\S]*\}/);
+        if (m) {
+          try { parsed = JSON.parse(m[0]); } catch {}
+        }
+      }
+      if (!parsed || !Array.isArray(parsed.suggestions)) {
+        debugInfo = `unparsable_content_len_${content.length}`;
+        continue;
+      }
+      items = parsed.suggestions;
+    } catch (e) {
+      debugInfo = `exception_${e && e.message ? String(e.message).slice(0, 60) : 'unknown'}`;
+    }
   }
+  items = (items || [])
+    .filter((s) => typeof s === 'string' && s.trim())
+    .map((s) => s.trim())
+    .slice(0, 3);
+  return json(items.length ? { suggestions: items } : { suggestions: [], debug: debugInfo });
 }
 
 // POST /api/suggestions
