@@ -456,25 +456,36 @@
   let suggestReqId = 0; // 防竞态：用户连发消息时丢弃过期的建议请求
   async function fetchDynamicSuggestions() {
     const myId = suggestReqId;
-    try {
-      const resp = await fetch(SUGGESTIONS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages, lang: currentLang }),
-      });
-      if (!resp.ok) return;
-      const data = await resp.json();
-      if (myId !== suggestReqId) return; // 期间又发了新消息，丢弃过期结果
-      const items = Array.isArray(data.suggestions)
-        ? data.suggestions.filter(Boolean).slice(0, 3)
-        : [];
-      if (items.length === 0) return;
-      renderSuggestions(items);
-      suggestBox.classList.remove('hidden');
-      // 建议区出现会挤压消息区高度，等下一帧布局更新后滚动到底，
-      // 确保最后一条气泡完整可见、不被建议区遮挡
-      requestAnimationFrame(() => { body.scrollTop = body.scrollHeight; });
-    } catch {}
+    // 拉一次建议；失败/超时返回 null（成功返回数组，可能为空）
+    const fetchOnce = async () => {
+      try {
+        const resp = await fetch(SUGGESTIONS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages, lang: currentLang }),
+          signal: AbortSignal.timeout(12000), // 后端偶发慢时避免挂死
+        });
+        if (!resp.ok) return null;
+        const data = await resp.json();
+        return Array.isArray(data.suggestions)
+          ? data.suggestions.filter(Boolean).slice(0, 3)
+          : [];
+      } catch {
+        return null;
+      }
+    };
+    // 首次失败或空结果（DeepSeek 偶发抖动/非法 JSON）时，未过期则重试一次
+    let items = await fetchOnce();
+    if ((!items || items.length === 0) && myId === suggestReqId) {
+      items = await fetchOnce();
+    }
+    if (myId !== suggestReqId) return; // 期间又发了新消息，丢弃过期结果
+    if (!items || items.length === 0) return;
+    renderSuggestions(items);
+    suggestBox.classList.remove('hidden');
+    // 建议区出现会挤压消息区高度，等下一帧布局更新后滚动到底，
+    // 确保最后一条气泡完整可见、不被建议区遮挡
+    requestAnimationFrame(() => { body.scrollTop = body.scrollHeight; });
   }
 
   // ---------- 打开/关闭 ----------
