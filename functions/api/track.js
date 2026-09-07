@@ -75,8 +75,11 @@ async function handleTrackPost(request, env) {
   // 入参硬约束：site 白名单、超长截断，配合 zone 级 WAF 限流兜底
   const site = ALLOWED_SITES.has(body.site) ? body.site : null;
   const path = truncate(body.path, 120);
+  // D1 的 bind 只接受 null 不接受 undefined，缺省字段统一置 null
   let payload = body.payload;
-  if (payload !== undefined && payload !== null) {
+  if (payload === undefined || payload === null) {
+    payload = null;
+  } else {
     payload = typeof payload === 'string' ? payload : JSON.stringify(payload);
     payload = truncate(payload, 600);
   }
