@@ -55,7 +55,7 @@ function truncate(s, n) {
   return s.length > n ? s.slice(0, n) : s;
 }
 
-async function handleTrackPost(request, env) {
+async function handleTrackPost(request, env, ctx) {
   if (!env.STATS_DB) {
     return json({ ok: false, error: 'STATS_DB not bound' }, 500);
   }
@@ -94,6 +94,12 @@ async function handleTrackPost(request, env) {
     )
       .bind(site, eventType, path, device, ip, ua, payload)
       .run();
+    // 小概率顺带清理 60 天前旧数据（waitUntil 不阻塞响应；stats 读取时必清兜底）
+    if (ctx && Math.random() < 0.05) {
+      ctx.waitUntil(
+        env.STATS_DB.prepare("DELETE FROM events WHERE ts < datetime('now', '-60 days')").run()
+      );
+    }
     return json({ ok: true });
   } catch (e) {
     return json({ ok: false, error: String((e && e.message) || e).slice(0, 120) }, 500);
@@ -113,7 +119,7 @@ async function handleTrackGet(request, env) {
 }
 
 export async function onRequestPost(context) {
-  return handleTrackPost(context.request, context.env);
+  return handleTrackPost(context.request, context.env, context.ctx);
 }
 
 export async function onRequestGet(context) {

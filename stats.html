@@ -7,17 +7,17 @@
 	<meta name="robots" content="noindex, nofollow" />
 	<title>访问统计 · 陈棋烽简历站</title>
 	<style>
-		/* 纯白背景与简历站一致，黑白灰主色，轻阴影呼应简历纸 */
+		/* 纯白极简风：无边框卡片，靠留白 + 细分隔线分区，大数字大图做主角 */
 		:root {
 			--text: #1a1a1a;
 			--muted: #9a9a9a;
-			--faint: #d9d9d9;
-			--border: #ebebeb;
-			--shadow: 0 1px 3px rgba(0, 0, 0, .04), 0 0 6px rgba(0, 0, 0, .03);
+			--faint: #e3e3e3;
+			--line: #efefef;
+			--track: #f6f6f6;
 			--hover: #fafafa;
 			--bar-1: #1a1a1a;
 			--bar-2: #9a9a9a;
-			--bar-3: #d9d9d9;
+			--bar-3: #dcdcdc;
 		}
 
 		* {
@@ -28,31 +28,35 @@
 			margin: 0;
 			background: #fff;
 			color: var(--text);
-			font: 14px/1.65 -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+			font: 14px/1.7 -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 			-webkit-font-smoothing: antialiased;
+			-webkit-text-size-adjust: 100%;
+			overflow-x: hidden;
 		}
 
 		.page {
 			max-width: 960px;
 			margin: 0 auto;
-			padding: 36px 20px 60px;
+			padding: 52px 24px 80px;
 		}
 
 		/* ---------- 头部 ---------- */
 		header {
+			position: relative;
 			display: flex;
 			flex-wrap: wrap;
 			gap: 14px;
 			align-items: flex-end;
 			justify-content: space-between;
-			margin-bottom: 26px;
+			padding-bottom: 26px;
+			border-bottom: 1px solid var(--line);
 		}
 
 		h1 {
-			font-size: 24px;
-			margin: 0 0 4px;
+			font-size: 26px;
+			margin: 0 0 6px;
 			font-weight: 700;
-			letter-spacing: .5px;
+			letter-spacing: .3px;
 		}
 
 		.sub {
@@ -61,22 +65,65 @@
 			font-size: 13px;
 		}
 
-		.header-controls {
+		/* 天数分段控件 */
+		.seg {
 			display: flex;
-			align-items: center;
-			gap: 10px;
-			flex-wrap: wrap;
+			border: 1px solid var(--text);
+			border-radius: 7px;
+			overflow: hidden;
 		}
 
-		/* 语言开关：胶囊滑动指示器 */
+		.seg button {
+			border: 0;
+			background: #fff;
+			color: var(--text);
+			padding: 7px 15px;
+			cursor: pointer;
+			font-size: 12.5px;
+			border-right: 1px solid var(--line);
+			transition: background .15s;
+		}
+
+		.seg button:last-child {
+			border-right: 0;
+		}
+
+		.seg button.active {
+			background: var(--text);
+			color: #fff;
+		}
+
+		.seg button:not(.active):hover {
+			background: var(--hover);
+		}
+
+		/* 语言开关：胶囊滑动指示器，absolute 悬浮在 header 右外侧留白区；
+		   bottom:26px = header 内容区底缘 = 日期控件底缘（flex-end），两者平行。
+		   水平位置自适应：理想为容器右缘外 188px；视口收窄时 max() 自动收紧，
+		   保证开关右缘距视口右缘始终 ≥16px（496 = 容器内容宽 960/2 + 16），不飞出屏幕 */
 		.lang-toggle {
-			position: relative;
+			position: absolute;
+			right: max(-188px, calc(496px - 50vw));
+			bottom: 26px;
 			display: inline-flex;
 			border: 1px solid var(--text);
 			border-radius: 999px;
 			background: #fff;
 			overflow: hidden;
 			user-select: none;
+		}
+
+		/* 视口过窄（<1160px，开关外挂会压到日期控件）时，回落 header 流内排日期右侧 */
+		@media (max-width: 1160px) {
+			.lang-toggle {
+				position: relative;
+				right: auto;
+				bottom: auto;
+			}
+
+			header>div:first-child {
+				flex: 1;
+			}
 		}
 
 		.lang-toggle button {
@@ -112,43 +159,11 @@
 			transform: translateX(100%);
 		}
 
-		.seg {
-			display: flex;
-			gap: 0;
-			border: 1px solid var(--text);
-			border-radius: 6px;
-			overflow: hidden;
-		}
-
-		.seg button {
-			border: 0;
-			background: #fff;
-			color: var(--text);
-			padding: 7px 16px;
-			cursor: pointer;
-			font-size: 13px;
-			border-right: 1px solid var(--border);
-			transition: background .15s;
-		}
-
-		.seg button:last-child {
-			border-right: 0;
-		}
-
-		.seg button.active {
-			background: var(--text);
-			color: #fff;
-		}
-
-		.seg button:not(.active):hover {
-			background: var(--hover);
-		}
-
 		/* ---------- 密钥 / 状态 ---------- */
 		.key-row {
 			display: flex;
 			gap: 8px;
-			margin-bottom: 16px;
+			margin: 16px 0 0;
 		}
 
 		.key-row input {
@@ -175,33 +190,35 @@
 			min-height: 22px;
 			color: var(--muted);
 			font-size: 13px;
-			margin-bottom: 12px;
+			margin: 14px 0 0;
 		}
 
 		.hidden {
 			display: none;
 		}
 
-		/* ---------- 卡片 ---------- */
-		.card {
-			background: #fff;
-			border: 1px solid var(--border);
-			border-radius: 12px;
-			padding: 20px 22px;
-			box-shadow: var(--shadow);
+		/* ---------- 区块节奏：留白 + 细线分隔 ---------- */
+		main>section {
+			padding: 42px 0 38px;
+			border-bottom: 1px solid var(--line);
 		}
 
-		.card-head {
+		main>section.last {
+			border-bottom: 0;
+		}
+
+		.block-head {
 			display: flex;
 			align-items: baseline;
 			justify-content: space-between;
-			margin-bottom: 16px;
+			margin-bottom: 22px;
 		}
 
 		h2 {
 			font-size: 15px;
 			margin: 0;
 			font-weight: 600;
+			letter-spacing: .2px;
 		}
 
 		.hint {
@@ -209,52 +226,50 @@
 			color: var(--muted);
 		}
 
-		main>section {
-			margin-bottom: 16px;
-		}
-
-		/* ---------- 汇总卡 ---------- */
+		/* ---------- KPI 区（无边框一排，大数字） ---------- */
 		.cards {
 			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-			gap: 12px;
-			margin-bottom: 16px;
-		}
-
-		.stat {
-			padding: 16px 18px;
+			grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+			gap: 18px 12px;
+			padding: 34px 0 30px;
+			border-bottom: 1px solid var(--line);
 		}
 
 		.stat-icon {
-			font-size: 17px;
-			margin-bottom: 6px;
+			font-size: 15px;
 			display: block;
+			margin-bottom: 8px;
+			opacity: .85;
 		}
 
 		.stat-val {
-			font-size: 27px;
+			font-size: 32px;
 			font-weight: 700;
-			line-height: 1.15;
+			line-height: 1.1;
 			font-variant-numeric: tabular-nums;
+			letter-spacing: -.5px;
 		}
 
 		.stat-sub {
 			font-size: 11px;
 			color: var(--muted);
-			margin-top: 2px;
+			margin-top: 3px;
 		}
 
 		.stat-label {
 			font-size: 12.5px;
 			color: var(--muted);
-			margin-top: 5px;
+			margin-top: 6px;
 		}
 
 		.stat-delta {
-			font-size: 11.5px;
+			display: inline-block;
+			font-size: 11px;
 			color: var(--muted);
-			margin-top: 2px;
-			min-height: 15px;
+			background: var(--track);
+			border-radius: 999px;
+			padding: 2px 9px;
+			margin-top: 7px;
 		}
 
 		.stat-delta.up {
@@ -269,30 +284,30 @@
 		.journey-row {
 			display: flex;
 			align-items: center;
-			gap: 12px;
-			margin: 11px 0;
+			gap: 14px;
+			margin: 14px 0;
 		}
 
 		.j-label {
-			width: 118px;
+			width: 120px;
 			flex: none;
 			font-size: 13px;
 			display: flex;
 			align-items: center;
-			gap: 6px;
+			gap: 7px;
 		}
 
 		.j-track {
 			flex: 1;
-			height: 22px;
-			background: var(--hover);
-			border-radius: 5px;
+			height: 24px;
+			background: var(--track);
+			border-radius: 6px;
 			overflow: hidden;
 		}
 
 		.j-fill {
 			height: 100%;
-			border-radius: 5px;
+			border-radius: 6px;
 			min-width: 2px;
 			transition: width .6s cubic-bezier(.22, .61, .36, 1);
 		}
@@ -300,7 +315,7 @@
 		.j-val {
 			flex: none;
 			text-align: right;
-			width: 110px;
+			width: 116px;
 			font-size: 12.5px;
 			color: var(--muted);
 			font-variant-numeric: tabular-nums;
@@ -308,8 +323,8 @@
 
 		.j-val b {
 			color: var(--text);
-			font-size: 14px;
-			font-weight: 600;
+			font-size: 14.5px;
+			font-weight: 650;
 		}
 
 		/* ---------- 图表 ---------- */
@@ -319,7 +334,6 @@
 
 		#chart svg {
 			display: block;
-			max-width: 100%;
 		}
 
 		#chart .bar-1 {
@@ -340,48 +354,48 @@
 		}
 
 		#chart rect:hover {
-			opacity: .75;
+			opacity: .7;
 		}
 
 		.legend {
-			margin: 10px 0 0;
+			margin: 12px 0 0;
 			font-size: 12px;
 			color: var(--muted);
 			display: flex;
 			flex-wrap: wrap;
-			gap: 6px 16px;
+			gap: 6px 18px;
 		}
 
 		.legend span {
 			display: inline-flex;
 			align-items: center;
-			gap: 5px;
+			gap: 6px;
 		}
 
 		.legend i {
 			width: 10px;
 			height: 10px;
-			border-radius: 2px;
+			border-radius: 3px;
 			display: inline-block;
 		}
 
 		/* ---------- 分布 ---------- */
-		.grid-2 {
+		.grid-3 {
 			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-			gap: 16px;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: 28px;
 		}
 
 		.hbar-row {
 			display: flex;
 			align-items: center;
 			gap: 10px;
-			margin: 9px 0;
+			margin: 10px 0;
 			font-size: 13px;
 		}
 
 		.hbar-label {
-			width: 130px;
+			width: 128px;
 			flex: none;
 			white-space: nowrap;
 			overflow: hidden;
@@ -391,7 +405,7 @@
 		.hbar-track {
 			flex: 1;
 			height: 12px;
-			background: var(--hover);
+			background: var(--track);
 			border-radius: 6px;
 			overflow: hidden;
 		}
@@ -405,7 +419,7 @@
 		}
 
 		.hbar-val {
-			width: 44px;
+			width: 42px;
 			text-align: right;
 			flex: none;
 			color: var(--muted);
@@ -426,9 +440,14 @@
 		th,
 		td {
 			text-align: left;
-			padding: 8px 10px;
-			border-bottom: 1px solid var(--border);
+			padding: 9px 12px;
+			border-bottom: 1px solid var(--line);
 			white-space: nowrap;
+		}
+
+		th:first-child,
+		td:first-child {
+			padding-left: 0;
 		}
 
 		th {
@@ -447,12 +466,11 @@
 
 		.tag {
 			display: inline-block;
-			padding: 1px 8px;
-			border-radius: 10px;
-			background: var(--hover);
-			border: 1px solid var(--border);
+			padding: 1px 9px;
+			border-radius: 999px;
+			background: var(--track);
 			font-size: 11.5px;
-			color: var(--muted);
+			color: var(--text);
 		}
 
 		.mono {
@@ -470,9 +488,9 @@
 		.qlist li {
 			display: flex;
 			justify-content: space-between;
-			gap: 14px;
-			padding: 10px 0;
-			border-bottom: 1px solid var(--border);
+			gap: 16px;
+			padding: 13px 0;
+			border-bottom: 1px solid var(--line);
 		}
 
 		.qlist li:last-child {
@@ -481,32 +499,32 @@
 
 		.q-meta {
 			flex: none;
-			width: 190px;
+			width: 180px;
 			font-size: 11.5px;
 			color: var(--muted);
-			line-height: 1.5;
-			padding-top: 3px;
+			line-height: 1.6;
+			padding-top: 4px;
 		}
 
 		.q-bubble {
 			flex: 1;
-			background: var(--hover);
-			border: 1px solid var(--border);
-			border-radius: 2px 12px 12px 12px;
-			padding: 8px 13px;
+			background: var(--track);
+			border-radius: 2px 14px 14px 14px;
+			padding: 10px 14px;
 			font-size: 13.5px;
+			line-height: 1.6;
 		}
 
 		.empty {
 			color: var(--muted);
 			margin: 0;
-			padding: 18px 0 6px;
+			padding: 22px 0 8px;
 			text-align: center;
 			font-size: 13px;
 		}
 
 		footer {
-			margin-top: 34px;
+			margin-top: 48px;
 			text-align: center;
 			color: var(--faint);
 			font-size: 12px;
@@ -519,15 +537,43 @@
 
 			.qlist li {
 				flex-direction: column;
-				gap: 5px;
+				gap: 6px;
 			}
 
 			.j-label {
-				width: 104px;
+				width: 108px;
 			}
 
 			.j-val {
-				width: 92px;
+				width: 96px;
+			}
+
+			.cards {
+				grid-template-columns: repeat(3, 1fr);
+			}
+
+			.stat-val {
+				font-size: 26px;
+			}
+
+			/* 触摸目标放大：移动端可点击区域 ≥36px 高 */
+			.seg button {
+				padding: 9px 16px;
+				font-size: 13px;
+			}
+
+			.lang-toggle button {
+				width: 42px;
+				padding: 9px 0;
+				font-size: 12px;
+			}
+
+			.key-row input {
+				padding: 10px 12px;
+			}
+
+			.key-row button {
+				padding: 10px 16px;
 			}
 		}
 	</style>
@@ -540,17 +586,16 @@
 				<h1 id="t-title">简历站访问统计</h1>
 				<p class="sub" id="sub"></p>
 			</div>
-			<div class="header-controls">
-				<div class="seg">
-					<button type="button" data-days="7">7 天</button>
-					<button type="button" data-days="14">14 天</button>
-					<button type="button" data-days="30">30 天</button>
-				</div>
-				<div class="lang-toggle" id="lang-toggle" role="switch" aria-label="Language">
-					<div class="lang-thumb"></div>
-					<button type="button" data-lang="zh">中</button>
-					<button type="button" data-lang="en">EN</button>
-				</div>
+			<div class="seg">
+				<button type="button" data-days="7">7 天</button>
+				<button type="button" data-days="14">14 天</button>
+				<button type="button" data-days="30">30 天</button>
+			</div>
+			<!-- 语言开关：absolute 脱离 header 流，悬浮在容器右外侧留白区，与日期控件底对齐 -->
+			<div class="lang-toggle" id="lang-toggle" role="switch" aria-label="Language">
+				<div class="lang-thumb"></div>
+				<button type="button" data-lang="zh">中</button>
+				<button type="button" data-lang="en">EN</button>
 			</div>
 		</header>
 
@@ -563,16 +608,16 @@
 		<main id="main" class="hidden">
 			<section id="cards" class="cards"></section>
 
-			<section class="card">
-				<div class="card-head">
+			<section>
+				<div class="block-head">
 					<h2 id="t-journey">🧭 访客互动旅程</h2>
 					<span class="hint" id="t-journey-hint">以页面浏览量为基准</span>
 				</div>
 				<div id="journey"></div>
 			</section>
 
-			<section class="card">
-				<div class="card-head">
+			<section>
+				<div class="block-head">
 					<h2 id="t-chart">📊 每日访问与互动</h2>
 					<span class="hint" id="t-chart-hint">悬停柱子查看明细</span>
 				</div>
@@ -584,32 +629,33 @@
 				</p>
 			</section>
 
-			<section class="grid-2">
-				<div class="card">
-					<h2 id="t-by-site">🌐 来源站</h2>
-					<div id="by-site"></div>
-				</div>
-				<div class="card">
-					<h2 id="t-by-device">📱 访问设备</h2>
-					<div id="by-device"></div>
+			<section>
+				<div class="grid-3">
+					<div>
+						<h2 id="t-by-site">🌐 来源站</h2>
+						<div id="by-site" style="margin-top:18px"></div>
+					</div>
+					<div>
+						<h2 id="t-by-device">📱 访问设备</h2>
+						<div id="by-device" style="margin-top:18px"></div>
+					</div>
+					<div>
+						<h2 id="t-by-duration">⏱ 停留时长</h2>
+						<div id="by-duration" style="margin-top:18px"></div>
+					</div>
 				</div>
 			</section>
 
-			<section class="card">
-				<h2 id="t-by-duration">⏱ 停留时长分布</h2>
-				<div id="by-duration"></div>
-			</section>
-
-			<section class="card">
+			<section>
 				<h2 id="t-recent">🕒 最近事件</h2>
-				<div class="table-wrap">
+				<div class="table-wrap" style="margin-top:18px">
 					<table id="recent"></table>
 				</div>
 			</section>
 
-			<section class="card">
+			<section class="last">
 				<h2 id="t-questions">💬 访客都在问什么</h2>
-				<ul id="questions" class="qlist"></ul>
+				<ul id="questions" class="qlist" style="margin-top:12px"></ul>
 			</section>
 		</main>
 
@@ -628,14 +674,14 @@
 					days: ['7 天', '14 天', '30 天'],
 					loading: '加载中…',
 					pageViews: '页面浏览', chatsOpened: '打开聊天', questions: '提问次数',
-					prints: '打印/导出', avgStay: '平均停留', mobile: '移动端占比',
-					samples: ' 个样本', inclTablet: '含手机与平板',
-					deltaSuffix: '，较上一时段', newData: '新数据', flat: '持平',
+					prints: '打印/导出', avgStay: '平均停留', uniqueVisitors: '独立访客',
+					samples: ' 个样本', uvSub: function (n, d) { return '近 ' + d + ' 天 ' + n + ' 人'; },
+					deltaSuffix: '较上一时段', newData: '新数据', flat: '持平',
 					journey: '🧭 访客互动旅程', journeyHint: '以页面浏览量为基准',
 					jViewed: '浏览简历', jChat: '打开聊天', jAsked: '发起提问', jPrint: '打印导出',
 					chart: '📊 每日访问与互动', chartHint: '悬停柱子查看明细',
 					legPage: '打开页面', legChat: '打开聊天', legAsk: '提问',
-					bySite: '🌐 来源站', byDevice: '📱 访问设备', byDuration: '⏱ 停留时长分布',
+					bySite: '🌐 来源站', byDevice: '📱 访问设备', byDuration: '⏱ 停留时长',
 					site: { github: 'GitHub（外国 HR）', gitlab: 'GitLab（中国 HR）', cv: 'cv.cqf.kdns.fr' },
 					device: { mobile: '📱 手机', desktop: '💻 电脑', tablet: '📟 平板', unknown: '未知' },
 					buckets: { lt30: '< 30 秒', '30_2m': '30 秒 – 2 分钟', '2_10m': '2 – 10 分钟', gt10: '> 10 分钟' },
@@ -648,7 +694,7 @@
 					keyPlaceholder: '访问密钥（服务端配置了 STATS_KEY 时填写）', keySave: '保存并重试',
 					needKey: '需要访问密钥（服务端已配置 STATS_KEY）',
 					apiError: '接口错误：', loadFail: '加载失败：', networkError: '网络错误',
-					footer: '数据来自简历页访问埋点，自动收集 · 仅自己可见',
+					footer: '数据来自简历页访问埋点，自动收集 · 保留 60 天 · 仅自己可见',
 					docTitle: '访问统计 · 陈棋烽简历站'
 				},
 				en: {
@@ -657,14 +703,14 @@
 					days: ['7d', '14d', '30d'],
 					loading: 'Loading…',
 					pageViews: 'Page Views', chatsOpened: 'Chats Opened', questions: 'Questions',
-					prints: 'Print/Export', avgStay: 'Avg. Duration', mobile: 'Mobile Share',
-					samples: ' samples', inclTablet: 'incl. tablet',
-					deltaSuffix: ', vs previous', newData: 'New', flat: 'Flat',
+					prints: 'Print/Export', avgStay: 'Avg. Duration', uniqueVisitors: 'Unique Visitors',
+					samples: ' samples', uvSub: function (n, d) { return n + ' in last ' + d + 'd'; },
+					deltaSuffix: 'vs previous', newData: 'New', flat: 'Flat',
 					journey: '🧭 Visitor Journey', journeyHint: 'Based on page views',
 					jViewed: 'Viewed Resume', jChat: 'Opened Chat', jAsked: 'Asked', jPrint: 'Printed',
 					chart: '📊 Daily Traffic & Engagement', chartHint: 'Hover bars for details',
 					legPage: 'Page Views', legChat: 'Chats Opened', legAsk: 'Questions',
-					bySite: '🌐 Source', byDevice: '📱 Device', byDuration: '⏱ Duration Distribution',
+					bySite: '🌐 Source', byDevice: '📱 Device', byDuration: '⏱ Duration',
 					site: { github: 'GitHub (intl. HR)', gitlab: 'GitLab (China HR)', cv: 'cv.cqf.kdns.fr' },
 					device: { mobile: '📱 Mobile', desktop: '💻 Desktop', tablet: '📟 Tablet', unknown: 'Unknown' },
 					buckets: { lt30: '< 30s', '30_2m': '30s – 2min', '2_10m': '2 – 10min', gt10: '> 10min' },
@@ -677,7 +723,7 @@
 					keyPlaceholder: 'Access key (when STATS_KEY is configured)', keySave: 'Save & Retry',
 					needKey: 'Access key required (STATS_KEY is configured)',
 					apiError: 'API error: ', loadFail: 'Load failed: ', networkError: 'Network error',
-					footer: 'Collected automatically from resume-page visits · Private to the owner',
+					footer: 'Collected automatically from resume-page visits · Retained 60 days · Private to the owner',
 					docTitle: 'Analytics · Qifeng Resume'
 				}
 			};
@@ -720,8 +766,7 @@
 			var lastData = null; // 语言切换时用它重渲染，不重新请求
 
 			function setActiveDays() {
-				var btns = document.querySelectorAll('.seg button[data-days]');
-				btns.forEach(function (b) {
+				document.querySelectorAll('.seg button[data-days]').forEach(function (b) {
 					b.classList.toggle('active', parseInt(b.dataset.days, 10) === days);
 				});
 			}
@@ -828,28 +873,26 @@
 				$('journey').innerHTML = html || '<p class="empty">' + esc(L.noData) + '</p>';
 			}
 
-			// ---------- 汇总卡（数字滚动 + 环比） ----------
+			// ---------- 汇总卡（无边框 KPI 一排 + 数字滚动 + 环比 pill） ----------
 			function renderCards(data) {
 				var t = {};
 				data.totals.forEach(function (r) { t[r.event_type] = r.n; });
 				var totalPv = t.pageview || 0;
-				var mobile = 0;
-				data.by_device.forEach(function (r) { if (r.device === 'mobile' || r.device === 'tablet') mobile += r.n; });
 				var cards = [
 					{ icon: '👁', label: L.pageViews, value: totalPv, count: true, delta: deltaOf(data.by_day, 'pageview') },
 					{ icon: '💬', label: L.chatsOpened, value: t.chat_open || 0, count: true, delta: deltaOf(data.by_day, 'chat_open') },
 					{ icon: '❓', label: L.questions, value: t.chat_question || 0, count: true, delta: deltaOf(data.by_day, 'chat_question') },
 					{ icon: '🖨', label: L.prints, value: t.print_click || 0, count: true, delta: deltaOf(data.by_day, 'print_click') },
 					{ icon: '⏱', label: L.avgStay, value: fmtDur(data.avg_duration_seconds), small: data.duration_samples + L.samples },
-					{ icon: '📱', label: L.mobile, value: totalPv ? Math.round(mobile / totalPv * 100) + '%' : '—', small: L.inclTablet }
+					{ icon: '👥', label: L.uniqueVisitors, value: data.unique_visitors_total || 0, count: true, small: L.uvSub(data.unique_visitors_window || 0, days) }
 				];
 				$('cards').innerHTML = cards.map(function (c, i) {
-					return '<div class="card stat">' +
+					return '<div class="stat">' +
 						'<span class="stat-icon">' + c.icon + '</span>' +
 						'<div class="stat-val"' + (c.count ? ' id="statv-' + i + '"' : '') + '>' + (c.count ? 0 : esc(c.value)) + '</div>' +
 						(c.small ? '<div class="stat-sub">' + esc(c.small) + '</div>' : '') +
 						'<div class="stat-label">' + esc(c.label) + '</div>' +
-						(c.delta ? '<div class="stat-delta ' + deltaClass(c.delta) + '">' + esc(c.delta) + esc(L.deltaSuffix) + '</div>' : '') +
+						(c.delta ? '<span class="stat-delta ' + deltaClass(c.delta) + '">' + esc(c.delta) + ' ' + esc(L.deltaSuffix) + '</span>' : '') +
 						'</div>';
 				}).join('');
 				cards.forEach(function (c, i) {
@@ -874,16 +917,17 @@
 				dates.forEach(function (d) {
 					series.forEach(function (s) { max = Math.max(max, (dayMap[d] || {})[s.key] || 0); });
 				});
-				var W = Math.max(320, Math.min(900, document.querySelector('.page').clientWidth - 66));
-				var H = 220, padL = 36, padB = 30, padT = 14;
+				// 宽度下限 480：小屏柱子不至于压成细线，超出容器由 #chart 横向滚动
+				var W = Math.max(480, Math.min(900, document.querySelector('.page').clientWidth - 48));
+				var H = 240, padL = 38, padB = 32, padT = 16;
 				var innerW = W - padL - 10, innerH = H - padT - padB;
 				var groupW = innerW / Math.max(dates.length, 1);
-				var barW = Math.min(14, Math.max(4, Math.floor(groupW / 4.6)));
+				var barW = Math.min(15, Math.max(4, Math.floor(groupW / 4.6)));
 				var svg = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(L.chart) + '">';
 				for (var g = 0; g <= 4; g++) {
 					var y = padT + innerH - (innerH * g / 4);
 					var val = Math.ceil(max * g / 4);
-					svg += '<line x1="' + padL + '" y1="' + y + '" x2="' + (W - 10) + '" y2="' + y + '" stroke="var(--border)" stroke-width="1"/>';
+					svg += '<line x1="' + padL + '" y1="' + y + '" x2="' + (W - 10) + '" y2="' + y + '" stroke="var(--line)" stroke-width="1"/>';
 					svg += '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end" font-size="10" fill="var(--muted)">' + val + '</text>';
 				}
 				dates.forEach(function (d, i) {
@@ -893,7 +937,7 @@
 						var h = Math.round((v / max) * innerH);
 						var x = gx + (groupW - barW * 3 - 6) / 2 + si * (barW + 3);
 						var y = padT + innerH - h;
-						svg += '<rect class="' + s.cls + '" x="' + x + '" y="' + y + '" width="' + barW + '" height="' + Math.max(h, v > 0 ? 2 : 0) + '" rx="2"><title>' + esc(d + ' · ' + s.name + '：' + v) + '</title></rect>';
+						svg += '<rect class="' + s.cls + '" x="' + x + '" y="' + y + '" width="' + barW + '" height="' + Math.max(h, v > 0 ? 2 : 0) + '" rx="2.5"><title>' + esc(d + ' · ' + s.name + '：' + v) + '</title></rect>';
 					});
 					var show = dates.length <= 16 || i % 2 === 0;
 					if (show) {

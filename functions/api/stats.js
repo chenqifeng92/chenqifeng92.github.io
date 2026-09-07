@@ -54,6 +54,9 @@ export async function onRequestGetStats(context) {
 
   const db = env.STATS_DB;
   try {
+    // 每次读取先清理 60 天前的旧数据（数据保留 60 天；track 端另有小概率清理兜底）
+    await db.prepare("DELETE FROM events WHERE ts < datetime('now', '-60 days')").run();
+
     // 一次 batch 跑完所有聚合，减少往返
     const results = await db.batch([
       // 1. 每日每类事件计数（北京时间分天，双倍窗口供环比）
@@ -107,9 +110,18 @@ export async function onRequestGetStats(context) {
          FROM events WHERE event_type = 'chat_question'
          ORDER BY id DESC LIMIT 100`
       ),
+      // 9. 累计独立访客（不同 IP 只算一次；全周期，受 60 天保留约束）
+      db.prepare(
+        `SELECT COUNT(DISTINCT ip) AS uv FROM events WHERE event_type = 'pageview'`
+      ),
+      // 10. 窗口内独立访客
+      db.prepare(
+        `SELECT COUNT(DISTINCT ip) AS uv FROM events
+         WHERE event_type = 'pageview' AND ts >= datetime('now', ?1)`
+      ).bind(since),
     ]);
 
-    const [byDay, bySite, byDevice, buckets, avgDur, totals, recent, questions] = results.map(
+    const [byDay, bySite, byDevice, buckets, avgDur, totals, recent, questions, uvTotal, uvWindow] = results.map(
       (r) => (r.results || [])
     );
 
@@ -122,6 +134,8 @@ export async function onRequestGetStats(context) {
       duration_buckets: buckets,
       avg_duration_seconds: avgDur.length ? Math.round(avgDur[0].avg_s || 0) : null,
       duration_samples: avgDur.length ? avgDur[0].n : 0,
+      unique_visitors_total: uvTotal.length ? uvTotal[0].uv || 0 : 0,
+      unique_visitors_window: uvWindow.length ? uvWindow[0].uv || 0 : 0,
       totals: totals,
       recent_events: recent,
       recent_questions: questions,
