@@ -61,6 +61,57 @@
 			font-size: 13px;
 		}
 
+		.header-controls {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+
+		/* 语言开关：胶囊滑动指示器 */
+		.lang-toggle {
+			position: relative;
+			display: inline-flex;
+			border: 1px solid var(--text);
+			border-radius: 999px;
+			background: #fff;
+			overflow: hidden;
+			user-select: none;
+		}
+
+		.lang-toggle button {
+			position: relative;
+			z-index: 1;
+			border: 0;
+			background: transparent;
+			color: var(--text);
+			width: 48px;
+			padding: 7px 0;
+			cursor: pointer;
+			font-size: 12.5px;
+			line-height: 1;
+			transition: color .25s;
+		}
+
+		.lang-toggle button.active {
+			color: #fff;
+		}
+
+		.lang-thumb {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 50%;
+			height: 100%;
+			background: var(--text);
+			border-radius: 999px;
+			transition: transform .25s cubic-bezier(.22, .61, .36, 1);
+		}
+
+		.lang-toggle.en .lang-thumb {
+			transform: translateX(100%);
+		}
+
 		.seg {
 			display: flex;
 			gap: 0;
@@ -187,12 +238,10 @@
 			font-variant-numeric: tabular-nums;
 		}
 
-		.stat-val small {
+		.stat-sub {
 			font-size: 11px;
 			color: var(--muted);
-			font-weight: 400;
-			display: block;
-			margin-top: 3px;
+			margin-top: 2px;
 		}
 
 		.stat-label {
@@ -225,7 +274,7 @@
 		}
 
 		.j-label {
-			width: 96px;
+			width: 118px;
 			flex: none;
 			font-size: 13px;
 			display: flex;
@@ -332,7 +381,7 @@
 		}
 
 		.hbar-label {
-			width: 110px;
+			width: 130px;
 			flex: none;
 			white-space: nowrap;
 			overflow: hidden;
@@ -474,7 +523,7 @@
 			}
 
 			.j-label {
-				width: 84px;
+				width: 104px;
 			}
 
 			.j-val {
@@ -488,19 +537,26 @@
 	<div class="page">
 		<header>
 			<div>
-				<h1>简历站访问统计</h1>
-				<p class="sub" id="sub">加载中…</p>
+				<h1 id="t-title">简历站访问统计</h1>
+				<p class="sub" id="sub"></p>
 			</div>
-			<div class="seg">
-				<button type="button" data-days="7">7 天</button>
-				<button type="button" data-days="14">14 天</button>
-				<button type="button" data-days="30">30 天</button>
+			<div class="header-controls">
+				<div class="lang-toggle" id="lang-toggle" role="switch" aria-label="Language">
+					<div class="lang-thumb"></div>
+					<button type="button" data-lang="zh">中</button>
+					<button type="button" data-lang="en">EN</button>
+				</div>
+				<div class="seg">
+					<button type="button" data-days="7">7 天</button>
+					<button type="button" data-days="14">14 天</button>
+					<button type="button" data-days="30">30 天</button>
+				</div>
 			</div>
 		</header>
 
 		<div id="key-row" class="key-row hidden">
-			<input id="key-input" type="password" placeholder="访问密钥（服务端配置了 STATS_KEY 时填写）" />
-			<button type="button" id="key-save">保存并重试</button>
+			<input id="key-input" type="password" />
+			<button type="button" id="key-save"></button>
 		</div>
 		<div id="status" class="status"></div>
 
@@ -509,77 +565,126 @@
 
 			<section class="card">
 				<div class="card-head">
-					<h2>🧭 访客互动旅程</h2>
-					<span class="hint">以页面浏览量为基准</span>
+					<h2 id="t-journey">🧭 访客互动旅程</h2>
+					<span class="hint" id="t-journey-hint">以页面浏览量为基准</span>
 				</div>
 				<div id="journey"></div>
 			</section>
 
 			<section class="card">
 				<div class="card-head">
-					<h2>📊 每日访问与互动</h2>
-					<span class="hint">悬停柱子查看明细</span>
+					<h2 id="t-chart">📊 每日访问与互动</h2>
+					<span class="hint" id="t-chart-hint">悬停柱子查看明细</span>
 				</div>
 				<div id="chart"></div>
 				<p class="legend">
-					<span><i style="background:var(--bar-1)"></i>打开页面</span>
-					<span><i style="background:var(--bar-2)"></i>打开聊天</span>
-					<span><i style="background:var(--bar-3)"></i>提问</span>
+					<span><i style="background:var(--bar-1)"></i><b id="t-leg-1">打开页面</b></span>
+					<span><i style="background:var(--bar-2)"></i><b id="t-leg-2">打开聊天</b></span>
+					<span><i style="background:var(--bar-3)"></i><b id="t-leg-3">提问</b></span>
 				</p>
 			</section>
 
 			<section class="grid-2">
 				<div class="card">
-					<h2>🌐 来源站</h2>
+					<h2 id="t-by-site">🌐 来源站</h2>
 					<div id="by-site"></div>
 				</div>
 				<div class="card">
-					<h2>📱 访问设备</h2>
+					<h2 id="t-by-device">📱 访问设备</h2>
 					<div id="by-device"></div>
 				</div>
 			</section>
 
 			<section class="card">
-				<h2>⏱ 停留时长分布</h2>
+				<h2 id="t-by-duration">⏱ 停留时长分布</h2>
 				<div id="by-duration"></div>
 			</section>
 
 			<section class="card">
-				<h2>🕒 最近事件</h2>
+				<h2 id="t-recent">🕒 最近事件</h2>
 				<div class="table-wrap">
 					<table id="recent"></table>
 				</div>
 			</section>
 
 			<section class="card">
-				<h2>💬 访客都在问什么</h2>
+				<h2 id="t-questions">💬 访客都在问什么</h2>
 				<ul id="questions" class="qlist"></ul>
 			</section>
 		</main>
 
-		<footer>数据来自简历页访问埋点，自动收集 · 仅自己可见</footer>
+		<footer id="t-footer">数据来自简历页访问埋点，自动收集 · 仅自己可见</footer>
 	</div>
 
 	<script>
 		(function () {
 			var API = 'https://cv.cqf.kdns.fr/api/stats';
-			var EVENT_NAMES = {
-				pageview: '打开页面',
-				duration: '停留上报',
-				chat_open: '打开聊天',
-				chat_question: '提问',
-				print_click: '打印/导出',
-				download_click: '下载'
+
+			/* ---------- 双语文案 ---------- */
+			var I18N = {
+				zh: {
+					title: '简历站访问统计',
+					sub: function (n, t) { return '最近 ' + n + ' 天 · 更新于 ' + t; },
+					days: ['7 天', '14 天', '30 天'],
+					loading: '加载中…',
+					pageViews: '页面浏览', chatsOpened: '打开聊天', questions: '提问次数',
+					prints: '打印/导出', avgStay: '平均停留', mobile: '移动端占比',
+					samples: ' 个样本', inclTablet: '含手机与平板',
+					deltaSuffix: '，较上一时段', newData: '新数据', flat: '持平',
+					journey: '🧭 访客互动旅程', journeyHint: '以页面浏览量为基准',
+					jViewed: '浏览简历', jChat: '打开聊天', jAsked: '发起提问', jPrint: '打印导出',
+					chart: '📊 每日访问与互动', chartHint: '悬停柱子查看明细',
+					legPage: '打开页面', legChat: '打开聊天', legAsk: '提问',
+					bySite: '🌐 来源站', byDevice: '📱 访问设备', byDuration: '⏱ 停留时长分布',
+					site: { github: 'GitHub（外国 HR）', gitlab: 'GitLab（中国 HR）', cv: 'cv.cqf.kdns.fr' },
+					device: { mobile: '📱 手机', desktop: '💻 电脑', tablet: '📟 平板', unknown: '未知' },
+					buckets: { lt30: '< 30 秒', '30_2m': '30 秒 – 2 分钟', '2_10m': '2 – 10 分钟', gt10: '> 10 分钟' },
+					recent: '🕒 最近事件',
+					thTime: '时间（北京）', thSite: '来源站', thEvent: '事件', thDevice: '设备',
+					event: { pageview: '打开页面', duration: '停留上报', chat_open: '打开聊天', chat_question: '提问', print_click: '打印/导出', download_click: '下载' },
+					questions: '💬 访客都在问什么',
+					questionsEmpty: '还没有访客提问——把简历链接分享出去，开始积累数据吧',
+					noData: '暂无数据',
+					keyPlaceholder: '访问密钥（服务端配置了 STATS_KEY 时填写）', keySave: '保存并重试',
+					needKey: '需要访问密钥（服务端已配置 STATS_KEY）',
+					apiError: '接口错误：', loadFail: '加载失败：', networkError: '网络错误',
+					footer: '数据来自简历页访问埋点，自动收集 · 仅自己可见',
+					docTitle: '访问统计 · 陈棋烽简历站'
+				},
+				en: {
+					title: 'Resume Site Analytics',
+					sub: function (n, t) { return 'Last ' + n + ' days · Updated ' + t; },
+					days: ['7d', '14d', '30d'],
+					loading: 'Loading…',
+					pageViews: 'Page Views', chatsOpened: 'Chats Opened', questions: 'Questions',
+					prints: 'Print/Export', avgStay: 'Avg. Duration', mobile: 'Mobile Share',
+					samples: ' samples', inclTablet: 'incl. tablet',
+					deltaSuffix: ', vs previous', newData: 'New', flat: 'Flat',
+					journey: '🧭 Visitor Journey', journeyHint: 'Based on page views',
+					jViewed: 'Viewed Resume', jChat: 'Opened Chat', jAsked: 'Asked', jPrint: 'Printed',
+					chart: '📊 Daily Traffic & Engagement', chartHint: 'Hover bars for details',
+					legPage: 'Page Views', legChat: 'Chats Opened', legAsk: 'Questions',
+					bySite: '🌐 Source', byDevice: '📱 Device', byDuration: '⏱ Duration Distribution',
+					site: { github: 'GitHub (intl. HR)', gitlab: 'GitLab (China HR)', cv: 'cv.cqf.kdns.fr' },
+					device: { mobile: '📱 Mobile', desktop: '💻 Desktop', tablet: '📟 Tablet', unknown: 'Unknown' },
+					buckets: { lt30: '< 30s', '30_2m': '30s – 2min', '2_10m': '2 – 10min', gt10: '> 10min' },
+					recent: '🕒 Recent Events',
+					thTime: 'Time (UTC+8)', thSite: 'Source', thEvent: 'Event', thDevice: 'Device',
+					event: { pageview: 'Page View', duration: 'Duration', chat_open: 'Chat Opened', chat_question: 'Question', print_click: 'Print', download_click: 'Download' },
+					questions: '💬 What Visitors Asked',
+					questionsEmpty: 'No questions yet — share your resume link to start collecting data',
+					noData: 'No data yet',
+					keyPlaceholder: 'Access key (when STATS_KEY is configured)', keySave: 'Save & Retry',
+					needKey: 'Access key required (STATS_KEY is configured)',
+					apiError: 'API error: ', loadFail: 'Load failed: ', networkError: 'Network error',
+					footer: 'Collected automatically from resume-page visits · Private to the owner',
+					docTitle: 'Analytics · Qifeng Resume'
+				}
 			};
-			var DURATION_LABELS = { lt30: '< 30 秒', '30_2m': '30 秒 – 2 分钟', '2_10m': '2 – 10 分钟', gt10: '> 10 分钟' };
-			var DEVICE_LABELS = { mobile: '📱 手机', desktop: '💻 电脑', tablet: '📟 平板', unknown: '未知' };
-			var SITE_LABELS = { github: 'GitHub（外国 HR）', gitlab: 'GitLab（中国 HR）', cv: 'cv.cqf.kdns.fr' };
-			var JOURNEY = [
-				{ key: 'pageview', icon: '👁', label: '浏览简历', fill: 'var(--bar-1)' },
-				{ key: 'chat_open', icon: '💬', label: '打开聊天', fill: 'var(--bar-2)' },
-				{ key: 'chat_question', icon: '❓', label: '发起提问', fill: 'var(--bar-2)' },
-				{ key: 'print_click', icon: '🖨', label: '打印/导出', fill: 'var(--bar-3)' }
-			];
+
+			var lang = localStorage.getItem('qf-stats-lang');
+			if (lang !== 'en') lang = 'zh'; // 默认中文，仅记忆 zh/en
+			var L = I18N[lang];
 
 			function $(id) { return document.getElementById(id); }
 
@@ -592,9 +697,9 @@
 
 			function fmtDur(sec) {
 				if (sec == null) return '—';
-				if (sec < 60) return sec + ' 秒';
-				if (sec < 3600) return Math.floor(sec / 60) + ' 分 ' + (sec % 60) + ' 秒';
-				return (sec / 3600).toFixed(1) + ' 小时';
+				if (sec < 60) return sec + (lang === 'zh' ? ' 秒' : 's');
+				if (sec < 3600) return Math.floor(sec / 60) + (lang === 'zh' ? ' 分 ' : 'm ') + (sec % 60) + (lang === 'zh' ? ' 秒' : 's');
+				return (sec / 3600).toFixed(1) + (lang === 'zh' ? ' 小时' : 'h');
 			}
 
 			function pad2(n) { return String(n).padStart(2, '0'); }
@@ -612,11 +717,47 @@
 
 			var days = parseInt(localStorage.getItem('qf-stats-days') || '14', 10);
 			if ([7, 14, 30].indexOf(days) === -1) days = 14;
+			var lastData = null; // 语言切换时用它重渲染，不重新请求
 
 			function setActiveDays() {
-				document.querySelectorAll('.seg button[data-days]').forEach(function (b) {
+				var btns = document.querySelectorAll('.seg button[data-days]');
+				btns.forEach(function (b) {
 					b.classList.toggle('active', parseInt(b.dataset.days, 10) === days);
 				});
+			}
+
+			function setLangUI() {
+				var toggle = $('lang-toggle');
+				toggle.classList.toggle('en', lang === 'en');
+				toggle.querySelectorAll('button').forEach(function (b) {
+					b.classList.toggle('active', b.dataset.lang === lang);
+				});
+				document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+				document.title = L.docTitle;
+
+				$('t-title').textContent = L.title;
+				$('t-journey').textContent = L.journey;
+				$('t-journey-hint').textContent = L.journeyHint;
+				$('t-chart').textContent = L.chart;
+				$('t-chart-hint').textContent = L.chartHint;
+				$('t-leg-1').textContent = L.legPage;
+				$('t-leg-2').textContent = L.legChat;
+				$('t-leg-3').textContent = L.legAsk;
+				$('t-by-site').textContent = L.bySite;
+				$('t-by-device').textContent = L.byDevice;
+				$('t-by-duration').textContent = L.byDuration;
+				$('t-recent').textContent = L.recent;
+				$('t-questions').textContent = L.questions;
+				$('t-footer').textContent = L.footer;
+				$('key-input').placeholder = L.keyPlaceholder;
+				$('key-save').textContent = L.keySave;
+				document.querySelectorAll('.seg button[data-days]').forEach(function (b, i) {
+					b.textContent = L.days[i];
+				});
+				if (lastData) {
+					var t = new Date().toLocaleTimeString(lang === 'zh' ? 'zh-CN' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+					$('sub').textContent = L.sub(days, t);
+				}
 			}
 
 			// 数字滚动动画：0 → target，500ms ease-out
@@ -640,9 +781,9 @@
 					if (r.event_type !== eventType) return;
 					if (r.d >= winStart) cur += r.n; else prev += r.n;
 				});
-				if (!prev) return cur ? '新数据' : '';
+				if (!prev) return cur ? L.newData : '';
 				var pct = Math.round((cur - prev) / prev * 100);
-				if (pct === 0) return '持平';
+				if (pct === 0) return L.flat;
 				return (pct > 0 ? '▲ ' : '▼ ') + Math.abs(pct) + '%';
 			}
 
@@ -660,7 +801,7 @@
 						'<span class="hbar-track"><span class="hbar-fill" style="width:' + pct + '%"></span></span>' +
 						'<span class="hbar-val">' + r.n + '</span></div>';
 				}).join('');
-				return html || '<p class="empty">暂无数据</p>';
+				return html || '<p class="empty">' + esc(L.noData) + '</p>';
 			}
 
 			// ---------- 访客互动旅程（以 pageview 为基准的横条） ----------
@@ -668,7 +809,13 @@
 				var t = {};
 				data.totals.forEach(function (r) { t[r.event_type] = r.n; });
 				var base = t.pageview || 0;
-				var html = JOURNEY.map(function (j) {
+				var journey = [
+					{ key: 'pageview', icon: '👁', label: L.jViewed, fill: 'var(--bar-1)' },
+					{ key: 'chat_open', icon: '💬', label: L.jChat, fill: 'var(--bar-2)' },
+					{ key: 'chat_question', icon: '❓', label: L.jAsked, fill: 'var(--bar-2)' },
+					{ key: 'print_click', icon: '🖨', label: L.jPrint, fill: 'var(--bar-3)' }
+				];
+				var html = journey.map(function (j) {
 					var v = t[j.key] || 0;
 					var pct = base ? Math.round(v / base * 100) : 0;
 					var width = base ? Math.max(Math.round(v / base * 100), v > 0 ? 2 : 0) : 0;
@@ -678,7 +825,7 @@
 						'<span class="j-val"><b>' + v + '</b> · ' + pct + '%</span>' +
 						'</div>';
 				}).join('');
-				$('journey').innerHTML = html || '<p class="empty">暂无数据</p>';
+				$('journey').innerHTML = html || '<p class="empty">' + esc(L.noData) + '</p>';
 			}
 
 			// ---------- 汇总卡（数字滚动 + 环比） ----------
@@ -689,20 +836,20 @@
 				var mobile = 0;
 				data.by_device.forEach(function (r) { if (r.device === 'mobile' || r.device === 'tablet') mobile += r.n; });
 				var cards = [
-					{ icon: '👁', label: '页面浏览', value: totalPv, count: true, delta: deltaOf(data.by_day, 'pageview') },
-					{ icon: '💬', label: '打开聊天', value: t.chat_open || 0, count: true, delta: deltaOf(data.by_day, 'chat_open') },
-					{ icon: '❓', label: '提问次数', value: t.chat_question || 0, count: true, delta: deltaOf(data.by_day, 'chat_question') },
-					{ icon: '🖨', label: '打印/导出', value: t.print_click || 0, count: true, delta: deltaOf(data.by_day, 'print_click') },
-					{ icon: '⏱', label: '平均停留', value: fmtDur(data.avg_duration_seconds), small: data.duration_samples + ' 个样本' },
-					{ icon: '📱', label: '移动端占比', value: totalPv ? Math.round(mobile / totalPv * 100) + '%' : '—', small: '含手机与平板' }
+					{ icon: '👁', label: L.pageViews, value: totalPv, count: true, delta: deltaOf(data.by_day, 'pageview') },
+					{ icon: '💬', label: L.chatsOpened, value: t.chat_open || 0, count: true, delta: deltaOf(data.by_day, 'chat_open') },
+					{ icon: '❓', label: L.questions, value: t.chat_question || 0, count: true, delta: deltaOf(data.by_day, 'chat_question') },
+					{ icon: '🖨', label: L.prints, value: t.print_click || 0, count: true, delta: deltaOf(data.by_day, 'print_click') },
+					{ icon: '⏱', label: L.avgStay, value: fmtDur(data.avg_duration_seconds), small: data.duration_samples + L.samples },
+					{ icon: '📱', label: L.mobile, value: totalPv ? Math.round(mobile / totalPv * 100) + '%' : '—', small: L.inclTablet }
 				];
 				$('cards').innerHTML = cards.map(function (c, i) {
 					return '<div class="card stat">' +
 						'<span class="stat-icon">' + c.icon + '</span>' +
 						'<div class="stat-val"' + (c.count ? ' id="statv-' + i + '"' : '') + '>' + (c.count ? 0 : esc(c.value)) + '</div>' +
-						(c.small ? '<div class="stat-val-small" style="font-size:11px;color:var(--muted);margin-top:2px">' + esc(c.small) + '</div>' : '') +
+						(c.small ? '<div class="stat-sub">' + esc(c.small) + '</div>' : '') +
 						'<div class="stat-label">' + esc(c.label) + '</div>' +
-						(c.delta ? '<div class="stat-delta ' + deltaClass(c.delta) + '">' + esc(c.delta) + '，较上一时段</div>' : '') +
+						(c.delta ? '<div class="stat-delta ' + deltaClass(c.delta) + '">' + esc(c.delta) + esc(L.deltaSuffix) + '</div>' : '') +
 						'</div>';
 				}).join('');
 				cards.forEach(function (c, i) {
@@ -718,9 +865,9 @@
 					dayMap[r.d][r.event_type] = r.n;
 				});
 				var series = [
-					{ key: 'pageview', cls: 'bar-1', name: '打开页面' },
-					{ key: 'chat_open', cls: 'bar-2', name: '打开聊天' },
-					{ key: 'chat_question', cls: 'bar-3', name: '提问' }
+					{ key: 'pageview', cls: 'bar-1', name: L.legPage },
+					{ key: 'chat_open', cls: 'bar-2', name: L.legChat },
+					{ key: 'chat_question', cls: 'bar-3', name: L.legAsk }
 				];
 				var dates = dateSeries(days);
 				var max = 1;
@@ -732,7 +879,7 @@
 				var innerW = W - padL - 10, innerH = H - padT - padB;
 				var groupW = innerW / Math.max(dates.length, 1);
 				var barW = Math.min(14, Math.max(4, Math.floor(groupW / 4.6)));
-				var svg = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="每日访问与互动柱状图">';
+				var svg = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(L.chart) + '">';
 				for (var g = 0; g <= 4; g++) {
 					var y = padT + innerH - (innerH * g / 4);
 					var val = Math.ceil(max * g / 4);
@@ -746,7 +893,7 @@
 						var h = Math.round((v / max) * innerH);
 						var x = gx + (groupW - barW * 3 - 6) / 2 + si * (barW + 3);
 						var y = padT + innerH - h;
-						svg += '<rect class="' + s.cls + '" x="' + x + '" y="' + y + '" width="' + barW + '" height="' + Math.max(h, v > 0 ? 2 : 0) + '" rx="2"><title>' + esc(d + ' ' + s.name + '：' + v) + '</title></rect>';
+						svg += '<rect class="' + s.cls + '" x="' + x + '" y="' + y + '" width="' + barW + '" height="' + Math.max(h, v > 0 ? 2 : 0) + '" rx="2"><title>' + esc(d + ' · ' + s.name + '：' + v) + '</title></rect>';
 					});
 					var show = dates.length <= 16 || i % 2 === 0;
 					if (show) {
@@ -761,21 +908,22 @@
 				renderCards(data);
 				renderJourney(data);
 				renderChart(data);
-				$('by-site').innerHTML = bar(data.by_site.map(function (r) { return { k: r.site, n: r.n }; }), function (k) { return SITE_LABELS[k] || k || '未知'; });
-				$('by-device').innerHTML = bar(data.by_device.map(function (r) { return { k: r.device, n: r.n }; }), function (k) { return DEVICE_LABELS[k] || k; });
-				$('by-duration').innerHTML = bar(data.duration_buckets.map(function (r) { return { k: r.bucket, n: r.n }; }), function (k) { return DURATION_LABELS[k] || k; });
+				$('by-site').innerHTML = bar(data.by_site.map(function (r) { return { k: r.site, n: r.n }; }), function (k) { return L.site[k] || k || '—'; });
+				$('by-device').innerHTML = bar(data.by_device.map(function (r) { return { k: r.device, n: r.n }; }), function (k) { return L.device[k] || k; });
+				$('by-duration').innerHTML = bar(data.duration_buckets.map(function (r) { return { k: r.bucket, n: r.n }; }), function (k) { return L.buckets[k] || k; });
 
 				var rows = data.recent_events.map(function (e) {
-					return '<tr><td class="mono">' + esc(e.t) + '</td><td>' + esc(SITE_LABELS[e.site] || e.site || '—') + '</td><td><span class="tag">' + esc(EVENT_NAMES[e.event_type] || e.event_type) + '</span></td><td>' + esc((DEVICE_LABELS[e.device] || e.device || '').replace(/^[^ ]+ /, '')) + '</td><td class="mono">' + esc(e.ip || '—') + '</td></tr>';
+					return '<tr><td class="mono">' + esc(e.t) + '</td><td>' + esc(L.site[e.site] || e.site || '—') + '</td><td><span class="tag">' + esc(L.event[e.event_type] || e.event_type) + '</span></td><td>' + esc((L.device[e.device] || e.device || '').replace(/^[^ ]+ /, '')) + '</td><td class="mono">' + esc(e.ip || '—') + '</td></tr>';
 				}).join('');
-				$('recent').innerHTML = '<thead><tr><th>时间（北京）</th><th>来源站</th><th>事件</th><th>设备</th><th>IP</th></tr></thead><tbody>' + (rows || '<tr><td colspan="5" class="empty">暂无数据</td></tr>') + '</tbody>';
+				$('recent').innerHTML = '<thead><tr><th>' + esc(L.thTime) + '</th><th>' + esc(L.thSite) + '</th><th>' + esc(L.thEvent) + '</th><th>' + esc(L.thDevice) + '</th><th>IP</th></tr></thead><tbody>' + (rows || '<tr><td colspan="5" class="empty">' + esc(L.noData) + '</td></tr>') + '</tbody>';
 
 				$('questions').innerHTML = data.recent_questions.map(function (q) {
-					return '<li><span class="q-meta">' + esc(q.t) + '<br>' + esc((DEVICE_LABELS[q.device] || q.device || '').replace(/^[^ ]+ /, '')) + ' · ' + esc(SITE_LABELS[q.site] || q.site || '—') + '</span>' +
+					return '<li><span class="q-meta">' + esc(q.t) + '<br>' + esc((L.device[q.device] || q.device || '').replace(/^[^ ]+ /, '')) + ' · ' + esc(L.site[q.site] || q.site || '—') + '</span>' +
 						'<span class="q-bubble">' + esc(q.payload) + '</span></li>';
-				}).join('') || '<li><p class="empty">还没有访客提问——把简历链接分享出去，开始积累数据吧</p></li>';
+				}).join('') || '<li><p class="empty">' + esc(L.questionsEmpty) + '</p></li>';
 
-				$('sub').textContent = '最近 ' + days + ' 天 · 更新于 ' + new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+				var t = new Date().toLocaleTimeString(lang === 'zh' ? 'zh-CN' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+				$('sub').textContent = L.sub(days, t);
 				$('main').classList.remove('hidden');
 			}
 
@@ -783,7 +931,7 @@
 
 			function load() {
 				setActiveDays();
-				setStatus('加载中…');
+				setStatus(L.loading);
 				var headers = {};
 				var key = localStorage.getItem('qf-stats-key');
 				if (key) headers['Authorization'] = 'Bearer ' + key;
@@ -796,15 +944,28 @@
 						return resp.json();
 					})
 					.then(function (data) {
-						if (!data.ok) { setStatus('接口错误：' + (data.error || '未知')); return; }
+						if (!data.ok) { setStatus(L.apiError + (data.error || '')); return; }
 						setStatus('');
+						lastData = data;
 						render(data);
 					})
 					.catch(function (e) {
-						if (e && e.message === 'NEED_KEY') { setStatus('需要访问密钥（服务端已配置 STATS_KEY）'); return; }
-						setStatus('加载失败：' + (e && e.message ? e.message : '网络错误'));
+						if (e && e.message === 'NEED_KEY') { setStatus(L.needKey); return; }
+						setStatus(L.loadFail + (e && e.message ? e.message : L.networkError));
 					});
 			}
+
+			// 语言切换：记忆选择，用缓存数据即时重渲染（不重新请求）
+			document.querySelectorAll('#lang-toggle button').forEach(function (b) {
+				b.addEventListener('click', function () {
+					if (b.dataset.lang === lang) return;
+					lang = b.dataset.lang;
+					L = I18N[lang];
+					localStorage.setItem('qf-stats-lang', lang);
+					setLangUI();
+					if (lastData) render(lastData);
+				});
+			});
 
 			document.querySelectorAll('.seg button[data-days]').forEach(function (b) {
 				b.addEventListener('click', function () {
@@ -818,6 +979,7 @@
 				load();
 			});
 
+			setLangUI();
 			load();
 		})();
 	</script>
