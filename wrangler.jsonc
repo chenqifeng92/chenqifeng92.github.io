@@ -13,9 +13,9 @@
   },
   "d1_databases": [
     {
-      "binding": "FEEDBACK_DB",
-      "database_name": "cv-feedback",
-      "database_id": "f7717cc1-8058-46b9-acaa-c99078b5c950"
+      "binding": "STATS_DB",
+      "database_name": "cv-stats",
+      "database_id": "48501e1d-e46e-4a1c-ac75-b2e8b083a0ac"
     }
   ]
 }

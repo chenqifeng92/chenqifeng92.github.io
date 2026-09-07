@@ -1171,6 +1171,47 @@
 			switchLanguage(defaultLang);
 		});
 	</script>
+	<!-- 访问统计埋点：fire-and-forget，失败静默，绝不影响页面功能；数据走 Worker cv 的 /api/track 入 D1 -->
+	<script>
+		(function () {
+			var TRACK_URL = 'https://cv.cqf.kdns.fr/api/track';
+			var site = location.hostname.indexOf('gitlab') !== -1 ? 'gitlab'
+				: location.hostname.indexOf('github') !== -1 ? 'github' : 'cv';
+			var reported = false; // duration 只报一次（pagehide 与 visibilitychange 可能双触发）
+
+			function track(eventType, payload) {
+				try {
+					var body = JSON.stringify({ site: site, event_type: eventType, path: location.pathname, payload: payload });
+					if (navigator.sendBeacon) {
+						navigator.sendBeacon(TRACK_URL, new Blob([body], { type: 'application/json' }));
+					} else {
+						fetch(TRACK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true });
+					}
+				} catch (e) { /* 埋点失败静默 */ }
+			}
+
+			track('pageview');
+
+			// 停留时长：页面关闭/切走时上报（sendBeacon 保证发出）
+			var start = Date.now();
+			function reportDuration() {
+				if (reported) return;
+				reported = true;
+				track('duration', { seconds: Math.round((Date.now() - start) / 1000) });
+			}
+			window.addEventListener('pagehide', reportDuration);
+			document.addEventListener('visibilitychange', function () {
+				if (document.visibilityState === 'hidden') reportDuration();
+			});
+
+			// 打印/导出简历点击（当前导出方案 = 触发浏览器打印）
+			var printBtn = document.querySelector('.print-button');
+			if (printBtn) printBtn.addEventListener('click', function () { track('print_click'); });
+
+			// 暴露给聊天 widget 复用（chat_open / chat_question 在 widget.js 里上报）
+			window.qfTrack = track;
+		})();
+	</script>
 	<!-- AI 聊天机器人：API 指向自定义域名（cv.cqf.kdns.fr），绕过 workers.dev 在中国大陆的 SNI 封锁；跨域已放开 -->
 	<script src="chatbot/widget.js" data-worker="https://cv.cqf.kdns.fr/api/chat" defer></script>
 </body>

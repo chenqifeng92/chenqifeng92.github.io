@@ -500,6 +500,7 @@
   }
   function openPanel() {
     hideTooltip();
+    if (window.qfTrack) window.qfTrack('chat_open'); // 访问统计：聊天面板打开
     panel.classList.add('open');
     // 通知页面：聊天面板已打开，页面可据此让出空间（如简历纸左移）
     document.body.classList.add('qf-chat-open');
@@ -565,6 +566,7 @@
     suggestBox.classList.add('hidden');
     suggestReqId++; // 作废上一轮未返回的建议请求
 
+    if (window.qfTrack) window.qfTrack('chat_question', text); // 访问统计：提问原文入库
     messages.push({ role: 'user', content: text });
     addMsg('user', text);
     input.value = '';

@@ -12,7 +12,7 @@
  * GET /api/track：冒烟与健康检查——验证 D1 绑定经 Workers Builds 部署后是否真实生效
  *   （ratelimit 绑定有过部署后不生效的前科，见 worker.js 头注释，故此端点必须能明确报告绑定状态）
  *
- * 数据落在 D1 库 cv-feedback 的 events 表，读取侧见 /api/stats（feedback.html 用）。
+ * 数据落在 D1 库 cv-stats 的 events 表，读取侧见 /api/stats（feedback.html 用）。
  */
 
 const ALLOWED_EVENTS = new Set([
@@ -56,8 +56,8 @@ function truncate(s, n) {
 }
 
 async function handleTrackPost(request, env) {
-  if (!env.FEEDBACK_DB) {
-    return json({ ok: false, error: 'FEEDBACK_DB not bound' }, 500);
+  if (!env.STATS_DB) {
+    return json({ ok: false, error: 'STATS_DB not bound' }, 500);
   }
 
   let body;
@@ -89,7 +89,7 @@ async function handleTrackPost(request, env) {
   const device = parseDevice(ua);
 
   try {
-    await env.FEEDBACK_DB.prepare(
+    await env.STATS_DB.prepare(
       'INSERT INTO events (site, event_type, path, device, ip, ua, payload) VALUES (?, ?, ?, ?, ?, ?, ?)'
     )
       .bind(site, eventType, path, device, ip, ua, payload)
@@ -101,12 +101,12 @@ async function handleTrackPost(request, env) {
 }
 
 async function handleTrackGet(request, env) {
-  if (!env.FEEDBACK_DB) {
-    return json({ ok: false, error: 'FEEDBACK_DB not bound' }, 500);
+  if (!env.STATS_DB) {
+    return json({ ok: false, error: 'STATS_DB not bound' }, 500);
   }
   try {
-    const r = await env.FEEDBACK_DB.prepare('SELECT COUNT(*) AS n FROM events').first();
-    return json({ ok: true, db: 'FEEDBACK_DB', total_events: r ? r.n : 0 });
+    const r = await env.STATS_DB.prepare('SELECT COUNT(*) AS n FROM events').first();
+    return json({ ok: true, db: 'STATS_DB', total_events: r ? r.n : 0 });
   } catch (e) {
     return json({ ok: false, error: String((e && e.message) || e).slice(0, 120) }, 500);
   }
