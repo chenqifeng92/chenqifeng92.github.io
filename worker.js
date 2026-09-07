@@ -3,6 +3,7 @@
  *
  * 路由：
  *   /api/chat  -> AI 聊天后端（DeepSeek 代理，逻辑在 functions/api/chat.js）
+ *   /api/track -> 埋点入库 + 冒烟（D1 cv-feedback，逻辑在 functions/api/track.js）
  *   其他路径   -> 静态资产（index.html、chatbot/widget.js 等，由 ASSETS 绑定提供）
  *
  * 限流：在 Cloudflare zone 级用 WAF Rate Limiting 规则配置（不在仓库内，见 README），
@@ -15,6 +16,11 @@
  */
 
 import { onRequestPost, onRequestGet, onRequestOptions, onRequestPostSuggestions } from './functions/api/chat.js';
+import {
+  onRequestPost as onTrackPost,
+  onRequestGet as onTrackGet,
+  onRequestOptions as onTrackOptions,
+} from './functions/api/track.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -29,6 +35,23 @@ export default {
           return onRequestGet(context);
         case 'OPTIONS':
           return onRequestOptions(context);
+        default:
+          return new Response('Method Not Allowed', {
+            status: 405,
+            headers: { Allow: 'GET, POST, OPTIONS' },
+          });
+      }
+    }
+
+    if (url.pathname === '/api/track') {
+      const context = { request, env, ctx };
+      switch (request.method) {
+        case 'POST':
+          return onTrackPost(context);
+        case 'GET':
+          return onTrackGet(context);
+        case 'OPTIONS':
+          return onTrackOptions(context);
         default:
           return new Response('Method Not Allowed', {
             status: 405,

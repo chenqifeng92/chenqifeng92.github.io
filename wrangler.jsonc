@@ -10,5 +10,12 @@
   "assets": {
     "directory": ".",
     "binding": "ASSETS"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "FEEDBACK_DB",
+      "database_name": "cv-feedback",
+      "database_id": "f7717cc1-8058-46b9-acaa-c99078b5c950"
+    }
+  ]
 }
